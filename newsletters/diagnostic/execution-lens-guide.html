@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Execution Lens Guide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --yellow: #FFB800;
+      --black: #111111;
+      --white: #ffffff;
+      --bg: #F2F1ED;
+      --surface: #ffffff;
+      --secondary: #555555;
+      --border: 2px solid #111111;
+      --border-light: 1px solid #E2E1DC;
+      --warning: #FF6B6B;
+      --success: #00C875;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--black);
+      background: var(--bg);
+      line-height: 1.6;
+      padding: 0;
+    }
+
+    .guide-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 60px 40px;
+      background: var(--bg);
+    }
+
+    /* Header */
+    .guide-header {
+      margin-bottom: 50px;
+      padding: 30px;
+      background: var(--white);
+      border: 2px solid var(--black);
+    }
+
+    .guide-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--black);
+      margin-bottom: 25px;
+      line-height: 1.2;
+    }
+
+    .guide-intro {
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.8;
+      color: var(--secondary);
+      margin-bottom: 15px;
+    }
+
+    .guide-intro em {
+      font-style: italic;
+      color: var(--black);
+      font-weight: 600;
+    }
+
+    /* Score Guide */
+    .score-guide {
+      margin-bottom: 50px;
+      padding: 30px;
+      background: var(--white);
+      border: 2px solid var(--black);
+    }
+
+    .score-guide h2 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 20px;
+      color: var(--black);
+    }
+
+    .score-band {
+      margin-bottom: 15px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .score-band:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .score-range {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--black);
+      margin-bottom: 5px;
+    }
+
+    .score-description {
+      font-size: 0.95rem;
+      color: var(--secondary);
+      line-height: 1.6;
+    }
+
+    /* Lens Items */
+    .lens-section {
+      margin-bottom: 45px;
+      padding: 30px;
+      border: 2px solid var(--black);
+      background: var(--white);
+    }
+
+    .lens-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .lens-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .lens-number {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--black);
+      background: var(--yellow);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 6px 12px;
+      border-radius: 20px;
+      display: inline-block;
+    }
+
+    .lens-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--black);
+    }
+
+    .lens-score {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.9rem;
+      color: var(--secondary);
+      font-weight: 600;
+      margin-top: 15px;
+    }
+
+    .lens-subsection-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--black);
+      margin-top: 20px;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .lens-subsection-title:first-of-type {
+      margin-top: 0;
+    }
+
+    .lens-description {
+      font-size: 0.95rem;
+      color: var(--secondary);
+      margin-bottom: 18px;
+      line-height: 1.7;
+    }
+
+    .lens-content p {
+      font-size: 0.95rem;
+      color: var(--black);
+      margin-bottom: 12px;
+      line-height: 1.7;
+    }
+
+    .lens-content ul {
+      margin-left: 20px;
+      margin-bottom: 15px;
+    }
+
+    .lens-content li {
+      font-size: 0.95rem;
+      color: var(--black);
+      margin-bottom: 8px;
+      line-height: 1.6;
+    }
+
+    .lens-content strong {
+      font-weight: 600;
+      color: var(--black);
+    }
+
+    .state-box {
+      background: #F8F7F3;
+      padding: 15px;
+      margin: 12px 0;
+      border-left: 3px solid var(--yellow);
+      border-radius: 2px;
+    }
+
+    .state-box-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--secondary);
+      margin-bottom: 8px;
+    }
+
+    .state-box p {
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+    }
+
+    .state-box ul {
+      margin-left: 20px;
+      margin-bottom: 0;
+    }
+
+    .state-box li {
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+    }
+
+    .next-steps-box {
+      background: #F0F9FF;
+      padding: 15px;
+      margin: 15px 0;
+      border-left: 3px solid #579bfc;
+      border-radius: 2px;
+    }
+
+    .next-steps-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #0066cc;
+      margin-bottom: 8px;
+    }
+
+    .next-steps-box ul {
+      margin-left: 20px;
+    }
+
+    .next-steps-box li {
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+    }
+
+    .next-steps-box strong {
+      color: #0066cc;
+    }
+
+    .quote-box {
+      font-style: italic;
+      color: var(--secondary);
+      border-left: 3px solid var(--black);
+      padding-left: 15px;
+      margin: 15px 0;
+    }
+
+    .final-section {
+      margin-top: 60px;
+      padding: 30px;
+      background: var(--white);
+      border: 2px solid var(--yellow);
+    }
+
+    .final-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--black);
+      margin-bottom: 20px;
+    }
+
+    .flow-diagram {
+      background: #F8F7F3;
+      padding: 15px;
+      margin: 15px 0;
+      border-left: 3px solid var(--yellow);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      text-align: center;
+      color: var(--black);
+    }
+
+    /* Print styles */
+    @media print {
+      * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      body {
+        background: white;
+        padding: 0;
+        margin: 0;
+      }
+
+      .guide-container {
+        max-width: 100%;
+        padding: 30px;
+        margin: 0;
+        background: white;
+      }
+
+      .guide-header {
+        page-break-after: avoid;
+      }
+
+      .score-guide {
+        page-break-after: avoid;
+      }
+
+      .lens-section {
+        page-break-inside: avoid;
+        page-break-after: auto;
+        margin-bottom: 30px;
+        padding: 25px;
+      }
+
+      .lens-section:nth-child(3n+1) {
+        page-break-before: auto;
+      }
+
+      .state-box {
+        page-break-inside: avoid;
+      }
+
+      .next-steps-box {
+        page-break-inside: avoid;
+      }
+
+      .final-section {
+        page-break-inside: avoid;
+        margin-top: 40px;
+      }
+
+      .guide-title {
+        page-break-after: avoid;
+      }
+
+      .lens-subsection-title {
+        page-break-after: avoid;
+      }
+
+      h2, h3 {
+        page-break-after: avoid;
+        orphans: 3;
+        widows: 3;
+      }
+
+      ul, ol {
+        page-break-inside: avoid;
+      }
+
+      p {
+        orphans: 2;
+        widows: 2;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="guide-container">
+    <!-- Header -->
+    <div class="guide-header">
+      <h1 class="guide-title">Execution Lens Framework</h1>
+      <p class="guide-intro">
+        This assessment evaluates how your operations actually perform across seven core execution lenses.
+      </p>
+      <p class="guide-intro">
+        Each lens reflects how work <em>really</em> gets done across bidding, projects, field execution, and closeout.
+      </p>
+    </div>
+
+    <!-- Score Guide -->
+    <div class="score-guide">
+      <h2>How to Read Your Score</h2>
+      <p style="margin-bottom: 20px; font-size: 0.95rem;">Each section is scored out of <strong>10 points</strong>.</p>
+
+      <div class="score-band">
+        <div class="score-range">9–10 → Installed System (Controlled Execution)</div>
+        <div class="score-description">You have defined rules. Work is processed consistently. Execution is predictable.</div>
+      </div>
+
+      <div class="score-band">
+        <div class="score-range">5–8 → Partial System (Inconsistent Execution)</div>
+        <div class="score-description">Some structure exists, but execution varies. People fill the gaps.</div>
+      </div>
+
+      <div class="score-band">
+        <div class="score-range">0–4 → No System (Reactive Execution) ⚠️</div>
+        <div class="score-description">No defined rules. Work relies on reaction, follow-up, and individual effort.</div>
+      </div>
+    </div>
+
+    <!-- Lens 01 -->
+    <div class="lens-section">
+      <div class="lens-header">
+        <span class="lens-number">01</span>
+        <h2 class="lens-name">Process</h2>
+      </div>
+      <div class="lens-score">Score: __ / 10</div>
+
+      <div class="lens-content">
+        <div class="lens-subsection-title">What This Measures</div>
+        <p>Whether your operation has clearly defined <strong>processing rules</strong> for how work moves from:</p>
+        <div class="flow-diagram">Input → Action → Outcome</div>
+        <p>Or if work is handled differently each time.</p>
+
+        <div class="lens-subsection-title">What This Looks Like in Practice</div>
+        <p><strong>Strong Process:</strong></p>
+        <ul>
+          <li>Every RFI follows the same path</li>
+          <li>Every project kickoff follows the same structure</li>
+          <li>Every bid moves through defined stages</li>
+        </ul>
+
+        <p><strong>Weak Process:</strong></p>
+        <ul>
+          <li>"It depends on the PM"</li>
+          <li>Steps are skipped or reordered</li>
+          <li>Workflows live in people's heads</li>
+        </ul>
+
+        <div class="lens-subsection-title">Current State</div>
+        <div class="state-box">
+          <div class="state-box-title">Typical Reality</div>
+          <p><strong>Methodology:</strong> Work flows are often "person-to-person" or managed through decentralized folder structures like Dropbox.</p>
+          <p><strong>Consistency:</strong> Each Project Manager (PM) utilizes a unique, non-standardized method for managing their specific jobs.</p>
+        </div>
+
+        <div class="lens-subsection-title">Key Breakdowns</div>
+        <div class="state-box">
+          <ul>
+            <li><strong>Handoffs:</strong> Critical project data is frequently lost during the transition from sales/pre-construction to operations</li>
+            <li><strong>Duplication:</strong> Staff perform "double entry" by manually moving data from emails into tracking spreadsheets</li>
+            <li><strong>Inconsistency:</strong> No central process to capture information consistently</li>
+          </ul>
+        </div>
+
+        <div class="lens-subsection-title">Desired State</div>
+        <div class="state-box">
+          <div class="state-box-title">What to Build</div>
+          <p><strong>Templatization:</strong> Automatic creation of standardized project structures based on project type (e.g., "Run" vs. "Strategic").</p>
+          <p><strong>Connectivity:</strong> A "single source of truth" where every project phase, from design to shipping, is linked in a continuous flow.</p>
+        </div>
+
+        <div class="lens-subsection-title">Next Steps (Based on Your Score)</div>
+        <div class="next-steps-box">
+          <div class="next-steps-title">High Priority Actions</div>
+          <ul>
+            <li><strong>Map your top 5 workflows</strong> (bid → kickoff → execution → closeout) — document what actually happens, not what should happen</li>
+            <li><strong>Create templates</strong> for each project type so new projects auto-populate with required phases and documents</li>
+            <li><strong>Define handoff rules</strong> — specify exactly what data transfers between phases and how</li>
+            <li><strong>Eliminate manual data entry</strong> — integrate systems so information moves automatically between phases</li>
+          </ul>
+        </div>
+
+        <div class="lens-subsection-title">Resource / Exercise</div>
+        <p>Write down:</p>
+        <ul>
+          <li>The last 3 projects you ran</li>
+          <li>Step-by-step what actually happened</li>
+        </ul>
+        <p><em>That—not what you think—is your current process.</em></p>
+      </div>
+    </div>
+
+    <!-- Lens 02 -->
+    <div class="lens-section">
+      <div class="lens-header">
+        <span class="lens-number">02</span>
+        <h2 class="lens-name">Accountability</h2>
+      </div>
+      <div class="lens-score">Score: __ / 10</div>
+
+      <div class="lens-content">
+        <div class="lens-subsection-title">What This Measures</div>
+        <p>Whether ownership is built into your system—or depends on follow-up.</p>
+
+        <div class="lens-subsection-title">What This Looks Like in Practice</div>
+        <p><strong>Strong Accountability:</strong></p>
+        <ul>
+          <li>Every task has a clearly assigned owner</li>
+          <li>Ownership is visible and tracked</li>
+          <li>Work doesn't move without responsibility</li>
+        </ul>
+
+        <p><strong>Weak Accountability:</strong></p>
+        <ul>
+          <li>"The team is handling it"</li>
+          <li>Tasks sit until someone follows up</li>
+          <li>Ownership changes depending on the situation</li>
+        </ul>
+
+        <div class="lens-subsection-title">Current State</div>
+        <div class="state-box">
+          <div class="state-box-title">Typical Reality</div>
+          <p><strong>Ownership:</strong> Tasks often sit in "someone's court" (e.g., "Sarah's court" for budgeting) without visibility for the rest of the team.</p>
+          <p><strong>Enforcement:</strong> Follow-ups on outstanding RFIs or submittals are handled manually through repetitive emails or phone calls.</p>
+        </div>
+
+        <div class="lens-subsection-title">Key Breakdowns</div>
+        <div class="state-box">
+          <ul>
+            <li><strong>Stagnation:</strong> RFIs stall for weeks because there is no clear owner or automated reminder</li>
+            <li><strong>Ambiguity:</strong> PMs may oversee construction but have no accountability for project budgets</li>
+            <li><strong>Manual Follow-up:</strong> Leadership spends time chasing instead of managing</li>
+          </ul>
+        </div>
+
+        <div class="lens-subsection-title">Desired State</div>
+        <div class="state-box">
+          <div class="state-box-title">What to Build</div>
+          <p><strong>Automated Assignment:</strong> Logic that automatically assigns an architect, engineer, or PM to a task the moment it is created.</p>
+          <p><strong>Gatekeeping:</strong> Systems that prevent a project from moving to the next phase until a specific owner signs off on the previous gate.</p>
+        </div>
+
+        <div class="lens-subsection-title">Next Steps (Based on Your Score)</div>
+        <div class="next-steps-box">
+          <div class="next-steps-title">High Priority Actions</div>
+          <ul>
+            <li><strong>Define ownership rules</strong> — for each task type, specify who is responsible by default</li>
+            <li><strong>Create automated assignments</strong> — when an RFI is created, automatically assign to the appropriate discipline</li>
+            <li><strong>Set escalation thresholds</strong> — "If RFI > 5 days, escalate to PM" or "If budget variance > 10%, escalate to controller"</li>
+            <li><strong>Build visibility into ownership</strong> — make it obvious who owns what and what is overdue</li>
+          </ul>
+        </div>
+
+        <div class="lens-subsection-title">Resource / Exercise</div>
+        <p>Take one workflow (RFIs, submittals, etc.):</p>
+        <p>For each step, answer: <div class="quote-box">"Who is responsible for this being completed?"</div></p>
+        <p><em>If you hesitate—you found a gap.</em></p>
+      </div>
+    </div>
+
+    <!-- Lens 03 -->
+    <div class="lens-section">
+      <div class="lens-header">
+        <span class="lens-number">03</span>
+        <h2 class="lens-name">Failure Mode</h2>
+      </div>
+      <div class="lens-score">Score: __ / 10</div>
+
+      <div class="lens-content">
+        <div class="lens-subsection-title">What This Measures</div>
+        <p>Whether your system detects problems early—or relies on people to notice them.</p>
+
+        <div class="lens-subsection-title">What This Looks Like in Practice</div>
+        <p><strong>Strong Failure Detection:</strong></p>
+        <ul>
+          <li>Aging RFIs are flagged automatically</li>
+          <li>Schedule delays are visible early</li>
+          <li>Issues are surfaced before impact</li>
+        </ul>
+
+        <p><strong>Weak Failure Detection:</strong></p>
+        <ul>
+          <li>Problems discovered during meetings</li>
+          <li>Issues identified after delays occur</li>
+          <li>Reliance on escalation</li>
+        </ul>
+
+        <div class="lens-subsection-title">Current State</div>
+        <div class="state-box">
+          <div class="state-box-title">Typical Reality</div>
+          <p><strong>Detection:</strong> Issues are often discovered late (e.g., "in the fourth quarter") because leadership lacks a real-time snapshot of what is off-track.</p>
+          <p><strong>Mitigation:</strong> When a delay occurs (e.g., equipment lead times of 52 weeks), there is no automated "trickle-down" to update downstream fabrication or shipping schedules.</p>
+        </div>
+
+        <div class="lens-subsection-title">Key Breakdowns</div>
+        <div class="state-box">
+          <ul>
+            <li><strong>Information Silos:</strong> External emails from suppliers about ship-date changes are not integrated into the schedule</li>
+            <li><strong>Compounding Delays:</strong> One missed task stalls an entire project because dependency logic is only in a manager's head</li>
+            <li><strong>Crew Impact:</strong> Crews arrive at sites without materials due to lack of integrated tracking</li>
+          </ul>
+        </div>
+
+        <div class="lens-subsection-title">Desired State</div>
+        <div class="state-box">
+          <div class="state-box-title">What to Build</div>
+          <p><strong>Proactive Alerts:</strong> Automated notifications sent to PMs when a task is marked "Stuck" or a due date passes without completion.</p>
+          <p><strong>Dynamic Scheduling:</strong> Gantt charts with dependencies that automatically push all following tasks when an early-stage item is delayed.</p>
+        </div>
+
+        <div class="lens-subsection-title">Next Steps (Based on Your Score)</div>
+        <div class="next-steps-box">
+          <div class="next-steps-title">High Priority Actions</div>
+          <ul>
+            <li><strong>Define status thresholds</strong> — set specific days (e.g., "5 days without update = stuck") that trigger alerts</li>
+            <li><strong>Build dependency logic</strong> — map which tasks block which phases so delays cascade automatically</li>
+            <li><strong>Create "Stuck" status</strong> — flag items that are delayed or at risk, forcing resolution before the project moves forward</li>
+            <li><strong>Automate notifications</strong> — when a deadline passes, notify the owner and escalate to their manager</li>
+          </ul>
+        </div>
+
+        <div class="lens-subsection-title">Resource / Exercise</div>
+        <p>Ask: <div class="quote-box">"How would I know something is off—without asking anyone?"</div></p>
+        <p><em>If the answer is unclear → no detection system exists.</em></p>
+      </div>
+    </div>
+
+    <!-- Lens 04 -->
+    <div class="lens-section">
+      <div class="lens-header">
+        <span class="lens-number">04</span>
+        <h2 class="lens-name">People Dependency</h2>
+      </div>
+      <div class="lens-score">Score: __ / 10</div>
+
+      <div class="lens-content">
+        <div class="lens-subsection-title">What This Measures</div>
+        <p>How much your operation depends on specific individuals vs system-driven execution.</p>
+
+        <div class="lens-subsection-title">What This Looks Like in Practice</div>
+        <p><strong>Low Dependency:</strong></p>
+        <ul>
+          <li>Work continues regardless of who is present</li>
+          <li>Knowledge is captured in systems</li>
+          <li>Processes are transferable</li>
+        </ul>
+
+        <p><strong>High Dependency:</strong></p>
+        <ul>
+          <li>"Only X knows how to do this"</li>
+          <li>Work stalls when people are unavailable</li>
+          <li>Knowledge lives in experience, not systems</li>
+        </ul>
+
+        <div class="lens-subsection-title">Current State</div>
+        <div class="state-box">
+          <div class="state-box-title">Typical Reality</div>
+          <p><strong>Knowledge Base:</strong> Information is frequently stored in "people's heads" or individual desktop folder systems.</p>
+          <p><strong>Bottlenecks:</strong> Specific individuals become operational constraints because they are the only ones with knowledge or access.</p>
+        </div>
+
+        <div class="lens-subsection-title">Key Breakdowns</div>
+        <div class="state-box">
+          <ul>
+            <li><strong>Siloed Data:</strong> Global accounts managed with different naming conventions across regions</li>
+            <li><strong>Retirement Risk:</strong> Critical knowledge held by "seasoned people" who are retiring</li>
+            <li><strong>Onboarding Drag:</strong> New staff take months to become productive because knowledge isn't documented</li>
+          </ul>
+        </div>
+
+        <div class="lens-subsection-title">Desired State</div>
+        <div class="state-box">
+          <div class="state-box-title">What to Build</div>
+          <p><strong>Role-Based Access:</strong> Standardized views where any team member can step into a project and understand its status by looking at the "metadata".</p>
+          <p><strong>Centralized Communication:</strong> All correspondence and files tied to a specific item so project history is not lost if a PM leaves.</p>
+        </div>
+
+        <div class="lens-subsection-title">Next Steps (Based on Your Score)</div>
+        <div class="next-steps-box">
+          <div class="next-steps-title">High Priority Actions</div>
+          <ul>
+            <li><strong>Document workflows</strong> — capture decision rules and process logic so others can execute them</li>
+            <li><strong>Standardize naming</strong> — ensure global accounts, projects, and items use consistent naming across all regions</li>
+            <li><strong>Centralize communication</strong> — move all project correspondence into the system, not individual emails</li>
+            <li><strong>Create role-based views</strong> — ensure anyone stepping into a role can see exactly what they need to know</li>
+          </ul>
+        </div>
+
+        <div class="lens-subsection-title">Resource / Exercise</div>
+        <p>Ask: <div class="quote-box">"If this person left tomorrow, what breaks?"</div></p>
+        <p><em>That's your dependency risk. List it. Systematize it.</em></p>
+      </div>
+    </div>
+
+    <!-- Lens 05 -->
+    <div class="lens-section">
+      <div class="lens-header">
+        <span class="lens-number">05</span>
+        <h2 class="lens-name">Visibility</h2>
+      </div>
+      <div class="lens-score">Score: __ / 10</div>
+
+      <div class="lens-content">
+        <div class="lens-subsection-title">What This Measures</div>
+        <p>Whether you can see what's happening in real time—or rely on updates and communication.</p>
+
+        <div class="lens-subsection-title">What This Looks Like in Practice</div>
+        <p><strong>High Visibility:</strong></p>
+        <ul>
+          <li>Project status visible instantly</li>
+          <li>Tasks, budgets, and timelines accessible</li>
+          <li>No need to ask for updates</li>
+        </ul>
+
+        <p><strong>Low Visibility:</strong></p>
+        <ul>
+          <li>Status requires meetings or calls</li>
+          <li>Information is scattered</li>
+          <li>Teams operate with partial information</li>
+        </ul>
+
+        <div class="lens-subsection-title">Current State</div>
+        <div class="state-box">
+          <div class="state-box-title">Typical Reality</div>
+          <p><strong>Reporting:</strong> Management relies on monthly manual roll-ups that are "strenuous to keep up to date" and often "clunky".</p>
+          <p><strong>Granularity:</strong> Current tools may offer a high-level view but fail to provide the ability to "drill down" into the specific task causing a delay.</p>
+        </div>
+
+        <div class="lens-subsection-title">Key Breakdowns</div>
+        <div class="state-box">
+          <ul>
+            <li><strong>Blind Spots:</strong> Leadership lacks visibility into "who has capacity" to take on new work</li>
+            <li><strong>Lag Time:</strong> Decisions are based on "reports" rather than "reality"</li>
+            <li><strong>Drill-Down Inability:</strong> Can't easily identify which specific task is causing a delay</li>
+          </ul>
+        </div>
+
+        <div class="lens-subsection-title">Desired State</div>
+        <div class="state-box">
+          <div class="state-box-title">What to Build</div>
+          <p><strong>Live Dashboards:</strong> Real-time visualizations of pipeline forecasting, project spend, and "items ready for production".</p>
+          <p><strong>Filtered Views:</strong> Custom interfaces for different users (e.g., "friendly" shop-floor views versus detailed PM "metadata" tables).</p>
+        </div>
+
+        <div class="lens-subsection-title">Next Steps (Based on Your Score)</div>
+        <div class="next-steps-box">
+          <div class="next-steps-title">High Priority Actions</div>
+          <ul>
+            <li><strong>Build a portfolio dashboard</strong> — 30,000-foot view showing all active projects, status, and pipeline value</li>
+            <li><strong>Create drill-down capability</strong> — click a project to see tasks; click a task to see details and owner</li>
+            <li><strong>Add capacity views</strong> — show which teams/individuals have capacity and who is overallocated</li>
+            <li><strong>Eliminate manual reporting</strong> — all metrics should pull directly from your system, not spreadsheets</li>
+          </ul>
+        </div>
+
+        <div class="lens-subsection-title">Resource / Exercise</div>
+        <p>Ask: <div class="quote-box">"Can I see the status of every active project in under 30 seconds?"</div></p>
+        <p><em>If not → visibility gap. That's your priority.</em></p>
+      </div>
+    </div>
+
+    <!-- Lens 06 -->
+    <div class="lens-section">
+      <div class="lens-header">
+        <span class="lens-number">06</span>
+        <h2 class="lens-name">Cost / Cash</h2>
+      </div>
+      <div class="lens-score">Score: __ / 10</div>
+
+      <div class="lens-content">
+        <div class="lens-subsection-title">What This Measures</div>
+        <p>How operational inefficiencies translate into financial impact.</p>
+
+        <div class="lens-subsection-title">What This Looks Like in Practice</div>
+        <p><strong>Controlled Cost:</strong></p>
+        <ul>
+          <li>Delays and inefficiencies are tracked</li>
+          <li>Financial impact is visible</li>
+          <li>Decisions are tied to cost</li>
+        </ul>
+
+        <p><strong>Uncontrolled Cost:</strong></p>
+        <ul>
+          <li>Time loss is untracked</li>
+          <li>Delays go unnoticed financially</li>
+          <li>Margins erode without visibility</li>
+        </ul>
+
+        <div class="lens-subsection-title">Current State</div>
+        <div class="state-box">
+          <div class="state-box-title">Typical Reality</div>
+          <p><strong>Accounting:</strong> Financial data lives in disparate systems (NetSuite, Workday, QuickBooks) and must be manually reconciled with project spreadsheets.</p>
+          <p><strong>Tracking:</strong> Costs are decoupled from progress; budgets are "kept over in Sarah's court" where PMs cannot see them.</p>
+        </div>
+
+        <div class="lens-subsection-title">Key Breakdowns</div>
+        <div class="state-box">
+          <ul>
+            <li><strong>Margin Leakage:</strong> Quotes honored a year later without price escalation because scope/date not tracked</li>
+            <li><strong>Documentation Lag:</strong> Invoicing delayed by weeks because closeout documentation must be compiled manually</li>
+            <li><strong>Hidden Time Loss:</strong> Time spent on rework, delays, and coordination is not costed or tracked</li>
+          </ul>
+        </div>
+
+        <div class="lens-subsection-title">Desired State</div>
+        <div class="state-box">
+          <div class="state-box-title">What to Build</div>
+          <p><strong>Job Costing Integration:</strong> Automated feeds from accounting software that update "Actual vs. Estimated" costs on project boards.</p>
+          <p><strong>Real-time Time Tracking:</strong> Mobile apps where field crews log hours against specific CSI codes, feeding directly into project budget roll-ups.</p>
+        </div>
+
+        <div class="lens-subsection-title">Next Steps (Based on Your Score)</div>
+        <div class="next-steps-box">
+          <div class="next-steps-title">High Priority Actions</div>
+          <ul>
+            <li><strong>Integrate accounting systems</strong> — connect job costing to project tracking so "Actual vs. Estimated" is always visible</li>
+            <li><strong>Enable mobile time tracking</strong> — field crews log hours against project tasks, feeding directly into budgets</li>
+            <li><strong>Link billing to execution</strong> — automate the trigger for invoicing when tasks are marked "complete" and signed off</li>
+            <li><strong>Measure cost of delays</strong> — calculate financial impact of schedule slips and inefficiencies</li>
+          </ul>
+        </div>
+
+        <div class="lens-subsection-title">Resource / Exercise</div>
+        <p>Ask: <div class="quote-box">"Where are we losing time—but not measuring it?"</div></p>
+        <p><em>That's where margin is leaking. Quantify it.</em></p>
+      </div>
+    </div>
+
+    <!-- Lens 07 -->
+    <div class="lens-section">
+      <div class="lens-header">
+        <span class="lens-number">07</span>
+        <h2 class="lens-name">Scalability</h2>
+      </div>
+      <div class="lens-score">Score: __ / 10</div>
+
+      <div class="lens-content">
+        <div class="lens-subsection-title">What This Measures</div>
+        <p>Whether your operation can handle increased volume without breaking.</p>
+
+        <div class="lens-subsection-title">What This Looks Like in Practice</div>
+        <p><strong>Scalable:</strong></p>
+        <ul>
+          <li>Systems handle increased workload</li>
+          <li>Workflows remain consistent</li>
+          <li>Teams don't rely on hero effort</li>
+        </ul>
+
+        <p><strong>Not Scalable:</strong></p>
+        <ul>
+          <li>More work = more chaos</li>
+          <li>Teams become overloaded</li>
+          <li>Quality drops</li>
+        </ul>
+
+        <div class="lens-subsection-title">Current State</div>
+        <div class="state-box">
+          <div class="state-box-title">Typical Reality</div>
+          <p><strong>Volume Limits:</strong> Managers are limited by the number of accounts they can manually track (e.g., 30 accounts is a "mature" limit for a salesperson without a CRM).</p>
+          <p><strong>Friction:</strong> Increasing project volume leads to "monster boards" with too many columns that "just don't work inherently" under load.</p>
+        </div>
+
+        <div class="lens-subsection-title">Key Breakdowns</div>
+        <div class="state-box">
+          <ul>
+            <li><strong>Manual Bottlenecks:</strong> Every new project requires hours of manual setup in Excel or MS Project</li>
+            <li><strong>System Fragmentation:</strong> Growth leads to more "siloed" modules that don't talk to each other</li>
+            <li><strong>Quality Degradation:</strong> Under volume, processes break and teams resort to ad-hoc solutions</li>
+          </ul>
+        </div>
+
+        <div class="lens-subsection-title">Desired State</div>
+        <div class="state-box">
+          <div class="state-box-title">What to Build</div>
+          <p><strong>System Leverage:</strong> Automations that handle handoffs between departments automatically, allowing teams to "move a lot faster" with less manual work.</p>
+          <p><strong>Templatized Growth:</strong> The ability to "copy-paste" complex project structures (like substations) to handle hundreds of similar jobs simultaneously.</p>
+        </div>
+
+        <div class="lens-subsection-title">Next Steps (Based on Your Score)</div>
+        <div class="next-steps-box">
+          <div class="next-steps-title">High Priority Actions</div>
+          <ul>
+            <li><strong>Build project templates</strong> — create reusable structures for each project type so new projects auto-populate</li>
+            <li><strong>Automate handoffs</strong> — eliminate manual work between departments through system integrations</li>
+            <li><strong>Reduce manual setup</strong> — one click should create a complete project structure, not hours of work</li>
+            <li><strong>Test under load</strong> — deliberately increase volume to identify what breaks and fix it proactively</li>
+          </ul>
+        </div>
+
+        <div class="lens-subsection-title">Resource / Exercise</div>
+        <p>Ask: <div class="quote-box">"If we doubled our workload tomorrow, what breaks first?"</div></p>
+        <p><em>Fix that first. That's your constraint.</em></p>
+      </div>
+    </div>
+
+    <!-- Final Section -->
+    <div class="final-section">
+      <h2 class="final-title">🔥 Final Note (To Tie It All Together)</h2>
+
+      <p>This isn't about fixing isolated issues.</p>
+
+      <p>It's about installing a system where:</p>
+
+      <div class="quote-box" style="font-size: 1rem; margin: 20px 0;">
+        <strong>Inputs are processed consistently, without relying on memory, follow-up, or individual effort</strong>
+      </div>
+
+      <p><strong>Right now, most operations run on:</strong></p>
+      <div class="flow-diagram">Input → Reaction → Outcome</div>
+
+      <p><strong>The goal is:</strong></p>
+      <div class="flow-diagram">Input → Rule → Action → Controlled Outcome</div>
+
+      <p style="margin-top: 25px; font-size: 1rem;"><strong>Your Next Move:</strong></p>
+      <p style="font-size: 0.95rem; color: var(--secondary); line-height: 1.8;">
+        Find your lowest-scoring lens. That's your constraint. Start there. Fix that lens, and you create capacity to improve the others. The lenses work together—strengthen one, and the others become easier to fix.
+      </p>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script>
+    // Auto-generate PDF on load
+    window.addEventListener('load', () => {
+      const element = document.querySelector('.guide-container');
+      const opt = {
+        margin: 10,
+        filename: 'Execution-Lens-Guide.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' }
+      };
+      html2pdf().set(opt).from(element).save();
+    });
+  </script>
+</body>
+</html>

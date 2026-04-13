@@ -1,0 +1,1544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Construction Operations Diagnostic</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;500;600&display=block" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <script defer src="https://unpkg.com/alpinejs@3.14.1/dist/cdn.min.js"></script>
+  <script src="https://unpkg.com/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/assessment-data.js"></script>
+  <script src="js/scoring.js"></script>
+  <script src="js/report.js"></script>
+</head>
+<body x-data="diagnosticApp()" x-init="init()" x-cloak>
+
+  <!-- ══════════════════════════════════════════════════════════════════════
+       CONTACT FORM CTA & DRAWER
+  ═══════════════════════════════════════════════════════════════════════ -->
+  <div class="contact-cta-wrapper">
+    <button class="contact-cta-btn" @click="showContactForm = true">
+      Get Free Playbook
+    </button>
+  </div>
+
+  <!-- Contact Form Drawer -->
+  <div
+    class="contact-form-overlay"
+    x-show="showContactForm"
+    x-transition:enter="fade-in"
+    x-transition:enter-start="opacity-0"
+    x-transition:enter-end="opacity-100"
+    x-transition:leave="fade-out"
+    x-transition:leave-start="opacity-100"
+    x-transition:leave-end="opacity-0"
+    @click.self="showContactForm = false"
+    x-cloak
+  >
+    <div
+      class="contact-form-drawer"
+      :class="{ 'is-expanded': formExpanded }"
+      x-transition:enter="slide-in-right"
+      x-transition:enter-start="translate-x-full"
+      x-transition:enter-end="translate-x-0"
+      x-transition:leave="slide-out-right"
+      x-transition:leave-start="translate-x-0"
+      x-transition:leave-end="translate-x-full"
+    >
+      <div class="form-header">
+        <button class="form-toggle-btn" @click="formExpanded = !formExpanded" :title="formExpanded ? 'Collapse' : 'Expand'">
+          <span x-text="formExpanded ? '←' : '→'"></span>
+        </button>
+        <button class="form-close-btn" @click="showContactForm = false">✕</button>
+      </div>
+      <div class="form-content">
+        <div class="form-section">
+          <h3>FINAL STEP</h3>
+          <p>Where should we send your results?</p>
+          <p class="form-description">Enter your information to see your Operations Diagnostic Score, plus a 5-part breakdown of where your operation is breaking—and how to fix it.</p>
+
+          <form @submit.prevent="submitContactForm" class="results-form">
+            <div class="form-group">
+              <label for="firstName">First Name</label>
+              <input
+                type="text"
+                id="firstName"
+                name="firstName"
+                x-model="contactForm.firstName"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                x-model="contactForm.email"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="company">Company Name</label>
+              <input
+                type="text"
+                id="company"
+                name="company"
+                x-model="contactForm.company"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="trade">Trade</label>
+              <select id="trade" name="trade" x-model="contactForm.trade" required>
+                <option value="">Select your trade...</option>
+                <option value="Framing">Framing</option>
+                <option value="Electrical">Electrical</option>
+                <option value="Plumbing">Plumbing</option>
+                <option value="HVAC">HVAC</option>
+                <option value="Concrete">Concrete</option>
+                <option value="Masonry">Masonry</option>
+                <option value="Roofing">Roofing</option>
+                <option value="Painting">Painting</option>
+                <option value="Drywall">Drywall</option>
+                <option value="Flooring">Flooring</option>
+                <option value="General Contractor">General Contractor</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <button type="submit" class="form-submit-btn">GET MY RESULTS →</button>
+
+            <p class="form-privacy">We respect your privacy. Unsubscribe anytime.</p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════════════
+       WELCOME
+  ═══════════════════════════════════════════════════════════════════════ -->
+  <div x-show="screen === 'welcome'" class="welcome-wrap">
+    <div class="welcome-card">
+
+      <div class="welcome-card-inner">
+        <div class="welcome-eyebrow">
+          <span class="pill">Operations Assessment</span>
+        </div>
+        <h1 class="welcome-title">Construction Operations Diagnostic</h1>
+        <p class="welcome-desc">
+          This assessment evaluates how your operation performs across seven core execution areas.<br><br>
+          Each area reflects how work is actually carried out across bidding, project execution, field operations, and closeout.
+        </p>
+      </div>
+
+      <!-- Overview / lenses -->
+      <div class="welcome-overview">
+        <div class="welcome-overview-header">Overview</div>
+        <div class="welcome-overview-body">
+          <p class="welcome-overview-intro">This assessment evaluates how your operation performs across seven core execution areas. Each area reflects how work is actually carried out across bidding, project execution, field operations, and closeout.</p>
+          <div class="pyramid-wrap">
+            <!-- Tier 1 — apex -->
+            <div class="pyramid-tier pyramid-t1">
+              <div class="pyramid-cell" @click="activeLens = activeLens === 'process' ? null : 'process'" :class="{ 'is-active': activeLens === 'process' }">
+                <span class="lens-num">01</span>
+                <span class="lens-name">Process</span>
+              </div>
+            </div>
+            <!-- Tier 2 -->
+            <div class="pyramid-tier pyramid-t2">
+              <div class="pyramid-cell" @click="activeLens = activeLens === 'accountability' ? null : 'accountability'" :class="{ 'is-active': activeLens === 'accountability' }">
+                <span class="lens-num">02</span>
+                <span class="lens-name">Accountability</span>
+              </div>
+              <div class="pyramid-cell" @click="activeLens = activeLens === 'failure_mode' ? null : 'failure_mode'" :class="{ 'is-active': activeLens === 'failure_mode' }">
+                <span class="lens-num">03</span>
+                <span class="lens-name">Failure Mode</span>
+              </div>
+            </div>
+            <!-- Tier 3 — base -->
+            <div class="pyramid-tier pyramid-t3">
+              <div class="pyramid-cell" @click="activeLens = activeLens === 'people_dependency' ? null : 'people_dependency'" :class="{ 'is-active': activeLens === 'people_dependency' }">
+                <span class="lens-num">04</span>
+                <span class="lens-name">People Dependency</span>
+              </div>
+              <div class="pyramid-cell" @click="activeLens = activeLens === 'visibility' ? null : 'visibility'" :class="{ 'is-active': activeLens === 'visibility' }">
+                <span class="lens-num">05</span>
+                <span class="lens-name">Visibility</span>
+              </div>
+              <div class="pyramid-cell" @click="activeLens = activeLens === 'cost_cash' ? null : 'cost_cash'" :class="{ 'is-active': activeLens === 'cost_cash' }">
+                <span class="lens-num">06</span>
+                <span class="lens-name">Cost / Cash</span>
+              </div>
+              <div class="pyramid-cell" @click="activeLens = activeLens === 'scalability' ? null : 'scalability'" :class="{ 'is-active': activeLens === 'scalability' }">
+                <span class="lens-num">07</span>
+                <span class="lens-name">Scalability</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="welcome-spec">
+        <div class="welcome-spec-cell">
+          <div class="welcome-spec-label">Questions</div>
+          <div class="welcome-spec-value">35</div>
+        </div>
+        <div class="welcome-spec-cell">
+          <div class="welcome-spec-label">Sections</div>
+          <div class="welcome-spec-value">07</div>
+        </div>
+        <div class="welcome-spec-cell">
+          <div class="welcome-spec-label">Est. Time</div>
+          <div class="welcome-spec-value">3 min</div>
+        </div>
+      </div>
+
+      <div class="welcome-cta">
+        <button class="btn btn-black btn-lg" @click="start()">
+          Start Assessment &rarr;
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════════════════════════════
+       QUIZ
+  ═══════════════════════════════════════════════════════════════════════ -->
+  <div x-show="screen === 'quiz'" class="page-wrap">
+
+    <!-- Section header block -->
+    <div class="quiz-header">
+
+      <div class="quiz-section-bar">
+        <div class="quiz-section-num">
+          <div class="quiz-section-num-big" x-text="String(sectionIndex + 1).padStart(2,'0')"></div>
+          <div class="quiz-section-num-total" x-text="'/ ' + String(sections.length).padStart(2,'0')"></div>
+        </div>
+        <div class="quiz-section-name">
+          <div class="quiz-section-eyebrow">Current Section</div>
+          <div class="quiz-section-title" x-text="currentSection.name"></div>
+        </div>
+        <div class="quiz-timer" :class="{ 'quiz-timer--urgent': timerSeconds <= 30 && !timerExpired, 'quiz-timer--expired': timerExpired }">
+          <div class="quiz-timer-label">Time</div>
+          <div class="quiz-timer-display" x-text="timerExpired ? 'Done' : timerDisplay"></div>
+        </div>
+      </div>
+
+      <div class="quiz-progress-row">
+        <div class="quiz-progress-label">Progress</div>
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill" :style="'width:' + progressPct + '%'"></div>
+          <span class="progress-bar-pct" x-text="progressPct + '%'"></span>
+        </div>
+        <div class="quiz-answered-label" x-text="answeredCount + ' / 35'"></div>
+      </div>
+
+      <div class="quiz-range-label"
+        x-text="'Questions ' + String(sectionIndex * 5 + 1).padStart(2,'0') + ' – ' + String(sectionIndex * 5 + 5).padStart(2,'0')">
+      </div>
+
+    </div><!-- /quiz-header -->
+
+    <!-- Questions -->
+    <template x-for="(q, qi) in currentQuestions" :key="q.id">
+      <div class="question-block">
+        <div class="question-card">
+
+          <div class="question-header">
+            <div class="question-num" x-text="String(sectionIndex * 5 + qi + 1).padStart(2,'0')"></div>
+            <div class="question-text" x-text="q.question"></div>
+          </div>
+
+          <div class="answer-options">
+            <template x-for="(key, ki) in ['A','B','C','D']" :key="key">
+              <div
+                class="answer-opt"
+                :class="{ selected: responses[q.id] === key }"
+                @click="responses[q.id] = key"
+              >
+                <div class="answer-key-cell" x-text="key"></div>
+                <div class="answer-label" x-text="q.options[key]"></div>
+              </div>
+            </template>
+          </div>
+
+        </div>
+      </div>
+    </template>
+
+    <!-- Navigation -->
+    <div class="nav-row">
+      <button
+        class="btn btn-ghost"
+        @click="prevSection()"
+        x-show="sectionIndex > 0"
+      >&larr; Back</button>
+
+      <div style="display:flex; align-items:center; gap:1rem; margin-left:auto; flex-wrap:wrap;">
+        <span
+          class="section-completion"
+          :class="{ 'all-done': sectionComplete }"
+          x-text="sectionComplete ? '✓ Section complete' : (answeredInSection + ' of 5 answered')"
+        ></span>
+        <button
+          class="btn btn-primary"
+          :disabled="!sectionComplete"
+          @click="sectionIndex < sections.length - 1 ? nextSection() : finish()"
+          x-text="sectionIndex < sections.length - 1 ? 'Next Section →' : 'View Report →'"
+        ></button>
+      </div>
+    </div>
+
+  </div><!-- /quiz -->
+
+
+  <!-- ══════════════════════════════════════════════════════════════════════
+       REPORT
+  ═══════════════════════════════════════════════════════════════════════ -->
+  <div x-show="screen === 'report'" class="page-wrap--wide">
+
+    <div class="report-actions">
+      <button class="btn btn-ghost" @click="restart()">&larr; Start Over</button>
+      <div style="display:flex;gap:0.5rem;">
+        <button
+          class="btn btn-outline"
+          :disabled="exporting"
+          @click="exportPdf()"
+          x-text="exporting ? 'Exporting…' : 'Export PDF'"
+        ></button>
+      </div>
+    </div>
+
+    <div id="report-output" x-show="report">
+      <template x-if="report">
+        <div>
+
+          <!-- Title block -->
+          <div class="report-title-block">
+            <div class="report-title-inner">
+              <div class="report-eyebrow">
+                <span class="pill">Diagnostic Report</span>
+              </div>
+              <h1 x-text="report.title"></h1>
+              <p class="report-overview" x-text="report.overview"></p>
+            </div>
+          </div>
+
+          <!-- Intro -->
+          <div class="report-intro" x-text="report.intro"></div>
+
+          <!-- Headline + summary -->
+          <div class="report-headline-block">
+            <div class="report-headline-accent">Key Finding</div>
+            <div class="report-headline" x-text="report.headline"></div>
+            <div class="report-summary"  x-text="report.summary"></div>
+            <div class="report-key-findings-note">A higher score indicates stronger execution, while a lower score signals more operational gaps.</div>
+            <button class="btn btn-primary" @click="showContactForm = true">GET MY RESULTS →</button>
+          </div>
+
+          <!-- Section Overview Bar Chart -->
+          <div class="report-section" id="section-0">
+            <div class="report-section-title">00 &nbsp; Operational Areas Overview</div>
+            <div class="charts-grid">
+              <div class="chart-container">
+                <div class="chart-label">Operational Areas</div>
+                <div class="section-overview-chart-wrapper">
+                  <canvas id="sectionsChart" class="sections-chart" width="400" height="350"></canvas>
+                </div>
+              </div>
+              <div class="chart-container">
+                <div class="chart-label">Execution Lenses</div>
+                <div class="section-overview-chart-wrapper">
+                  <canvas id="lensChart" class="lens-chart" width="400" height="350"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 01 Top Strength -->
+          <div class="report-section" id="section-1">
+            <div class="report-section-title">01 &nbsp; Top Strength</div>
+            <div class="category-card" :class="'band-' + report.top_strength.band">
+              <div class="cat-card-topbar">
+                <div class="cat-card-name" x-text="report.top_strength.category_name"></div>
+                <div class="card-meta">
+                  <span class="percent" x-text="report.top_strength.percent + '%'"></span>
+                  <span class="pill"
+                    x-text="report.top_strength.band === 'high' ? 'Strong' : report.top_strength.band === 'mid' ? 'Partial' : 'Weak'">
+                  </span>
+                </div>
+              </div>
+              <div class="cat-card-body">
+                <div class="cat-card-title" x-text="report.top_strength.title"></div>
+                <div class="cat-card-summary" x-text="report.top_strength.summary"></div>
+              </div>
+              <div class="cat-card-risk-row">
+                <div class="cat-card-risk-label">Risk</div>
+                <div class="cat-card-risk" x-text="report.top_strength.risk"></div>
+              </div>
+              <div class="cat-card-steps-row">
+                <div class="cat-card-steps-label">Next Steps</div>
+                <ul class="cat-card-steps">
+                  <template x-for="(step, si) in report.top_strength.next_steps" :key="step">
+                    <li>
+                      <span class="step-num" x-text="String(si + 1).padStart(2,'0')"></span>
+                      <span x-text="step"></span>
+                    </li>
+                  </template>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- 02 Primary Constraint -->
+          <div class="report-section" id="section-2">
+            <div class="report-section-title">02 &nbsp; Primary Constraint</div>
+            <div class="category-card is-primary" :class="'band-' + report.primary_constraint.band">
+              <div class="cat-card-topbar">
+                <div class="cat-card-name" x-text="report.primary_constraint.category_name"></div>
+                <div class="card-meta">
+                  <span class="percent" x-text="report.primary_constraint.percent + '%'"></span>
+                  <span class="pill"
+                    x-text="report.primary_constraint.band === 'high' ? 'Strong' : report.primary_constraint.band === 'mid' ? 'Partial' : 'Weak'">
+                  </span>
+                </div>
+              </div>
+              <div class="cat-card-body">
+                <div class="cat-card-title" x-text="report.primary_constraint.title"></div>
+                <div class="cat-card-summary" x-text="report.primary_constraint.summary"></div>
+              </div>
+              <div class="cat-card-risk-row">
+                <div class="cat-card-risk-label">Risk</div>
+                <div class="cat-card-risk" x-text="report.primary_constraint.risk"></div>
+              </div>
+              <div class="cat-card-steps-row">
+                <div class="cat-card-steps-label">Next Steps</div>
+                <ul class="cat-card-steps">
+                  <template x-for="(step, si) in report.primary_constraint.next_steps" :key="step">
+                    <li>
+                      <span class="step-num" x-text="String(si + 1).padStart(2,'0')"></span>
+                      <span x-text="step"></span>
+                    </li>
+                  </template>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- 03 Secondary Constraint -->
+          <div class="report-section" id="section-3">
+            <div class="report-section-title">03 &nbsp; Secondary Constraint</div>
+            <div class="category-card" :class="'band-' + report.secondary_constraint.band">
+              <div class="cat-card-topbar">
+                <div class="cat-card-name" x-text="report.secondary_constraint.category_name"></div>
+                <div class="card-meta">
+                  <span class="percent" x-text="report.secondary_constraint.percent + '%'"></span>
+                  <span class="pill"
+                    x-text="report.secondary_constraint.band === 'high' ? 'Strong' : report.secondary_constraint.band === 'mid' ? 'Partial' : 'Weak'">
+                  </span>
+                </div>
+              </div>
+              <div class="cat-card-body">
+                <div class="cat-card-title" x-text="report.secondary_constraint.title"></div>
+                <div class="cat-card-summary" x-text="report.secondary_constraint.summary"></div>
+              </div>
+              <div class="cat-card-risk-row">
+                <div class="cat-card-risk-label">Risk</div>
+                <div class="cat-card-risk" x-text="report.secondary_constraint.risk"></div>
+              </div>
+              <div class="cat-card-steps-row">
+                <div class="cat-card-steps-label">Next Steps</div>
+                <ul class="cat-card-steps">
+                  <template x-for="(step, si) in report.secondary_constraint.next_steps" :key="step">
+                    <li>
+                      <span class="step-num" x-text="String(si + 1).padStart(2,'0')"></span>
+                      <span x-text="step"></span>
+                    </li>
+                  </template>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- 04 Other Areas -->
+          <div class="report-section" id="section-4">
+            <div class="report-section-title">04 &nbsp; Other Areas</div>
+            <div class="remaining-grid">
+              <template x-for="cat in report.remaining_categories" :key="cat.category">
+                <div class="category-card" :class="'band-' + cat.band">
+                  <div class="cat-card-topbar">
+                    <div class="cat-card-name" x-text="cat.category_name"></div>
+                    <div class="card-meta">
+                      <span class="percent" x-text="cat.percent + '%'"></span>
+                      <span class="pill"
+                        x-text="cat.band === 'high' ? 'Strong' : cat.band === 'mid' ? 'Partial' : 'Weak'">
+                      </span>
+                    </div>
+                  </div>
+                  <div class="cat-card-body">
+                    <div class="cat-card-title" x-text="cat.title"></div>
+                    <div class="cat-card-summary" x-text="cat.summary"></div>
+                  </div>
+                  <div class="cat-card-risk-row">
+                    <div class="cat-card-risk-label">Risk</div>
+                    <div class="cat-card-risk" x-text="cat.risk"></div>
+                  </div>
+                  <div class="cat-card-steps-row">
+                    <div class="cat-card-steps-label">Next Steps</div>
+                    <ul class="cat-card-steps">
+                      <template x-for="(step, si) in cat.next_steps" :key="step">
+                        <li>
+                          <span class="step-num" x-text="String(si + 1).padStart(2,'0')"></span>
+                          <span x-text="step"></span>
+                        </li>
+                      </template>
+                    </ul>
+                  </div>
+                </div>
+              </template>
+            </div>
+          </div>
+
+          <!-- 05 Weakest Sections -->
+          <div class="report-section" id="section-5">
+            <div class="report-section-title">05 &nbsp; Weakest Sections</div>
+            <div class="section-score-list">
+              <template x-for="(s, si) in report.weakest_sections" :key="s.section">
+                <div class="section-score-row" :class="'band-' + s.band">
+                  <div class="section-row-num" x-text="String(si + 1).padStart(2,'0')"></div>
+                  <div class="section-row-content">
+                    <div class="section-row-top">
+                      <div class="section-row-name" x-text="s.section_name"></div>
+                      <div class="section-row-score-wrap">
+                        <span class="section-row-score" x-text="s.percent + '%'"></span>
+                        <span class="pill"
+                          x-text="s.band === 'high' ? 'Controlled' : s.band === 'mid' ? 'Functional' : 'Operational Strain'">
+                        </span>
+                      </div>
+                    </div>
+                    <div class="score-bar-track">
+                      <div class="score-bar-fill" :style="'width:' + s.percent + '%'"></div>
+                    </div>
+                    <div class="section-row-narrative" x-text="s.narrative"></div>
+                  </div>
+                </div>
+              </template>
+            </div>
+          </div>
+
+          <!-- Closing CTA -->
+          <div class="cta-block">
+            <p x-text="report.closing_cta"></p>
+            <div style="display: flex; gap: 1rem;">
+              <button class="btn btn-primary" @click="exportPdf()">Download Report</button>
+              <button class="btn btn-secondary" @click="showScoreGuide = !showScoreGuide" style="background: var(--surface); color: var(--black); border: var(--border);">How to Read Your Score</button>
+            </div>
+          </div>
+
+          <!-- How to Read Your Score Expandable Section -->
+          <div x-show="showScoreGuide" x-transition class="score-guide-section">
+            <div class="score-guide-header">
+              <h2>How to Read Your Score</h2>
+              <button @click="showScoreGuide = false" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--secondary);">×</button>
+            </div>
+            <div class="score-guide-content">
+              <h3 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 1rem;">Each section is scored out of <strong>10 points</strong>.</h3>
+
+              <div class="scoring-band">
+                <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.5rem;">9–10 → Installed System (Controlled Execution)</h4>
+                <p>You have defined rules. Work is processed consistently. Execution is predictable.</p>
+              </div>
+
+              <div class="scoring-band">
+                <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.5rem;">5–8 → Partial System (Inconsistent Execution)</h4>
+                <p>Some structure exists, but execution varies. People fill the gaps.</p>
+              </div>
+
+              <div class="scoring-band" style="margin-bottom: 2rem;">
+                <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.5rem;">0–4 → No System (Reactive Execution) ⚠️</h4>
+                <p>No defined rules. Work relies on reaction, follow-up, and individual effort.</p>
+              </div>
+
+              <hr style="border: none; border-top: var(--border); margin: 2rem 0;">
+
+              <div class="lens-guide">
+                <h3 style="font-size: 1.1rem; font-weight: 800; margin-bottom: 0.5rem;">1. PROCESS</h3>
+                <p style="font-size: 0.9rem; color: var(--secondary); margin-bottom: 1.5rem;"><strong>Score: X / 10</strong></p>
+
+                <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.75rem;">What This Measures</h4>
+                <p>Whether your operation has clearly defined <strong>processing rules</strong> for how work moves from:</p>
+                <blockquote style="margin: 0.75rem 0 0.75rem 1.25rem; padding-left: 1rem; border-left: 3px solid var(--yellow); font-style: italic;">Input → Action → Outcome</blockquote>
+                <p>Or if work is handled differently each time.</p>
+
+                <h4 style="font-size: 0.9rem; font-weight: 700; margin-top: 1.5rem; margin-bottom: 0.75rem;">What This Looks Like in Practice</h4>
+                <p><strong>Strong Process:</strong></p>
+                <ul style="margin: 0.5rem 0 1rem 1.25rem;"><li>Every RFI follows the same path</li><li>Every project kickoff follows the same structure</li><li>Every bid moves through defined stages</li></ul>
+                <p><strong>Weak Process:</strong></p>
+                <ul style="margin: 0.5rem 0 1.5rem 1.25rem;"><li>"It depends on the PM"</li><li>Steps are skipped or reordered</li><li>Workflows live in people's heads</li></ul>
+
+                <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.75rem;">What We're Seeing</h4>
+                <ul style="margin: 0.5rem 0 1.5rem 1.25rem;"><li>Inputs (bids, RFIs, tasks) are handled differently depending on the person</li><li>No consistent "next step" when work enters the system</li><li>Execution relies on memory instead of structure</li></ul>
+
+                <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.75rem;">Why This Matters</h4>
+                <p>Without defined processing rules:</p>
+                <ul style="margin: 0.5rem 0 1.5rem 1.25rem;"><li>Work gets recreated every time</li><li>Execution becomes inconsistent</li><li>Small issues compound into larger problems</li></ul>
+
+                <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.75rem;">Recommended Actions</h4>
+                <ul style="margin: 0.5rem 0 1.5rem 1.25rem;"><li>Map your top 5 workflows (bid → kickoff → execution → closeout)</li><li>Define <strong>"when X happens → do Y"</strong> for each step</li><li>Standardize sequence, ownership, and required inputs</li></ul>
+
+                <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.75rem;">Resource / Exercise</h4>
+                <p>Write down:</p>
+                <ul style="margin: 0.5rem 0 1.5rem 1.25rem;"><li>The last 3 projects you ran</li><li>Step-by-step what actually happened</li></ul>
+                <p>That—not what you think—<em>is your current process</em></p>
+              </div>
+
+              <hr style="border: none; border-top: var(--border); margin: 2rem 0;">
+
+              <div class="lens-guide">
+                <h3 style="font-size: 1.1rem; font-weight: 800; margin-bottom: 0.5rem;">2. ACCOUNTABILITY</h3>
+                <p style="font-size: 0.9rem; color: var(--secondary); margin-bottom: 1.5rem;"><strong>Score: X / 10</strong></p>
+
+                <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.75rem;">What This Measures</h4>
+                <p>Whether ownership is built into your system—or depends on follow-up.</p>
+
+                <h4 style="font-size: 0.9rem; font-weight: 700; margin-top: 1.5rem; margin-bottom: 0.75rem;">What This Looks Like in Practice</h4>
+                <p><strong>Strong Accountability:</strong></p>
+                <ul style="margin: 0.5rem 0 1rem 1.25rem;"><li>Every task has a clearly assigned owner</li><li>Ownership is visible and tracked</li><li>Work doesn't move without responsibility</li></ul>
+                <p><strong>Weak Accountability:</strong></p>
+                <ul style="margin: 0.5rem 0 1.5rem 1.25rem;"><li>"The team is handling it"</li><li>Tasks sit until someone follows up</li><li>Ownership changes depending on the situation</li></ul>
+
+                <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.75rem;">What We're Seeing</h4>
+                <ul style="margin: 0.5rem 0 1.5rem 1.25rem;"><li>Ownership unclear across RFIs, closeout, and field coordination</li><li>Tasks depend on reminders rather than assignment</li><li>Work is completed inconsistently</li></ul>
+
+                <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.75rem;">Why This Matters</h4>
+                <p>Without ownership:</p>
+                <ul style="margin: 0.5rem 0 1.5rem 1.25rem;"><li>Work gets delayed</li><li>Issues fall through the cracks</li><li>No one is responsible for outcomes</li></ul>
+
+                <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.75rem;">Recommended Actions</h4>
+                <ul style="margin: 0.5rem 0 1.5rem 1.25rem;"><li>Assign an owner to every step in your workflows</li><li>Make ownership visible in a system</li><li>Eliminate shared responsibility without clarity</li></ul>
+
+                <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.75rem;">Resource / Exercise</h4>
+                <p>Take one workflow (RFIs, submittals, etc.):</p>
+                <p>For each step, answer:</p>
+                <blockquote style="margin: 0.75rem 0 0.75rem 1.25rem; padding-left: 1rem; border-left: 3px solid var(--yellow); font-style: italic;">"Who is responsible for this being completed?"</blockquote>
+                <p>If you hesitate—you found a gap.</p>
+              </div>
+
+              <hr style="border: none; border-top: var(--border); margin: 2rem 0;">
+
+              <div class="lens-guide">
+                <h3 style="font-size: 1.1rem; font-weight: 800; margin-bottom: 0.5rem;">3. FAILURE MODE</h3>
+                <p style="font-size: 0.9rem; color: var(--secondary); margin-bottom: 1.5rem;"><strong>Score: X / 10</strong></p>
+
+                <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.75rem;">What This Measures</h4>
+                <p>Whether your system detects problems early—or relies on people to notice them.</p>
+
+                <h4 style="font-size: 0.9rem; font-weight: 700; margin-top: 1.5rem; margin-bottom: 0.75rem;">What This Looks Like in Practice</h4>
+                <p><strong>Strong Failure Detection:</strong></p>
+                <ul style="margin: 0.5rem 0 1rem 1.25rem;"><li>Aging RFIs are flagged automatically</li><li>Schedule delays are visible early</li><li>Issues are surfaced before impact</li></ul>
+                <p><strong>Weak Failure Detection:</strong></p>
+                <ul style="margin: 0.5rem 0 1.5rem 1.25rem;"><li>Problems discovered during meetings</li><li>Issues identified after delays occur</li><li>Reliance on escalation</li></ul>
+
+                <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.75rem;">What We're Seeing</h4>
+                <ul style="margin: 0.5rem 0 1.5rem 1.25rem;"><li>Issues discovered late in the process</li><li>No early warning indicators</li><li>Problems identified through communication, not systems</li></ul>
+
+                <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.75rem;">Why This Matters</h4>
+                <p>Late detection leads to:</p>
+                <ul style="margin: 0.5rem 0 1.5rem 1.25rem;"><li>Rework</li><li>Delays</li><li>Increased cost</li></ul>
+
+                <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.75rem;">Recommended Actions</h4>
+                <ul style="margin: 0.5rem 0 1.5rem 1.25rem;"><li>Track aging items (RFIs, tasks, approvals)</li><li>Define thresholds (e.g., "RFI > 5 days = flagged")</li><li>Surface issues automatically</li></ul>
+
+                <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.75rem;">Resource / Exercise</h4>
+                <p>Ask:</p>
+                <blockquote style="margin: 0.75rem 0 0.75rem 1.25rem; padding-left: 1rem; border-left: 3px solid var(--yellow); font-style: italic;">"How would I know something is off—without asking anyone?"</blockquote>
+                <p>If the answer is unclear → no detection system exists.</p>
+              </div>
+
+              <hr style="border: none; border-top: var(--border); margin: 2rem 0;">
+
+              <div class="lens-guide">
+                <h3 style="font-size: 1.1rem; font-weight: 800; margin-bottom: 0.5rem;">4. PEOPLE DEPENDENCY</h3>
+                <p style="font-size: 0.9rem; color: var(--secondary); margin-bottom: 1.5rem;"><strong>Score: X / 10</strong></p>
+
+                <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.75rem;">What This Measures</h4>
+                <p>How much your operation depends on specific individuals vs system-driven execution.</p>
+
+                <h4 style="font-size: 0.9rem; font-weight: 700; margin-top: 1.5rem; margin-bottom: 0.75rem;">What This Looks Like in Practice</h4>
+                <p><strong>Low Dependency:</strong></p>
+                <ul style="margin: 0.5rem 0 1rem 1.25rem;"><li>Work continues regardless of who is present</li><li>Knowledge is captured in systems</li><li>Processes are transferable</li></ul>
+                <p><strong>High Dependency:</strong></p>
+                <ul style="margin: 0.5rem 0 1.5rem 1.25rem;"><li>"Only X knows how to do this"</li><li>Work stalls when people are unavailable</li><li>Knowledge lives in experience, not systems</li></ul>
+
+                <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.75rem;">What We're Seeing</h4>
+                <ul style="margin: 0.5rem 0 1.5rem 1.25rem;"><li>Heavy reliance on PMs and foremen</li><li>Knowledge not documented or systemized</li><li>Execution varies based on experience</li></ul>
+
+                <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.75rem;">Why This Matters</h4>
+                <p>High dependency creates:</p>
+                <ul style="margin: 0.5rem 0 1.5rem 1.25rem;"><li>Bottlenecks</li><li>Risk</li><li>Limited scalability</li></ul>
+
+                <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.75rem;">Recommended Actions</h4>
+                <ul style="margin: 0.5rem 0 1.5rem 1.25rem;"><li>Document repeatable workflows</li><li>Capture decision logic in systems</li><li>Train teams on standardized processes</li></ul>
+
+                <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.75rem;">Resource / Exercise</h4>
+                <p>Ask:</p>
+                <blockquote style="margin: 0.75rem 0 0.75rem 1.25rem; padding-left: 1rem; border-left: 3px solid var(--yellow); font-style: italic;">"If this person left tomorrow, what breaks?"</blockquote>
+                <p>That's your dependency risk.</p>
+              </div>
+
+              <hr style="border: none; border-top: var(--border); margin: 2rem 0;">
+
+              <div class="lens-guide">
+                <h3 style="font-size: 1.1rem; font-weight: 800; margin-bottom: 0.5rem;">5. VISIBILITY</h3>
+                <p style="font-size: 0.9rem; color: var(--secondary); margin-bottom: 1.5rem;"><strong>Score: X / 10</strong></p>
+
+                <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.75rem;">What This Measures</h4>
+                <p>Whether you can see what's happening in real time—or rely on updates and communication.</p>
+
+                <h4 style="font-size: 0.9rem; font-weight: 700; margin-top: 1.5rem; margin-bottom: 0.75rem;">What This Looks Like in Practice</h4>
+                <p><strong>High Visibility:</strong></p>
+                <ul style="margin: 0.5rem 0 1rem 1.25rem;"><li>Project status visible instantly</li><li>Tasks, budgets, and timelines accessible</li><li>No need to ask for updates</li></ul>
+                <p><strong>Low Visibility:</strong></p>
+                <ul style="margin: 0.5rem 0 1.5rem 1.25rem;"><li>Status requires meetings or calls</li><li>Information is scattered</li><li>Teams operate with partial information</li></ul>
+
+                <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.75rem;">What We're Seeing</h4>
+                <ul style="margin: 0.5rem 0 1.5rem 1.25rem;"><li>No single source of truth</li><li>Requires manual updates to understand status</li><li>Information fragmented across tools</li></ul>
+
+                <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.75rem;">Why This Matters</h4>
+                <p>Without visibility:</p>
+                <ul style="margin: 0.5rem 0 1.5rem 1.25rem;"><li>Decisions are delayed</li><li>Issues stay hidden</li><li>Teams become misaligned</li></ul>
+
+                <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.75rem;">Recommended Actions</h4>
+                <ul style="margin: 0.5rem 0 1.5rem 1.25rem;"><li>Create a centralized system for tracking work</li><li>Build dashboards for key metrics</li><li>Eliminate duplicate tracking</li></ul>
+
+                <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.75rem;">Resource / Exercise</h4>
+                <p>Ask:</p>
+                <blockquote style="margin: 0.75rem 0 0.75rem 1.25rem; padding-left: 1rem; border-left: 3px solid var(--yellow); font-style: italic;">"Can I see the status of every active project in under 30 seconds?"</blockquote>
+                <p>If not → visibility gap.</p>
+              </div>
+
+              <hr style="border: none; border-top: var(--border); margin: 2rem 0;">
+
+              <div class="lens-guide">
+                <h3 style="font-size: 1.1rem; font-weight: 800; margin-bottom: 0.5rem;">6. COST / CASH</h3>
+                <p style="font-size: 0.9rem; color: var(--secondary); margin-bottom: 1.5rem;"><strong>Score: X / 10</strong></p>
+
+                <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.75rem;">What This Measures</h4>
+                <p>How operational inefficiencies translate into financial impact.</p>
+
+                <h4 style="font-size: 0.9rem; font-weight: 700; margin-top: 1.5rem; margin-bottom: 0.75rem;">What This Looks Like in Practice</h4>
+                <p><strong>Controlled Cost:</strong></p>
+                <ul style="margin: 0.5rem 0 1rem 1.25rem;"><li>Delays and inefficiencies are tracked</li><li>Financial impact is visible</li><li>Decisions are tied to cost</li></ul>
+                <p><strong>Uncontrolled Cost:</strong></p>
+                <ul style="margin: 0.5rem 0 1.5rem 1.25rem;"><li>Time loss is untracked</li><li>Delays go unnoticed financially</li><li>Margins erode without visibility</li></ul>
+
+                <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.75rem;">What We're Seeing</h4>
+                <ul style="margin: 0.5rem 0 1.5rem 1.25rem;"><li>Time loss in execution and coordination</li><li>Delays impacting profitability</li><li>No direct tie between workflow and cost</li></ul>
+
+                <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.75rem;">Why This Matters</h4>
+                <p>Operational gaps =</p>
+                <ul style="margin: 0.5rem 0 1.5rem 1.25rem;"><li>Lost labor</li><li>Delayed payments</li><li>Reduced margins</li></ul>
+
+                <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.75rem;">Recommended Actions</h4>
+                <ul style="margin: 0.5rem 0 1.5rem 1.25rem;"><li>Track time and delays by workflow</li><li>Connect operational issues to cost impact</li><li>Identify high-cost inefficiencies</li></ul>
+
+                <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.75rem;">Resource / Exercise</h4>
+                <p>Ask:</p>
+                <blockquote style="margin: 0.75rem 0 0.75rem 1.25rem; padding-left: 1rem; border-left: 3px solid var(--yellow); font-style: italic;">"Where are we losing time—but not measuring it?"</blockquote>
+                <p>That's where margin is leaking.</p>
+              </div>
+
+              <hr style="border: none; border-top: var(--border); margin: 2rem 0;">
+
+              <div class="lens-guide">
+                <h3 style="font-size: 1.1rem; font-weight: 800; margin-bottom: 0.5rem;">7. SCALABILITY</h3>
+                <p style="font-size: 0.9rem; color: var(--secondary); margin-bottom: 1.5rem;"><strong>Score: X / 10</strong></p>
+
+                <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.75rem;">What This Measures</h4>
+                <p>Whether your operation can handle increased volume without breaking.</p>
+
+                <h4 style="font-size: 0.9rem; font-weight: 700; margin-top: 1.5rem; margin-bottom: 0.75rem;">What This Looks Like in Practice</h4>
+                <p><strong>Scalable:</strong></p>
+                <ul style="margin: 0.5rem 0 1rem 1.25rem;"><li>Systems handle increased workload</li><li>Workflows remain consistent</li><li>Teams don't rely on hero effort</li></ul>
+                <p><strong>Not Scalable:</strong></p>
+                <ul style="margin: 0.5rem 0 1.5rem 1.25rem;"><li>More work = more chaos</li><li>Teams become overloaded</li><li>Quality drops</li></ul>
+
+                <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.75rem;">What We're Seeing</h4>
+                <ul style="margin: 0.5rem 0 1.5rem 1.25rem;"><li>Increased workload creates coordination issues</li><li>Systems rely on capacity, not structure</li><li>Execution breaks under pressure</li></ul>
+
+                <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.75rem;">Why This Matters</h4>
+                <p>If it doesn't scale:</p>
+                <ul style="margin: 0.5rem 0 1.5rem 1.25rem;"><li>Growth creates risk</li><li>Teams burn out</li><li>Execution quality drops</li></ul>
+
+                <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.75rem;">Recommended Actions</h4>
+                <ul style="margin: 0.5rem 0 1.5rem 1.25rem;"><li>Standardize workflows</li><li>Reduce manual steps</li><li>Build systems that handle volume</li></ul>
+
+                <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.75rem;">Resource / Exercise</h4>
+                <p>Ask:</p>
+                <blockquote style="margin: 0.75rem 0 0.75rem 1.25rem; padding-left: 1rem; border-left: 3px solid var(--yellow); font-style: italic;">"If we doubled our workload tomorrow, what breaks first?"</blockquote>
+                <p>That's your scalability limit.</p>
+              </div>
+
+              <hr style="border: none; border-top: var(--border); margin: 2rem 0;">
+
+              <div style="background: var(--bg); padding: 1.5rem; border-radius: 2px;">
+                <h3 style="font-size: 1rem; font-weight: 800; margin-bottom: 1rem;">🔥 FINAL NOTE (TO TIE IT ALL TOGETHER)</h3>
+                <p>This isn't about fixing isolated issues.</p>
+                <p style="margin-bottom: 1.5rem;">It's about installing a system where:</p>
+                <blockquote style="margin: 1rem 0 1rem 1.25rem; padding-left: 1rem; border-left: 3px solid var(--yellow); font-weight: 500;"><strong>Inputs are processed consistently, without relying on memory, follow-up, or individual effort</strong></blockquote>
+                <p>Right now, most operations run on:</p>
+                <blockquote style="margin: 1rem 0 1rem 1.25rem; padding-left: 1rem; border-left: 3px solid var(--yellow);">Input → Reaction → Outcome</blockquote>
+                <p>The goal is:</p>
+                <blockquote style="margin: 1rem 0 0 1.25rem; padding-left: 1rem; border-left: 3px solid var(--yellow);">Input → Rule → Action → Controlled Outcome</blockquote>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </template>
+    </div><!-- /#report-output -->
+
+  </div><!-- /report -->
+
+  <!-- ══════════════════════════════════════════════════════════════════════
+       LENS MODAL — fixed overlay, no layout shift
+  ═══════════════════════════════════════════════════════════════════════ -->
+  <div
+    class="lens-modal-backdrop"
+    x-show="activeLens"
+    x-transition:enter="lens-backdrop-enter"
+    x-transition:enter-start="lens-backdrop-start"
+    x-transition:enter-end="lens-backdrop-end"
+    x-transition:leave="lens-backdrop-enter"
+    x-transition:leave-start="lens-backdrop-end"
+    x-transition:leave-end="lens-backdrop-start"
+    @click.self="activeLens = null"
+    x-cloak
+  >
+    <div
+      class="lens-modal"
+      x-transition:enter="lens-modal-enter"
+      x-transition:enter-start="lens-modal-start"
+      x-transition:enter-end="lens-modal-end"
+      x-transition:leave="lens-modal-enter"
+      x-transition:leave-start="lens-modal-end"
+      x-transition:leave-end="lens-modal-start"
+    >
+      <!-- Header -->
+      <div class="lens-modal-header">
+        <div class="lens-modal-title">
+          <span class="lens-detail-num" x-text="activeLens ? LENS_CONTENT[activeLens].num : ''"></span>
+          <span class="lens-detail-name" x-text="activeLens ? LENS_CONTENT[activeLens].name : ''"></span>
+        </div>
+        <button class="lens-detail-close" @click="activeLens = null">Close &times;</button>
+      </div>
+      <!-- Body -->
+      <div class="lens-modal-body">
+        <p class="lens-detail-desc" x-text="activeLens ? LENS_CONTENT[activeLens].desc : ''"></p>
+        <ul class="lens-detail-bullets">
+          <template x-for="(b, bi) in (activeLens ? LENS_CONTENT[activeLens].bullets : [])" :key="bi">
+            <li>
+              <span class="bullet-num" x-text="String(bi + 1).padStart(2,'0')"></span>
+              <span x-text="b"></span>
+            </li>
+          </template>
+        </ul>
+      </div>
+      <!-- CTA -->
+      <div class="lens-modal-cta">
+        <p class="lens-modal-cta-text">Ready to see how your operation scores across all seven lenses?</p>
+        <button class="btn btn-black btn-lg" @click="activeLens = null; start()">
+          Start Assessment &rarr;
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const LENS_CONTENT = {
+      process: {
+        num: '01', name: 'Process',
+        desc: 'How clearly work is defined, structured, and repeatable.',
+        bullets: [
+          'Are steps documented or improvised?',
+          'Is there a consistent way work gets done across jobs?',
+          'Can someone new follow the process without guessing?'
+        ],
+        reveals: 'Whether your operation runs on structure or memory.'
+      },
+      accountability: {
+        num: '02', name: 'Accountability',
+        desc: 'How ownership is assigned and enforced.',
+        bullets: [
+          'Does every step have a clear owner?',
+          'Is it obvious who is responsible when something stalls?',
+          'Are handoffs clean or ambiguous?'
+        ],
+        reveals: 'Whether work moves forward or waits on "someone."'
+      },
+      failure_mode: {
+        num: '03', name: 'Failure Mode',
+        desc: 'What happens when something breaks.',
+        bullets: [
+          'Are issues caught early or discovered late?',
+          'Is there a defined path to resolve problems?',
+          'Do the same issues repeat?'
+        ],
+        reveals: 'Whether problems are contained or compound.'
+      },
+      people_dependency: {
+        num: '04', name: 'People Dependency',
+        desc: 'How much your operation relies on specific individuals.',
+        bullets: [
+          'Does work depend on "that one person"?',
+          'Can others step in without disruption?',
+          'Is knowledge documented or tribal?'
+        ],
+        reveals: 'How fragile or resilient your operation is.'
+      },
+      visibility: {
+        num: '05', name: 'Visibility',
+        desc: 'How easily you can see what\'s actually happening.',
+        bullets: [
+          'Can you see project status in real time?',
+          'Are blockers visible without asking?',
+          'Do leaders rely on reports or reality?'
+        ],
+        reveals: 'Whether you\'re managing proactively or reacting late.'
+      },
+      cost_cash: {
+        num: '06', name: 'Cost / Cash',
+        desc: 'How well financial performance is tracked and controlled.',
+        bullets: [
+          'Are costs tied to actual progress?',
+          'Can you spot overruns early?',
+          'Is billing aligned with execution?'
+        ],
+        reveals: 'Whether margin is controlled or slowly leaking.'
+      },
+      scalability: {
+        num: '07', name: 'Scalability',
+        desc: 'How well your operation holds up as you grow.',
+        bullets: [
+          'Does adding work create chaos?',
+          'Do processes break under volume?',
+          'Can systems handle more projects without more stress?'
+        ],
+        reveals: 'Whether growth creates leverage or friction.'
+      }
+    };
+
+    function diagnosticApp() {
+      return {
+        screen:            'welcome',
+        sectionIndex:      0,
+        responses:         {},
+        scored:            null,
+        report:            null,
+        exporting:         false,
+        activeLens:        null,
+        showContactForm:   false,
+        formExpanded:      false,
+        showScoreGuide:    false,
+        timerSeconds:      180,
+        timerInterval:     null,
+        timerExpired:      false,
+        submissionId:      null,
+        supabase:          null,
+        contactForm:       {
+          firstName: '',
+          email: '',
+          company: '',
+          trade: ''
+        },
+
+        get sections()          { return AssessmentData.sections; },
+        get currentSection()    { return this.sections[this.sectionIndex]; },
+        get currentQuestions()  {
+          return AssessmentData.questions.filter(q => q.section === this.currentSection.id);
+        },
+        get totalQuestions()    { return AssessmentData.questions.length; },
+        get answeredCount()     { return Object.keys(this.responses).length; },
+        get answeredInSection() {
+          return this.currentQuestions.filter(q => this.responses[q.id]).length;
+        },
+        get sectionComplete()   { return this.answeredInSection === this.currentQuestions.length; },
+        get progressPct()       {
+          return Math.round((this.answeredCount / this.totalQuestions) * 100);
+        },
+        get timerDisplay() {
+          const m = Math.floor(this.timerSeconds / 60);
+          const s = this.timerSeconds % 60;
+          return m + ':' + String(s).padStart(2, '0');
+        },
+
+        init() {
+          if (window.supabase && !this.supabase) {
+            const supabaseUrl = 'https://fappsarnztagfboncywm.supabase.co';
+            const supabaseKey = 'sb_publishable_YjY4HfaOEKWYKafCALOg8A_gnmIRlPy';
+            this.supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+          }
+        },
+
+        async start() {
+          this.timerSeconds  = 180;
+          this.timerExpired  = false;
+
+          // Create submission record in Supabase
+          try {
+            this.init(); // Ensure Supabase is initialized
+
+            if (this.supabase) {
+              const { data, error } = await this.supabase
+                .from('submissions')
+                .insert({
+                  assessment_started_at: new Date().toISOString()
+                })
+                .select('id')
+                .single();
+
+              if (error) {
+                console.error('Error creating submission:', error);
+              } else {
+                this.submissionId = data.id;
+              }
+            }
+          } catch (err) {
+            console.error('Supabase error:', err);
+          }
+
+          if (this.timerInterval) clearInterval(this.timerInterval);
+          this.timerInterval = setInterval(() => {
+            if (this.timerSeconds > 0) {
+              this.timerSeconds--;
+            } else {
+              this.timerExpired = true;
+              clearInterval(this.timerInterval);
+              this.timerInterval = null;
+            }
+          }, 1000);
+          this.screen = 'quiz';
+          window.scrollTo(0, 0);
+        },
+
+        nextSection() { this.sectionIndex++; window.scrollTo(0,0); },
+
+        prevSection() {
+          if (this.sectionIndex > 0) { this.sectionIndex--; window.scrollTo(0,0); }
+        },
+
+        async finish() {
+          if (this.timerInterval) { clearInterval(this.timerInterval); this.timerInterval = null; }
+          this.scored = Scoring.compute(this.responses);
+          this.report = Report.generate(this.scored);
+
+          // Save all responses and final score to Supabase
+          if (this.submissionId) {
+            try {
+              this.init(); // Ensure Supabase is initialized
+
+              if (this.supabase) {
+                // Build question responses as JSONB
+                const questionResponses = Object.entries(this.responses).map(([questionId, response]) => {
+                  const question = AssessmentData.questions.find(q => q.id === questionId);
+                  return {
+                    question_id: questionId,
+                    question_text: question?.question || '',
+                    section_id: question?.section || '',
+                    section_name: this.sections.find(s => s.id === question?.section)?.name || '',
+                    response_value: response
+                  };
+                });
+
+                // Update submission with responses and completion data
+                const { error: updateError } = await this.supabase
+                  .from('submissions')
+                  .update({
+                    assessment_completed_at: new Date().toISOString(),
+                    final_score: this.scored.overall_percent,
+                    overall_percent: this.scored.overall_percent,
+                    question_responses: questionResponses
+                  })
+                  .eq('id', this.submissionId);
+
+                if (updateError) {
+                  console.error('Error updating submission:', updateError);
+                }
+              }
+            } catch (err) {
+              console.error('Supabase error:', err);
+            }
+          }
+
+          this.screen = 'report';
+          window.scrollTo(0, 0);
+          // Initialize charts after DOM is updated and visible
+          setTimeout(() => {
+            this.initSectionsChart();
+            this.initLensChart();
+          }, 300);
+        },
+
+        initSectionsChart() {
+          try {
+            const canvas = document.getElementById('sectionsChart');
+            if (!canvas) {
+              console.error('Canvas not found');
+              return;
+            }
+
+            // Check if Chart.js is available
+            if (typeof Chart === 'undefined') {
+              console.error('Chart.js library not loaded');
+              return;
+            }
+
+            // Check report data
+            if (!this.report) {
+              console.error('Report object not available');
+              return;
+            }
+
+            if (!this.report.all_sections || this.report.all_sections.length === 0) {
+              console.error('No section data available', this.report.all_sections);
+              return;
+            }
+
+            // Destroy existing chart
+            if (window.sectionsChartInstance) {
+              window.sectionsChartInstance.destroy();
+            }
+
+            const sections = this.report.all_sections;
+            console.log('Creating chart with sections:', sections);
+
+            const chartData = {
+              labels: sections.map(s => s.section_name),
+              datasets: [{
+                label: 'Score / 10',
+                data: sections.map(s => parseFloat(s.score)),
+                backgroundColor: sections.map(s =>
+                  s.band === 'high' ? '#FFD700' : s.band === 'mid' ? '#999999' : '#000000'
+                ),
+                borderWidth: 0,
+                borderRadius: 2,
+                barThickness: 28,
+                categoryPercentage: 0.7,
+                barPercentage: 0.9
+              }]
+            };
+
+            const chartOptions = {
+              indexAxis: 'y',
+              responsive: true,
+              maintainAspectRatio: false,
+              layout: {
+                padding: { top: 10, bottom: 10, left: 0, right: 20 }
+              },
+              plugins: {
+                legend: { display: false },
+                datalabels: {
+                  anchor: 'end',
+                  align: 'end',
+                  offset: 8,
+                  color: '#000',
+                  font: { size: 12, weight: 'bold' },
+                  formatter: function(value) {
+                    return typeof value === 'number' ? value.toFixed(1) : '0.0';
+                  }
+                },
+                tooltip: {
+                  enabled: true,
+                  backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                  padding: 10,
+                  titleFont: { size: 12 },
+                  bodyFont: { size: 11 },
+                  callbacks: {
+                    label: function(context) {
+                      const value = context.parsed.x;
+                      return (typeof value === 'number' ? value.toFixed(1) : '0.0') + ' / 10';
+                    }
+                  }
+                }
+              },
+              scales: {
+                x: {
+                  beginAtZero: true,
+                  max: 10,
+                  ticks: {
+                    stepSize: 2,
+                    color: '#666',
+                    font: { size: 11 }
+                  },
+                  grid: { color: '#f0f0f0', drawBorder: false },
+                  border: { display: false }
+                },
+                y: {
+                  ticks: {
+                    color: '#333',
+                    padding: 12,
+                    font: { size: 12, weight: 'bold' }
+                  },
+                  grid: { display: false },
+                  border: { display: false }
+                }
+              }
+            };
+
+            window.sectionsChartInstance = new Chart(canvas, {
+              type: 'bar',
+              data: chartData,
+              options: chartOptions
+            });
+
+            console.log('Chart created successfully');
+          } catch (error) {
+            console.error('Error in initSectionsChart:', error, error.stack);
+          }
+        },
+
+        initLensChart() {
+          try {
+            const canvas = document.getElementById('lensChart');
+            if (!canvas) {
+              console.error('Canvas not found for lens chart');
+              return;
+            }
+
+            if (typeof Chart === 'undefined') {
+              console.error('Chart.js library not loaded');
+              return;
+            }
+
+            if (!this.report || !this.scored) {
+              console.error('Report or scored data not available');
+              return;
+            }
+
+            // Destroy existing chart
+            if (window.lensChartInstance) {
+              window.lensChartInstance.destroy();
+            }
+
+            // Build category data from the scored results
+            const { category_bands, category_percents, sorted_categories } = this.scored;
+            const categoryNames = {
+              'accountability': 'Accountability',
+              'process': 'Process',
+              'failure_mode': 'Failure Mode',
+              'people_dependency': 'People Dependency',
+              'visibility': 'Visibility',
+              'cost_cash': 'Cost / Cash'
+            };
+
+            if (!sorted_categories || sorted_categories.length === 0) {
+              console.error('No category data available');
+              return;
+            }
+
+            const categories = sorted_categories.map(id => ({
+              id,
+              name: categoryNames[id] || id,
+              band: category_bands[id],
+              percent: category_percents[id],
+              score: (category_percents[id] / 100) * 10
+            }));
+
+            console.log('Creating lens chart with categories:', categories);
+
+            const chartData = {
+              labels: categories.map(c => c.name),
+              datasets: [{
+                label: 'Score / 10',
+                data: categories.map(c => parseFloat(c.score)),
+                backgroundColor: categories.map(c =>
+                  c.band === 'high' ? '#FFD700' : c.band === 'mid' ? '#999999' : '#000000'
+                ),
+                borderWidth: 0,
+                borderRadius: 2,
+                barThickness: 28,
+                categoryPercentage: 0.7,
+                barPercentage: 0.9
+              }]
+            };
+
+            const chartOptions = {
+              indexAxis: 'y',
+              responsive: true,
+              maintainAspectRatio: false,
+              layout: {
+                padding: { top: 10, bottom: 10, left: 0, right: 20 }
+              },
+              plugins: {
+                legend: { display: false },
+                datalabels: {
+                  anchor: 'end',
+                  align: 'end',
+                  offset: 8,
+                  color: '#000',
+                  font: { size: 12, weight: 'bold' },
+                  formatter: function(value) {
+                    return typeof value === 'number' ? value.toFixed(1) : '0.0';
+                  }
+                },
+                tooltip: {
+                  enabled: true,
+                  backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                  padding: 10,
+                  titleFont: { size: 12 },
+                  bodyFont: { size: 11 },
+                  callbacks: {
+                    label: function(context) {
+                      const value = context.parsed.x;
+                      return (typeof value === 'number' ? value.toFixed(1) : '0.0') + ' / 10';
+                    }
+                  }
+                }
+              },
+              scales: {
+                x: {
+                  beginAtZero: true,
+                  max: 10,
+                  ticks: {
+                    stepSize: 2,
+                    color: '#666',
+                    font: { size: 11 }
+                  },
+                  grid: { color: '#f0f0f0', drawBorder: false },
+                  border: { display: false }
+                },
+                y: {
+                  ticks: {
+                    color: '#333',
+                    padding: 12,
+                    font: { size: 12, weight: 'bold' }
+                  },
+                  grid: { display: false },
+                  border: { display: false }
+                }
+              }
+            };
+
+            window.lensChartInstance = new Chart(canvas, {
+              type: 'bar',
+              data: chartData,
+              options: chartOptions
+            });
+
+            console.log('Lens chart created successfully');
+          } catch (error) {
+            console.error('Error in initLensChart:', error, error.stack);
+          }
+        },
+
+        restart() {
+          if (this.timerInterval) { clearInterval(this.timerInterval); this.timerInterval = null; }
+          if (window.sectionsChartInstance) {
+            window.sectionsChartInstance.destroy();
+            window.sectionsChartInstance = null;
+          }
+          if (window.lensChartInstance) {
+            window.lensChartInstance.destroy();
+            window.lensChartInstance = null;
+          }
+          this.sectionIndex = 0;
+          this.responses    = {};
+          this.scored       = null;
+          this.report       = null;
+          this.submissionId = null;
+          this.timerSeconds = 180;
+          this.timerExpired = false;
+          this.screen       = 'welcome';
+          window.scrollTo(0, 0);
+        },
+
+        async exportPdf() {
+          this.exporting = true;
+          document.body.classList.add('pdf-exporting');
+
+          try {
+            // Get the report element
+            const element = document.getElementById('report-output');
+            if (!element) {
+              console.error('Report output element not found');
+              return;
+            }
+
+            // Use html2pdf library
+            const opt = {
+              margin: [15, 15, 15, 15],
+              filename: 'operations-diagnostic-report.pdf',
+              image: { type: 'jpeg', quality: 0.98 },
+              html2canvas: { scale: 2, useCORS: true, logging: false },
+              jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            // Wait a moment for fonts to load
+            await new Promise(resolve => setTimeout(resolve, 500));
+
+            // Use the html2pdf function if available
+            if (window.html2pdf) {
+              await window.html2pdf().set(opt).from(element).save();
+            } else {
+              console.error('html2pdf library not loaded');
+              alert('PDF export library not available. Please try again.');
+            }
+          } catch (err) {
+            console.error('PDF export failed:', err);
+            alert('PDF export failed. Please check the console for details.');
+          } finally {
+            document.body.classList.remove('pdf-exporting');
+            this.exporting = false;
+          }
+        },
+
+        async submitReportForm() {
+          const { firstName, email } = this.contactForm;
+
+          if (!firstName || !email) {
+            alert('Please fill out all fields');
+            return;
+          }
+
+          try {
+            this.init(); // Ensure Supabase is initialized
+
+            if (this.supabase) {
+              // Create new submission with contact data
+              const { data, error } = await this.supabase
+                .from('submissions')
+                .insert({
+                  first_name: firstName,
+                  email: email,
+                  assessment_completed_at: new Date().toISOString(),
+                  contact_submitted_at: new Date().toISOString(),
+                  final_score: this.scored?.overall_percent || null
+                })
+                .select('id')
+                .single();
+
+              if (error) {
+                console.error('Error saving contact info:', error);
+                alert('There was an error submitting your form. Please try again.');
+                return;
+              }
+
+              const submissionId = data.id;
+
+              // Save all question responses
+              if (this.scored && Object.keys(this.responses).length > 0) {
+                const questionResponses = Object.entries(this.responses).map(([questionId, response]) => {
+                  const question = AssessmentData.questions.find(q => q.id === questionId);
+                  return {
+                    submission_id: submissionId,
+                    question_id: questionId,
+                    question_text: question?.question || '',
+                    section_id: question?.section || '',
+                    section_name: this.sections.find(s => s.id === question?.section)?.name || '',
+                    response_value: JSON.stringify({ value: response })
+                  };
+                });
+
+                const { error: insertError } = await this.supabase
+                  .from('question_responses')
+                  .insert(questionResponses);
+
+                if (insertError) {
+                  console.error('Error saving responses:', insertError);
+                }
+              }
+
+              alert('Thank you! Check your email for your personalized Gap Score and course.');
+              this.contactForm = { firstName: '', email: '', company: '', trade: '' };
+            } else {
+              alert('Unable to connect to database. Please try again.');
+            }
+          } catch (error) {
+            console.error('Form submission error:', error);
+            alert('Network error. Please check your connection and try again.');
+          }
+        },
+
+        async submitContactForm() {
+          const { firstName, email } = this.contactForm;
+
+          // Basic validation (HTML5 also validates)
+          if (!firstName || !email) {
+            alert('Please fill out all fields');
+            return;
+          }
+
+          try {
+            this.init(); // Ensure Supabase is initialized
+
+            if (this.supabase && this.submissionId) {
+              // Build question responses as JSONB if not already saved
+              let questionResponses = null;
+              if (this.scored && Object.keys(this.responses).length > 0) {
+                questionResponses = Object.entries(this.responses).map(([questionId, response]) => {
+                  const question = AssessmentData.questions.find(q => q.id === questionId);
+                  return {
+                    question_id: questionId,
+                    question_text: question?.question || '',
+                    section_id: question?.section || '',
+                    section_name: this.sections.find(s => s.id === question?.section)?.name || '',
+                    response_value: response
+                  };
+                });
+              }
+
+              // Update submission with contact info and responses
+              const updateData = {
+                first_name: firstName,
+                email: email,
+                contact_submitted_at: new Date().toISOString(),
+                final_score: this.scored?.overall_percent || null,
+                overall_percent: this.scored?.overall_percent || null
+              };
+
+              if (questionResponses) {
+                updateData.question_responses = questionResponses;
+              }
+
+              const { error: updateError } = await this.supabase
+                .from('submissions')
+                .update(updateData)
+                .eq('id', this.submissionId);
+
+              if (updateError) {
+                console.error('Error updating submission:', updateError);
+                alert('There was an error submitting your form. Please try again.');
+                return;
+              }
+
+              alert('Thank you! Check your email for your personalized Operations Diagnostic Score.');
+              this.contactForm = { firstName: '', email: '', company: '', trade: '' };
+              this.showContactForm = false;
+            } else {
+              alert('Unable to connect to database. Please try again.');
+            }
+          } catch (error) {
+            console.error('Form submission error:', error);
+            alert('Network error. Please check your connection and try again.');
+          }
+        }
+      };
+    }
+  </script>
+
+
+</body>
+</html>

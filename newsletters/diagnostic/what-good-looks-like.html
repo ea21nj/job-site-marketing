@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>What Good Looks Like</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --yellow: #FFB800;
+      --black: #111111;
+      --white: #ffffff;
+      --bg: #F2F1ED;
+      --surface: #ffffff;
+      --secondary: #555555;
+      --border: 2px solid #111111;
+      --border-light: 1px solid #E2E1DC;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--black);
+      background: var(--bg);
+      line-height: 1.6;
+      padding: 0;
+    }
+
+    .guide-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 60px 40px;
+      background: var(--bg);
+    }
+
+    /* Header */
+    .guide-header {
+      margin-bottom: 50px;
+      padding: 30px;
+      background: var(--white);
+      border: 2px solid var(--black);
+    }
+
+    .guide-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--black);
+      margin-bottom: 25px;
+      line-height: 1.2;
+    }
+
+    .guide-intro {
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.8;
+      color: var(--secondary);
+      margin-bottom: 15px;
+    }
+
+    .guide-intro em {
+      font-style: italic;
+      color: var(--black);
+      font-weight: 600;
+    }
+
+    /* Lens Items */
+    .lens-section {
+      margin-bottom: 45px;
+      padding: 30px;
+      border: 2px solid var(--black);
+      background: var(--white);
+    }
+
+    .lens-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .lens-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .lens-number {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--black);
+      background: var(--yellow);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 6px 12px;
+      border-radius: 20px;
+      display: inline-block;
+    }
+
+    .lens-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--black);
+    }
+
+    .lens-subsection-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--black);
+      margin-top: 20px;
+      margin-bottom: 12px;
+    }
+
+    .lens-subsection-title:first-of-type {
+      margin-top: 0;
+    }
+
+    .lens-description {
+      font-size: 0.95rem;
+      color: var(--secondary);
+      margin-bottom: 18px;
+      line-height: 1.7;
+    }
+
+    .lens-content p {
+      font-size: 0.95rem;
+      color: var(--black);
+      margin-bottom: 12px;
+      line-height: 1.7;
+    }
+
+    .lens-content ul {
+      margin-left: 20px;
+      margin-bottom: 15px;
+    }
+
+    .lens-content li {
+      font-size: 0.95rem;
+      color: var(--black);
+      margin-bottom: 8px;
+      line-height: 1.6;
+    }
+
+    .lens-content strong {
+      font-weight: 600;
+      color: var(--black);
+    }
+
+    .practice-box {
+      background: #F8F7F3;
+      padding: 15px;
+      margin: 15px 0;
+      border-left: 3px solid var(--yellow);
+    }
+
+    .practice-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--secondary);
+      margin-bottom: 8px;
+    }
+
+    .practice-box p {
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+    }
+
+    .practice-box ul {
+      margin-left: 20px;
+      margin-bottom: 0;
+    }
+
+    .practice-box li {
+      font-size: 0.9rem;
+    }
+
+    .quote-box {
+      font-style: italic;
+      color: var(--secondary);
+      border-left: 3px solid var(--black);
+      padding-left: 15px;
+      margin: 15px 0;
+    }
+
+    .final-section {
+      margin-top: 60px;
+      padding: 30px;
+      background: var(--white);
+      border: 2px solid var(--yellow);
+    }
+
+    .final-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--black);
+      margin-bottom: 20px;
+    }
+
+    /* Print styles */
+    @media print {
+      body {
+        background: white;
+        padding: 0;
+      }
+      .guide-container {
+        max-width: 100%;
+        padding: 40px;
+        margin: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="guide-container">
+    <!-- Header -->
+    <div class="guide-header">
+      <h1 class="guide-title">What Good Looks Like</h1>
+      <p class="guide-intro">
+        Seven operational systems that define <em>controlled execution</em> across bidding, projects, and closeout.
+      </p>
+      <p class="guide-intro">
+        Each framework describes what real operational excellence looks like in practice—not theory.
+      </p>
+    </div>
+
+    <!-- 01: Bidding & Pipeline -->
+    <div class="lens-section">
+      <div class="lens-header">
+        <span class="lens-number">01</span>
+        <h2 class="lens-name">Bidding & Pipeline</h2>
+      </div>
+
+      <div class="lens-content">
+        <div class="lens-subsection-title">What Good Looks Like</div>
+        <p>A bid pipeline that is <strong>visible, owned, and actively managed without relying on memory</strong></p>
+
+        <div class="practice-box">
+          <div class="practice-label">In Practice</div>
+          <ul>
+            <li>Every active bid is visible in <strong>one system</strong></li>
+            <li>Each bid has: a clear owner, a defined next step, a due date</li>
+            <li>Follow-ups are <strong>triggered automatically</strong>, not remembered</li>
+            <li>Stalled bids are <strong>flagged early</strong>, not discovered late</li>
+            <li>Leadership can answer instantly:
+              <ul style="margin-top: 8px;">
+                <li>What's active</li>
+                <li>What's at risk</li>
+                <li>What's likely to close</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+        <div class="lens-subsection-title">What This Enables</div>
+        <ul>
+          <li>Faster response time</li>
+          <li>Higher hit rate</li>
+          <li>Less duplicated effort</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 02: Project Kickoff -->
+    <div class="lens-section">
+      <div class="lens-header">
+        <span class="lens-number">02</span>
+        <h2 class="lens-name">Project Kickoff</h2>
+      </div>
+
+      <div class="lens-content">
+        <div class="lens-subsection-title">What Good Looks Like</div>
+        <p>A kickoff that is <strong>repeatable, structured, and independent of the individual PM</strong></p>
+
+        <div class="practice-box">
+          <div class="practice-label">In Practice</div>
+          <ul>
+            <li>Every project follows the same <strong>Day 1 workflow</strong></li>
+            <li>All required inputs are: complete, verified, accessible</li>
+            <li>Ownership is defined across: setup, coordination, early execution</li>
+            <li>Any PM can step into a project without rebuilding context</li>
+            <li>Issues at startup are <strong>prevented</strong>, not discovered later</li>
+          </ul>
+        </div>
+
+        <div class="lens-subsection-title">What This Enables</div>
+        <ul>
+          <li>Clean project starts</li>
+          <li>Faster ramp-up</li>
+          <li>Fewer downstream issues</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 03: Scheduling -->
+    <div class="lens-section">
+      <div class="lens-header">
+        <span class="lens-number">03</span>
+        <h2 class="lens-name">Scheduling</h2>
+      </div>
+
+      <div class="lens-content">
+        <div class="lens-subsection-title">What Good Looks Like</div>
+        <p>A schedule that acts as the <strong>single source of truth for execution</strong></p>
+
+        <div class="practice-box">
+          <div class="practice-label">In Practice</div>
+          <ul>
+            <li>One <strong>live schedule</strong> exists — not multiple versions</li>
+            <li>All teams are aligned to the <strong>same current plan</strong></li>
+            <li>Updates are: immediate, visible, tied to execution</li>
+            <li>Ownership of the schedule is clear</li>
+            <li>Outdated schedules are <strong>eliminated</strong>, not managed</li>
+          </ul>
+        </div>
+
+        <div class="lens-subsection-title">What This Enables</div>
+        <ul>
+          <li>Coordinated execution</li>
+          <li>Reduced rework</li>
+          <li>Predictable timelines</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 04: RFIs & Submittals -->
+    <div class="lens-section">
+      <div class="lens-header">
+        <span class="lens-number">04</span>
+        <h2 class="lens-name">RFIs & Submittals</h2>
+      </div>
+
+      <div class="lens-content">
+        <div class="lens-subsection-title">What Good Looks Like</div>
+        <p>A workflow where RFIs and submittals are <strong>tracked, owned, and predictable</strong></p>
+
+        <div class="practice-box">
+          <div class="practice-label">In Practice</div>
+          <ul>
+            <li>Every item has: a status, an owner, a due date</li>
+            <li>All documents are <strong>linked and accessible in one place</strong></li>
+            <li>Delays are: visible early, actively followed up</li>
+            <li>Nothing relies on inbox tracking or memory</li>
+            <li>Anyone can check status without asking</li>
+          </ul>
+        </div>
+
+        <div class="lens-subsection-title">What This Enables</div>
+        <ul>
+          <li>Faster turnaround</li>
+          <li>Fewer delays</li>
+          <li>Less coordination overhead</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 05: Project Visibility -->
+    <div class="lens-section">
+      <div class="lens-header">
+        <span class="lens-number">05</span>
+        <h2 class="lens-name">Project Visibility</h2>
+      </div>
+
+      <div class="lens-content">
+        <div class="lens-subsection-title">What Good Looks Like</div>
+        <p>Real-time visibility into <strong>project health, risk, and performance without asking</strong></p>
+
+        <div class="practice-box">
+          <div class="practice-label">In Practice</div>
+          <ul>
+            <li>Leadership has access to: live dashboards, current status, active risks</li>
+            <li>Risk identification is: structured, proactive</li>
+            <li>Issues are surfaced: early, automatically</li>
+            <li>Decisions are made based on <strong>current data</strong>, not updates</li>
+          </ul>
+        </div>
+
+        <div class="lens-subsection-title">What This Enables</div>
+        <ul>
+          <li>Faster decision-making</li>
+          <li>Early intervention</li>
+          <li>Reduced firefighting</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 06: Field Execution -->
+    <div class="lens-section">
+      <div class="lens-header">
+        <span class="lens-number">06</span>
+        <h2 class="lens-name">Field Execution</h2>
+      </div>
+
+      <div class="lens-content">
+        <div class="lens-subsection-title">What Good Looks Like</div>
+        <p>Field execution that is <strong>clear, consistent, and not dependent on specific individuals</strong></p>
+
+        <div class="practice-box">
+          <div class="practice-label">In Practice</div>
+          <ul>
+            <li>Daily assignments are: clearly defined, tied to the plan, communicated consistently</li>
+            <li>Crews know: what they are doing, where, and why</li>
+            <li>Direction does not rely on: last-minute conversations, specific individuals</li>
+            <li>Confusion is rare and resolved quickly</li>
+          </ul>
+        </div>
+
+        <div class="lens-subsection-title">What This Enables</div>
+        <ul>
+          <li>Higher productivity</li>
+          <li>Less downtime</li>
+          <li>More predictable output</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 07: Closeout -->
+    <div class="lens-section">
+      <div class="lens-header">
+        <span class="lens-number">07</span>
+        <h2 class="lens-name">Closeout</h2>
+      </div>
+
+      <div class="lens-content">
+        <div class="lens-subsection-title">What Good Looks Like</div>
+        <p>A closeout process that is <strong>structured, visible, and predictable</strong></p>
+
+        <div class="practice-box">
+          <div class="practice-label">In Practice</div>
+          <ul>
+            <li>Closeout follows a defined workflow: punch, documentation, approvals, final billing</li>
+            <li>Each item has: a clear owner, a due date</li>
+            <li>Status is visible across all jobs</li>
+            <li>Nothing is discovered late</li>
+            <li>Final payment timing is <strong>predictable</strong></li>
+          </ul>
+        </div>
+
+        <div class="lens-subsection-title">What This Enables</div>
+        <ul>
+          <li>Faster project completion</li>
+          <li>Faster cash collection</li>
+          <li>Less administrative chaos</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Final Section -->
+    <div class="final-section">
+      <h2 class="final-title">The Pattern</h2>
+
+      <p style="margin-bottom: 20px;">All seven areas share a common principle:</p>
+
+      <div class="quote-box" style="font-size: 1rem; margin: 20px 0;">
+        <strong>Work is visible, owned, and processed by system—not by memory, reaction, or individual effort.</strong>
+      </div>
+
+      <p style="margin-bottom: 15px;"><strong>Without these systems, operations look like:</strong></p>
+      <p style="margin-bottom: 20px; padding: 15px; background: #F8F7F3; border-left: 3px solid var(--yellow); font-family: 'Barlow Condensed', sans-serif; font-size: 0.95rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">
+        Input → Follow-up → Reaction → Outcome
+      </p>
+
+      <p style="margin-bottom: 15px;"><strong>With them, it looks like:</strong></p>
+      <p style="padding: 15px; background: #F8F7F3; border-left: 3px solid var(--yellow); font-family: 'Barlow Condensed', sans-serif; font-size: 0.95rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">
+        Input → Rule → Owner → Predictable Outcome
+      </p>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script>
+    // Auto-generate PDF on load
+    window.addEventListener('load', () => {
+      const element = document.querySelector('.guide-container');
+      const opt = {
+        margin: 10,
+        filename: 'What-Good-Looks-Like.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' }
+      };
+      html2pdf().set(opt).from(element).save();
+    });
+  </script>
+</body>
+</html>

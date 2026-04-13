@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How to Read Your Score - Construction Operations Diagnostic</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    .score-guide-wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2.5rem 1.25rem 5rem;
+    }
+
+    .guide-header {
+      background: var(--surface);
+      border: var(--border);
+      padding: 2rem 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .guide-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--black);
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+
+    .guide-intro {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      color: var(--secondary);
+      line-height: 1.75;
+    }
+
+    .scoring-bands {
+      background: var(--surface);
+      border: var(--border);
+      margin-bottom: 2rem;
+      padding: 1.5rem;
+    }
+
+    .scoring-bands-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--secondary);
+      margin-bottom: 1rem;
+    }
+
+    .band-row {
+      margin-bottom: 1.25rem;
+      padding-bottom: 1.25rem;
+      border-bottom: var(--border-thin);
+    }
+
+    .band-row:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+
+    .band-score {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 0.4rem;
+    }
+
+    .band-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--yellow);
+      margin-bottom: 0.5rem;
+      display: inline-block;
+    }
+
+    .band-description {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.875rem;
+      color: var(--secondary);
+      line-height: 1.65;
+    }
+
+    .category-guide {
+      background: var(--surface);
+      border: var(--border);
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+    }
+
+    .category-guide-header {
+      background: var(--bg);
+      border-bottom: var(--border);
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .category-guide-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--secondary);
+      min-width: 40px;
+    }
+
+    .category-guide-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--black);
+    }
+
+    .category-guide-body {
+      padding: 1.5rem;
+    }
+
+    .guide-section {
+      margin-bottom: 1.5rem;
+    }
+
+    .guide-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .guide-section-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--secondary);
+      margin-bottom: 0.75rem;
+    }
+
+    .guide-section-content {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.875rem;
+      color: var(--black);
+      line-height: 1.75;
+    }
+
+    .strength-example {
+      margin-bottom: 0.75rem;
+      padding: 0.75rem;
+      background: #f5f5f5;
+      border-left: 3px solid var(--yellow);
+      font-size: 0.85rem;
+    }
+
+    .strength-example strong {
+      color: var(--black);
+    }
+
+    .weakness-example {
+      margin-bottom: 0.75rem;
+      padding: 0.75rem;
+      background: #f5f5f5;
+      border-left: 3px solid #999;
+      font-size: 0.85rem;
+    }
+
+    .weakness-example strong {
+      color: var(--secondary);
+    }
+
+    .action-list {
+      margin: 0;
+      padding-left: 1.25rem;
+    }
+
+    .action-list li {
+      margin-bottom: 0.5rem;
+      font-size: 0.875rem;
+    }
+
+    .action-list li:last-child {
+      margin-bottom: 0;
+    }
+
+    .guide-footer {
+      background: var(--surface);
+      border: var(--border);
+      padding: 2rem 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .guide-footer-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--black);
+      margin-bottom: 1rem;
+    }
+
+    .guide-footer-body {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.875rem;
+      color: var(--black);
+      line-height: 1.75;
+    }
+
+    .guide-footer-body p {
+      margin-bottom: 1rem;
+    }
+
+    .guide-footer-body p:last-child {
+      margin-bottom: 0;
+    }
+
+    .goal-structure {
+      background: var(--bg);
+      padding: 1rem;
+      margin-top: 1rem;
+      border-left: 3px solid var(--yellow);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      line-height: 1.8;
+    }
+
+    .back-button {
+      display: inline-block;
+      margin-bottom: 1.5rem;
+      padding: 0.5rem 1rem;
+      background: var(--surface);
+      border: var(--border);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--black);
+      text-decoration: none;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: background 0.1s;
+    }
+
+    .back-button:hover {
+      background: var(--bg);
+    }
+  </style>
+</head>
+<body>
+  <div class="score-guide-wrap">
+    <a href="index.html" class="back-button">← Back to Report</a>
+
+    <div class="guide-header">
+      <div class="guide-title">How to Read Your Score</div>
+      <div class="guide-intro">
+        Each section is scored out of 10 points. Use this guide to understand what your score means and how to interpret the results across the six execution lenses.
+      </div>
+    </div>
+
+    <!-- Scoring Bands -->
+    <div class="scoring-bands">
+      <div class="scoring-bands-title">Scoring Bands</div>
+
+      <div class="band-row">
+        <div class="band-score">9–10</div>
+        <div class="band-label">Installed System</div>
+        <div class="band-description">
+          You have defined rules. Work is processed consistently. Execution is predictable.
+        </div>
+      </div>
+
+      <div class="band-row">
+        <div class="band-score">5–8</div>
+        <div class="band-label">Partial System</div>
+        <div class="band-description">
+          Some structure exists, but execution varies. People fill the gaps.
+        </div>
+      </div>
+
+      <div class="band-row">
+        <div class="band-score">0–4</div>
+        <div class="band-label">No System</div>
+        <div class="band-description">
+          No defined rules. Work relies on reaction, follow-up, and individual effort. ⚠️
+        </div>
+      </div>
+    </div>
+
+    <!-- Category Guides -->
+
+    <!-- 01 Process -->
+    <div class="category-guide">
+      <div class="category-guide-header">
+        <div class="category-guide-num">01</div>
+        <div class="category-guide-name">Process</div>
+      </div>
+      <div class="category-guide-body">
+        <div class="guide-section">
+          <div class="guide-section-title">What This Measures</div>
+          <div class="guide-section-content">
+            Whether your operation has clearly defined processing rules for how work moves from Input → Action → Outcome, or if work is handled differently each time.
+          </div>
+        </div>
+
+        <div class="guide-section">
+          <div class="guide-section-title">What This Looks Like in Practice</div>
+          <div class="guide-section-content">
+            <strong>Strong Process:</strong>
+            <div class="strength-example">• Every RFI follows the same path</div>
+            <div class="strength-example">• Every project kickoff follows the same structure</div>
+            <div class="strength-example">• Every bid moves through defined stages</div>
+
+            <strong style="margin-top: 0.75rem; display: block;">Weak Process:</strong>
+            <div class="weakness-example">• "It depends on the PM"</div>
+            <div class="weakness-example">• Steps are skipped or reordered</div>
+            <div class="weakness-example">• Workflows live in people's heads</div>
+          </div>
+        </div>
+
+        <div class="guide-section">
+          <div class="guide-section-title">What We're Seeing</div>
+          <div class="guide-section-content">
+            Inputs (bids, RFIs, tasks) are handled differently depending on the person. No consistent "next step" when work enters the system. Execution relies on memory instead of structure.
+          </div>
+        </div>
+
+        <div class="guide-section">
+          <div class="guide-section-title">Why This Matters</div>
+          <div class="guide-section-content">
+            Without defined processing rules, work gets recreated every time, execution becomes inconsistent, and small issues compound into larger problems.
+          </div>
+        </div>
+
+        <div class="guide-section">
+          <div class="guide-section-title">Recommended Actions</div>
+          <ul class="action-list">
+            <li>Map your top 5 workflows (bid → kickoff → execution → closeout)</li>
+            <li>Define "when X happens → do Y" for each step</li>
+            <li>Standardize sequence, ownership, and required inputs</li>
+          </ul>
+        </div>
+
+        <div class="guide-section">
+          <div class="guide-section-title">Resource / Exercise</div>
+          <div class="guide-section-content">
+            Write down the last 3 projects you ran and step-by-step what actually happened. That—not what you think—is your current process.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 02 Accountability -->
+    <div class="category-guide">
+      <div class="category-guide-header">
+        <div class="category-guide-num">02</div>
+        <div class="category-guide-name">Accountability</div>
+      </div>
+      <div class="category-guide-body">
+        <div class="guide-section">
+          <div class="guide-section-title">What This Measures</div>
+          <div class="guide-section-content">
+            Whether ownership is built into your system—or depends on follow-up.
+          </div>
+        </div>
+
+        <div class="guide-section">
+          <div class="guide-section-title">What This Looks Like in Practice</div>
+          <div class="guide-section-content">
+            <strong>Strong Accountability:</strong>
+            <div class="strength-example">• Every task has a clearly assigned owner</div>
+            <div class="strength-example">• Ownership is visible and tracked</div>
+            <div class="strength-example">• Work doesn't move without responsibility</div>
+
+            <strong style="margin-top: 0.75rem; display: block;">Weak Accountability:</strong>
+            <div class="weakness-example">• "The team is handling it"</div>
+            <div class="weakness-example">• Tasks sit until someone follows up</div>
+            <div class="weakness-example">• Ownership changes depending on the situation</div>
+          </div>
+        </div>
+
+        <div class="guide-section">
+          <div class="guide-section-title">What We're Seeing</div>
+          <div class="guide-section-content">
+            Ownership unclear across RFIs, closeout, and field coordination. Tasks depend on reminders rather than assignment. Work is completed inconsistently.
+          </div>
+        </div>
+
+        <div class="guide-section">
+          <div class="guide-section-title">Why This Matters</div>
+          <div class="guide-section-content">
+            Without ownership, work gets delayed, issues fall through the cracks, and no one is responsible for outcomes.
+          </div>
+        </div>
+
+        <div class="guide-section">
+          <div class="guide-section-title">Recommended Actions</div>
+          <ul class="action-list">
+            <li>Assign an owner to every step in your workflows</li>
+            <li>Make ownership visible in a system</li>
+            <li>Eliminate shared responsibility without clarity</li>
+          </ul>
+        </div>
+
+        <div class="guide-section">
+          <div class="guide-section-title">Resource / Exercise</div>
+          <div class="guide-section-content">
+            Take one workflow (RFIs, submittals, etc.). For each step, answer: "Who is responsible for this being completed?" If you hesitate—you found a gap.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 03 Failure Mode -->
+    <div class="category-guide">
+      <div class="category-guide-header">
+        <div class="category-guide-num">03</div>
+        <div class="category-guide-name">Failure Mode</div>
+      </div>
+      <div class="category-guide-body">
+        <div class="guide-section">
+          <div class="guide-section-title">What This Measures</div>
+          <div class="guide-section-content">
+            Whether your system detects problems early—or relies on people to notice them.
+          </div>
+        </div>
+
+        <div class="guide-section">
+          <div class="guide-section-title">What This Looks Like in Practice</div>
+          <div class="guide-section-content">
+            <strong>Strong Failure Detection:</strong>
+            <div class="strength-example">• Aging RFIs are flagged automatically</div>
+            <div class="strength-example">• Schedule delays are visible early</div>
+            <div class="strength-example">• Issues are surfaced before impact</div>
+
+            <strong style="margin-top: 0.75rem; display: block;">Weak Failure Detection:</strong>
+            <div class="weakness-example">• Problems discovered during meetings</div>
+            <div class="weakness-example">• Issues identified after delays occur</div>
+            <div class="weakness-example">• Reliance on escalation</div>
+          </div>
+        </div>
+
+        <div class="guide-section">
+          <div class="guide-section-title">What We're Seeing</div>
+          <div class="guide-section-content">
+            Issues discovered late in the process. No early warning indicators. Problems identified through communication, not systems.
+          </div>
+        </div>
+
+        <div class="guide-section">
+          <div class="guide-section-title">Why This Matters</div>
+          <div class="guide-section-content">
+            Late detection leads to rework, delays, and increased cost.
+          </div>
+        </div>
+
+        <div class="guide-section">
+          <div class="guide-section-title">Recommended Actions</div>
+          <ul class="action-list">
+            <li>Track aging items (RFIs, tasks, approvals)</li>
+            <li>Define thresholds (e.g., "RFI > 5 days = flagged")</li>
+            <li>Surface issues automatically</li>
+          </ul>
+        </div>
+
+        <div class="guide-section">
+          <div class="guide-section-title">Resource / Exercise</div>
+          <div class="guide-section-content">
+            Ask: "How would I know something is off—without asking anyone?" If the answer is unclear → no detection system exists.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 04 People Dependency -->
+    <div class="category-guide">
+      <div class="category-guide-header">
+        <div class="category-guide-num">04</div>
+        <div class="category-guide-name">People Dependency</div>
+      </div>
+      <div class="category-guide-body">
+        <div class="guide-section">
+          <div class="guide-section-title">What This Measures</div>
+          <div class="guide-section-content">
+            How much your operation depends on specific individuals vs system-driven execution.
+          </div>
+        </div>
+
+        <div class="guide-section">
+          <div class="guide-section-title">What This Looks Like in Practice</div>
+          <div class="guide-section-content">
+            <strong>Low Dependency:</strong>
+            <div class="strength-example">• Work continues regardless of who is present</div>
+            <div class="strength-example">• Knowledge is captured in systems</div>
+            <div class="strength-example">• Processes are transferable</div>
+
+            <strong style="margin-top: 0.75rem; display: block;">High Dependency:</strong>
+            <div class="weakness-example">• "Only X knows how to do this"</div>
+            <div class="weakness-example">• Work stalls when people are unavailable</div>
+            <div class="weakness-example">• Knowledge lives in experience, not systems</div>
+          </div>
+        </div>
+
+        <div class="guide-section">
+          <div class="guide-section-title">What We're Seeing</div>
+          <div class="guide-section-content">
+            Heavy reliance on PMs and foremen. Knowledge not documented or systemized. Execution varies based on experience.
+          </div>
+        </div>
+
+        <div class="guide-section">
+          <div class="guide-section-title">Why This Matters</div>
+          <div class="guide-section-content">
+            High dependency creates bottlenecks, increases risk, and limits scalability.
+          </div>
+        </div>
+
+        <div class="guide-section">
+          <div class="guide-section-title">Recommended Actions</div>
+          <ul class="action-list">
+            <li>Document repeatable workflows</li>
+            <li>Capture decision logic in systems</li>
+            <li>Train teams on standardized processes</li>
+          </ul>
+        </div>
+
+        <div class="guide-section">
+          <div class="guide-section-title">Resource / Exercise</div>
+          <div class="guide-section-content">
+            Ask: "If this person left tomorrow, what breaks?" That's your dependency risk.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 05 Visibility -->
+    <div class="category-guide">
+      <div class="category-guide-header">
+        <div class="category-guide-num">05</div>
+        <div class="category-guide-name">Visibility</div>
+      </div>
+      <div class="category-guide-body">
+        <div class="guide-section">
+          <div class="guide-section-title">What This Measures</div>
+          <div class="guide-section-content">
+            Whether you can see what's happening in real time—or rely on updates and communication.
+          </div>
+        </div>
+
+        <div class="guide-section">
+          <div class="guide-section-title">What This Looks Like in Practice</div>
+          <div class="guide-section-content">
+            <strong>High Visibility:</strong>
+            <div class="strength-example">• Project status visible instantly</div>
+            <div class="strength-example">• Tasks, budgets, and timelines accessible</div>
+            <div class="strength-example">• No need to ask for updates</div>
+
+            <strong style="margin-top: 0.75rem; display: block;">Low Visibility:</strong>
+            <div class="weakness-example">• Status requires meetings or calls</div>
+            <div class="weakness-example">• Information is scattered</div>
+            <div class="weakness-example">• Teams operate with partial information</div>
+          </div>
+        </div>
+
+        <div class="guide-section">
+          <div class="guide-section-title">What We're Seeing</div>
+          <div class="guide-section-content">
+            No single source of truth. Requires manual updates to understand status. Information fragmented across tools.
+          </div>
+        </div>
+
+        <div class="guide-section">
+          <div class="guide-section-title">Why This Matters</div>
+          <div class="guide-section-content">
+            Without visibility, decisions are delayed, issues stay hidden, and teams become misaligned.
+          </div>
+        </div>
+
+        <div class="guide-section">
+          <div class="guide-section-title">Recommended Actions</div>
+          <ul class="action-list">
+            <li>Create a centralized system for tracking work</li>
+            <li>Build dashboards for key metrics</li>
+            <li>Eliminate duplicate tracking</li>
+          </ul>
+        </div>
+
+        <div class="guide-section">
+          <div class="guide-section-title">Resource / Exercise</div>
+          <div class="guide-section-content">
+            Ask: "Can I see the status of every active project in under 30 seconds?" If not → visibility gap.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 06 Cost / Cash -->
+    <div class="category-guide">
+      <div class="category-guide-header">
+        <div class="category-guide-num">06</div>
+        <div class="category-guide-name">Cost / Cash</div>
+      </div>
+      <div class="category-guide-body">
+        <div class="guide-section">
+          <div class="guide-section-title">What This Measures</div>
+          <div class="guide-section-content">
+            How operational inefficiencies translate into financial impact.
+          </div>
+        </div>
+
+        <div class="guide-section">
+          <div class="guide-section-title">What This Looks Like in Practice</div>
+          <div class="guide-section-content">
+            <strong>Controlled Cost:</strong>
+            <div class="strength-example">• Delays and inefficiencies are tracked</div>
+            <div class="strength-example">• Financial impact is visible</div>
+            <div class="strength-example">• Decisions are tied to cost</div>
+
+            <strong style="margin-top: 0.75rem; display: block;">Uncontrolled Cost:</strong>
+            <div class="weakness-example">• Time loss is untracked</div>
+            <div class="weakness-example">• Delays go unnoticed financially</div>
+            <div class="weakness-example">• Margins erode without visibility</div>
+          </div>
+        </div>
+
+        <div class="guide-section">
+          <div class="guide-section-title">What We're Seeing</div>
+          <div class="guide-section-content">
+            Time loss in execution and coordination. Delays impacting profitability. No direct tie between workflow and cost.
+          </div>
+        </div>
+
+        <div class="guide-section">
+          <div class="guide-section-title">Why This Matters</div>
+          <div class="guide-section-content">
+            Operational gaps lead to lost labor, delayed payments, and reduced margins.
+          </div>
+        </div>
+
+        <div class="guide-section">
+          <div class="guide-section-title">Recommended Actions</div>
+          <ul class="action-list">
+            <li>Track time and delays by workflow</li>
+            <li>Connect operational issues to cost impact</li>
+            <li>Identify high-cost inefficiencies</li>
+          </ul>
+        </div>
+
+        <div class="guide-section">
+          <div class="guide-section-title">Resource / Exercise</div>
+          <div class="guide-section-content">
+            Ask: "Where are we losing time—but not measuring it?" That's where margin is leaking.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer note -->
+    <div class="guide-footer">
+      <div class="guide-footer-title">🔥 Final Note</div>
+      <div class="guide-footer-body">
+        <p>
+          This isn't about fixing isolated issues. It's about installing a system where inputs are processed consistently, without relying on memory, follow-up, or individual effort.
+        </p>
+        <p>
+          Right now, most operations run on:
+        </p>
+        <div class="goal-structure">
+          Input → Reaction → Outcome
+        </div>
+        <p style="margin-top: 1rem;">
+          The goal is:
+        </p>
+        <div class="goal-structure">
+          Input → Rule → Action → Controlled Outcome
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
