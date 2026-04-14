@@ -1484,50 +1484,19 @@
 
             console.log('Supabase client ready');
 
-            // Build question responses
-            let questionResponses = null;
-            if (this.scored && Object.keys(this.responses).length > 0) {
-              questionResponses = Object.entries(this.responses).map(([questionId, response]) => {
-                const question = AssessmentData.questions.find(q => q.id === questionId);
-                return {
-                  question_id: questionId,
-                  question_text: question?.question || '',
-                  section_id: question?.section || '',
-                  section_name: this.sections.find(s => s.id === question?.section)?.name || '',
-                  response_value: response
-                };
-              });
-            }
-
-            // Prepare submission data
+            // Prepare submission data for Free Playbook table
             const submissionData = {
-              first_name: firstName,
+              name: firstName,
               email: email,
               company: company,
-              trade: trade,
-              contact_submitted_at: new Date().toISOString(),
-              final_score: this.scored?.overall_percent || null,
-              overall_percent: this.scored?.overall_percent || null,
-              question_responses: questionResponses,
-
-              // Include all scored results
-              category_percents: this.scored?.category_percents || null,
-              category_bands: this.scored?.category_bands || null,
-              section_percents: this.scored?.section_percents || null,
-              section_bands: this.scored?.section_bands || null,
-              primary_constraint: this.scored?.primary_constraint || null,
-              secondary_constraint: this.scored?.secondary_constraint || null,
-              top_strength: this.scored?.top_strength || null,
-
-              // Include full report for later display
-              full_report: this.report || null
+              trade: trade
             };
 
             console.log('Submitting to Supabase:', submissionData);
 
-            // Insert into Supabase
+            // Insert into Free Playbook table
             const { data, error } = await this.supabase
-              .from('submissions')
+              .from('Free Playbook')
               .insert([submissionData]);
 
             if (error) {
