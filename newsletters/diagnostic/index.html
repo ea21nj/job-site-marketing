@@ -17,7 +17,7 @@
   <script src="js/scoring.js"></script>
   <script src="js/report.js"></script>
 </head>
-<body x-data="diagnosticApp()" x-init="init()" x-cloak>
+<body x-data="diagnosticApp()" x-init="initSupabase()" x-cloak>
 
   <!-- ══════════════════════════════════════════════════════════════════════
        CONTACT FORM CTA & DRAWER
@@ -71,6 +71,7 @@
                 id="firstName"
                 name="firstName"
                 x-model="contactForm.firstName"
+                @change="checkAutoSubmit()"
                 required
               />
             </div>
@@ -82,6 +83,7 @@
                 id="email"
                 name="email"
                 x-model="contactForm.email"
+                @change="checkAutoSubmit()"
                 required
               />
             </div>
@@ -93,13 +95,14 @@
                 id="company"
                 name="company"
                 x-model="contactForm.company"
+                @change="checkAutoSubmit()"
                 required
               />
             </div>
 
             <div class="form-group">
               <label for="trade">Trade</label>
-              <select id="trade" name="trade" x-model="contactForm.trade" required>
+              <select id="trade" name="trade" x-model="contactForm.trade" @change="checkAutoSubmit()" required>
                 <option value="">Select your trade...</option>
                 <option value="Framing">Framing</option>
                 <option value="Electrical">Electrical</option>
@@ -116,7 +119,7 @@
               </select>
             </div>
 
-            <button type="submit" class="form-submit-btn">GET MY RESULTS →</button>
+            <button type="button" class="form-submit-btn" @click="submitContactForm()">GET MY RESULTS →</button>
 
             <p class="form-privacy">We respect your privacy. Unsubscribe anytime.</p>
           </form>
@@ -956,7 +959,6 @@
         timerSeconds:      180,
         timerInterval:     null,
         timerExpired:      false,
-        submissionId:      null,
         supabase:          null,
         contactForm:       {
           firstName: '',
@@ -985,7 +987,7 @@
           return m + ':' + String(s).padStart(2, '0');
         },
 
-        init() {
+        initSupabase() {
           if (window.supabase && !this.supabase) {
             const supabaseUrl = 'https://fappsarnztagfboncywm.supabase.co';
             const supabaseKey = 'sb_publishable_YjY4HfaOEKWYKafCALOg8A_gnmIRlPy';
@@ -993,32 +995,9 @@
           }
         },
 
-        async start() {
+        start() {
           this.timerSeconds  = 180;
           this.timerExpired  = false;
-
-          // Create submission record in Supabase
-          try {
-            this.init(); // Ensure Supabase is initialized
-
-            if (this.supabase) {
-              const { data, error } = await this.supabase
-                .from('submissions')
-                .insert({
-                  assessment_started_at: new Date().toISOString()
-                })
-                .select('id')
-                .single();
-
-              if (error) {
-                console.error('Error creating submission:', error);
-              } else {
-                this.submissionId = data.id;
-              }
-            }
-          } catch (err) {
-            console.error('Supabase error:', err);
-          }
 
           if (this.timerInterval) clearInterval(this.timerInterval);
           this.timerInterval = setInterval(() => {
@@ -1472,64 +1451,100 @@
           }
         },
 
-        async submitContactForm() {
-          const { firstName, email } = this.contactForm;
+        checkAutoSubmit() {
+          const { firstName, email, company, trade } = this.contactForm;
 
-          // Basic validation (HTML5 also validates)
-          if (!firstName || !email) {
+          // Auto-submit when all fields are filled
+          if (firstName && email && company && trade) {
+            setTimeout(() => this.submitContactForm(), 300);
+          }
+        },
+
+        async submitContactForm() {
+          const { firstName, email, company, trade } = this.contactForm;
+
+          // Validation
+          if (!firstName || !email || !company || !trade) {
             alert('Please fill out all fields');
             return;
           }
 
           try {
-            this.init(); // Ensure Supabase is initialized
+            // Ensure Supabase is initialized
+            this.initSupabase();
 
-            if (this.supabase && this.submissionId) {
-              // Build question responses as JSONB if not already saved
-              let questionResponses = null;
-              if (this.scored && Object.keys(this.responses).length > 0) {
-                questionResponses = Object.entries(this.responses).map(([questionId, response]) => {
-                  const question = AssessmentData.questions.find(q => q.id === questionId);
-                  return {
-                    question_id: questionId,
-                    question_text: question?.question || '',
-                    section_id: question?.section || '',
-                    section_name: this.sections.find(s => s.id === question?.section)?.name || '',
-                    response_value: response
-                  };
-                });
-              }
+            // Wait a moment for Supabase to be ready
+            await new Promise(resolve => setTimeout(resolve, 100));
 
-              // Update submission with contact info and responses
-              const updateData = {
-                first_name: firstName,
-                email: email,
-                contact_submitted_at: new Date().toISOString(),
-                final_score: this.scored?.overall_percent || null,
-                overall_percent: this.scored?.overall_percent || null
-              };
-
-              if (questionResponses) {
-                updateData.question_responses = questionResponses;
-              }
-
-              const { error: updateError } = await this.supabase
-                .from('submissions')
-                .update(updateData)
-                .eq('id', this.submissionId);
-
-              if (updateError) {
-                console.error('Error updating submission:', updateError);
-                alert('There was an error submitting your form. Please try again.');
-                return;
-              }
-
-              alert('Thank you! Check your email for your personalized Operations Diagnostic Score.');
-              this.contactForm = { firstName: '', email: '', company: '', trade: '' };
-              this.showContactForm = false;
-            } else {
+            if (!this.supabase) {
+              console.error('Supabase not initialized');
               alert('Unable to connect to database. Please try again.');
+              return;
             }
+
+            console.log('Supabase client ready');
+
+            // Build question responses
+            let questionResponses = null;
+            if (this.scored && Object.keys(this.responses).length > 0) {
+              questionResponses = Object.entries(this.responses).map(([questionId, response]) => {
+                const question = AssessmentData.questions.find(q => q.id === questionId);
+                return {
+                  question_id: questionId,
+                  question_text: question?.question || '',
+                  section_id: question?.section || '',
+                  section_name: this.sections.find(s => s.id === question?.section)?.name || '',
+                  response_value: response
+                };
+              });
+            }
+
+            // Prepare submission data
+            const submissionData = {
+              first_name: firstName,
+              email: email,
+              company: company,
+              trade: trade,
+              contact_submitted_at: new Date().toISOString(),
+              final_score: this.scored?.overall_percent || null,
+              overall_percent: this.scored?.overall_percent || null,
+              question_responses: questionResponses,
+
+              // Include all scored results
+              category_percents: this.scored?.category_percents || null,
+              category_bands: this.scored?.category_bands || null,
+              section_percents: this.scored?.section_percents || null,
+              section_bands: this.scored?.section_bands || null,
+              primary_constraint: this.scored?.primary_constraint || null,
+              secondary_constraint: this.scored?.secondary_constraint || null,
+              top_strength: this.scored?.top_strength || null,
+
+              // Include full report for later display
+              full_report: this.report || null
+            };
+
+            console.log('Submitting to Supabase:', submissionData);
+
+            // Insert into Supabase
+            const { data, error } = await this.supabase
+              .from('submissions')
+              .insert([submissionData]);
+
+            if (error) {
+              console.error('Supabase error:', error);
+              alert('Error saving your information. Please try again.');
+              return;
+            }
+
+            console.log('Successfully saved to Supabase:', data);
+
+            // Show success message
+            alert('Thank you! Check your email for your personalized Operations Diagnostic Score.');
+
+            // Reset form
+            this.contactForm = { firstName: '', email: '', company: '', trade: '' };
+            this.showContactForm = false;
+
           } catch (error) {
             console.error('Form submission error:', error);
             alert('Network error. Please check your connection and try again.');
