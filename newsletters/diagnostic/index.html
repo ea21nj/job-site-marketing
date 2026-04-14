@@ -960,6 +960,7 @@
         timerInterval:     null,
         timerExpired:      false,
         supabase:          null,
+        isSubmitting:      false,
         contactForm:       {
           firstName: '',
           email: '',
@@ -1461,6 +1462,11 @@
         },
 
         async submitContactForm() {
+          // Prevent duplicate submissions
+          if (this.isSubmitting) {
+            return;
+          }
+
           const { firstName, email, company, trade } = this.contactForm;
 
           // Validation
@@ -1468,6 +1474,8 @@
             alert('Please fill out all fields');
             return;
           }
+
+          this.isSubmitting = true;
 
           try {
             // Ensure Supabase is initialized
@@ -1502,6 +1510,7 @@
             if (error) {
               console.error('Supabase error:', error);
               alert('Error saving your information. Please try again.');
+              this.isSubmitting = false;
               return;
             }
 
@@ -1513,10 +1522,12 @@
             // Reset form
             this.contactForm = { firstName: '', email: '', company: '', trade: '' };
             this.showContactForm = false;
+            this.isSubmitting = false;
 
           } catch (error) {
             console.error('Form submission error:', error);
             alert('Network error. Please check your connection and try again.');
+            this.isSubmitting = false;
           }
         }
       };
