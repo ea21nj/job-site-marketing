@@ -1,0 +1,3314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Construction Operations Playbook</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;800&family=Inter:wght@400;500;600&display=swap');
+    </style>
+    <style>
+        :root {
+            --yellow: #FFB800;
+            --black: #111111;
+            --white: #FFFFFF;
+            --off-white: #F2F1ED;
+            --secondary: #555555;
+            --border: #E2E1DC;
+            --spacing: 24px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            color: var(--black);
+            background: var(--white);
+            line-height: 1.6;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--yellow);
+            z-index: 1000;
+            width: 0%;
+            transition: width 0.1s ease;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            height: 100vh;
+            background: var(--off-white);
+            border-right: 2px solid var(--black);
+            padding: 40px 24px;
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        .sidebar-logo {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 18px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            margin-bottom: 48px;
+            padding: 12px;
+            border: 2px solid var(--black);
+            text-align: center;
+            cursor: pointer;
+            background: var(--yellow);
+            color: var(--black);
+        }
+
+        .nav-section {
+            margin-bottom: 36px;
+        }
+
+        .nav-label {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--secondary);
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 8px 12px;
+            margin-bottom: 8px;
+            color: var(--secondary);
+            text-decoration: none;
+            border: 2px solid transparent;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--black);
+        }
+
+        .nav-link.active {
+            background: rgba(255, 184, 0, 0.15);
+            border-left: 2px solid var(--yellow);
+            color: var(--black);
+            font-weight: 500;
+        }
+
+        .cta-button {
+            position: sticky;
+            bottom: 24px;
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--yellow);
+            border: 2px solid var(--black);
+            border-radius: 4px;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+            cursor: pointer;
+            margin-top: 48px;
+            transition: all 0.2s ease;
+        }
+
+        .cta-button:hover {
+            background: var(--black);
+            color: var(--yellow);
+        }
+
+        /* Main Content */
+        .main {
+            margin-left: 280px;
+            min-height: 100vh;
+        }
+
+        .section {
+            min-height: 100vh;
+            padding: 60px 48px;
+            border-bottom: 2px solid var(--black);
+            position: relative;
+            animation: fadeIn 0.8s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Hero Section */
+        .hero {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 100px 48px;
+            border-bottom: 2px solid var(--black);
+            margin-left: 280px;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(180deg, rgba(255, 184, 0, 0.04) 0%, var(--white) 50%);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--yellow);
+            z-index: 1;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--black), transparent);
+            opacity: 0.08;
+            z-index: 1;
+        }
+
+        .hero-content {
+            max-width: 820px;
+            position: relative;
+            z-index: 2;
+            animation: heroFadeIn 0.8s ease-out;
+            padding-left: 24px;
+        }
+
+        .hero-content > .collapsible-section {
+            border-top: 1px solid var(--border);
+            margin-top: 0;
+            padding: 0;
+        }
+
+        @keyframes heroFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 72px;
+            font-weight: 800;
+            text-transform: uppercase;
+            line-height: 1.1;
+            letter-spacing: -1px;
+            margin-bottom: 16px;
+            color: var(--black);
+            animation: heroHeadingSlideIn 0.9s ease-out 0.1s both;
+            padding-bottom: 12px;
+            border-bottom: 3px solid var(--yellow);
+            display: inline-block;
+        }
+
+        .hero h1::before {
+            content: none;
+        }
+
+        @keyframes heroHeadingSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-subheader {
+            font-size: 18px;
+            font-weight: 400;
+            color: var(--secondary);
+            margin-bottom: 32px;
+            line-height: 1.7;
+            max-width: 720px;
+            font-family: 'Manrope', sans-serif;
+            letter-spacing: 0px;
+            animation: heroSubheaderFadeIn 0.9s ease-out 0.2s both;
+            border-left: none;
+            padding-left: 0;
+        }
+
+        @keyframes heroSubheaderFadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .hero-cta {
+            display: inline-block;
+            padding: 14px 28px;
+            background: var(--yellow);
+            border: 2px solid var(--black);
+            border-radius: 4px;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 13px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+            cursor: pointer;
+            text-decoration: none;
+            color: var(--black);
+            transition: all 0.2s ease;
+            margin-bottom: 24px;
+        }
+
+        .hero-cta:hover {
+            background: var(--black);
+            color: var(--yellow);
+        }
+
+        .hero-support {
+            font-size: 14px;
+            color: var(--secondary);
+            font-weight: 400;
+            max-width: 680px;
+            animation: heroSupportFadeIn 0.9s ease-out 0.3s both;
+            font-family: 'Manrope', sans-serif;
+            letter-spacing: 0px;
+            text-transform: none;
+            line-height: 1.7;
+            border-left: 4px solid var(--yellow);
+            padding-left: 28px;
+            padding-top: 0;
+            margin-top: 32px;
+            background: rgba(255, 184, 0, 0.05);
+            padding: 20px 28px;
+            padding-left: 28px;
+        }
+
+        @keyframes heroSupportFadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .hero-reason {
+            margin: 32px 0;
+            padding: 28px;
+            padding-left: 28px;
+            border-left: 4px solid var(--yellow);
+            background: rgba(255, 184, 0, 0.05);
+            animation: heroReasonFadeIn 0.9s ease-out 0.2s both;
+        }
+
+        @keyframes heroReasonFadeIn {
+            from {
+                opacity: 0;
+                transform: translateX(-12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Collapsible Sections */
+        .collapsible-section {
+            border-top: 1px solid var(--border);
+            margin-top: 0;
+        }
+
+        .collapsible-section:last-of-type {
+            border-bottom: 1px solid var(--border);
+        }
+
+        .collapsible-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 0;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+        }
+
+        .collapsible-header:hover {
+            opacity: 0.7;
+        }
+
+        .collapsible-header h3 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+            margin: 0;
+            color: var(--black);
+        }
+
+        .collapsible-toggle {
+            font-size: 18px;
+            color: var(--yellow);
+            transition: transform 0.3s ease;
+            font-weight: bold;
+        }
+
+        .collapsible-section.open .collapsible-toggle {
+            transform: rotate(180deg);
+        }
+
+        .collapsible-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s ease;
+        }
+
+        .collapsible-section.open .collapsible-body {
+            max-height: 2000px;
+        }
+
+        .collapsible-inner {
+            padding-bottom: 24px;
+        }
+
+        /* CTA Block */
+        .landing-cta {
+            background: var(--yellow);
+            border: 2px solid var(--black);
+            padding: 40px 32px;
+            margin: 48px 0;
+            text-align: center;
+        }
+
+        .landing-cta h2 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 32px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            margin: 0;
+            color: var(--black);
+            line-height: 1.2;
+        }
+
+        /* Closing Block */
+        .landing-closing {
+            margin: 48px 0;
+            padding: 32px 0;
+        }
+
+        .landing-closing p {
+            font-size: 15px;
+            line-height: 1.8;
+            color: var(--secondary);
+            margin-bottom: 16px;
+        }
+
+        /* Landing Subheadline */
+        .landing-subheadline {
+            font-size: 18px;
+            line-height: 1.7;
+            color: var(--secondary);
+            margin: 24px 0 32px 0;
+            max-width: 800px;
+        }
+
+        .landing-subheadline strong {
+            color: var(--black);
+            font-weight: 600;
+        }
+
+        /* Section Headers */
+        h2 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 48px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: -1.5px;
+            margin-bottom: 48px;
+            color: var(--black);
+            border-bottom: 2px solid var(--yellow);
+            padding-bottom: 16px;
+        }
+
+        h3 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+            margin: 32px 0 16px 0;
+            color: var(--black);
+        }
+
+        /* Cards */
+        .card {
+            background: var(--white);
+            border: 2px solid var(--black);
+            padding: 28px;
+            margin-bottom: 20px;
+            border-radius: 0;
+        }
+
+        .card.positive {
+            border-left: 4px solid var(--yellow);
+            background: rgba(255, 184, 0, 0.08);
+        }
+
+        .card.negative {
+            border-left: 4px solid #FF6464;
+            background: rgba(255, 100, 100, 0.05);
+        }
+
+        /* Blockquotes */
+        .blockquote {
+            border-left: 4px solid var(--yellow);
+            padding-left: 28px;
+            margin: 32px 0;
+            font-size: 18px;
+            font-style: italic;
+            color: var(--black);
+            line-height: 1.7;
+        }
+
+        /* Grid */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+        }
+
+        .grid-2 .card {
+            border-right: none;
+            margin-bottom: 0;
+        }
+
+        .grid-2 .card:nth-child(odd) {
+            border-right: 1px solid var(--border);
+        }
+
+        .grid-2 .card:nth-last-child(n+3) {
+            border-bottom: 1px solid var(--border);
+        }
+
+        /* Skill Cards */
+        .skill-card {
+            background: var(--white);
+            border: 2px solid var(--black);
+            padding: 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .skill-icon {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--yellow);
+        }
+
+        .skill-badge {
+            display: inline-block;
+            background: var(--yellow);
+            color: var(--black);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            width: fit-content;
+            border: 1px solid var(--black);
+        }
+
+        .skill-name {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+            color: var(--black);
+        }
+
+        .skill-desc {
+            font-size: 13px;
+            color: var(--secondary);
+            line-height: 1.5;
+        }
+
+        /* Prompt Cards */
+        .prompt-phase {
+            margin-bottom: 64px;
+        }
+
+        .prompt-phase-title {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+            color: var(--black);
+            margin-bottom: 32px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--yellow);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+            transition: color 0.2s ease;
+        }
+
+        .prompt-phase-title:hover {
+            color: var(--yellow);
+        }
+
+        .prompt-phase-title::after {
+            content: '↓';
+            font-size: 18px;
+            color: var(--yellow);
+            transition: transform 0.3s ease;
+        }
+
+        .prompt-phase.collapsed .prompt-phase-title::after {
+            transform: rotate(-180deg);
+        }
+
+        .prompt-phase-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0;
+            max-height: 10000px;
+            overflow: hidden;
+            transition: max-height 0.35s ease;
+        }
+
+        .prompt-phase.collapsed .prompt-phase-grid {
+            max-height: 0;
+        }
+
+        .prompt-card {
+            background: var(--white);
+            border: 2px solid var(--black);
+            padding: 24px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            border-right: none;
+            border-bottom: none;
+            min-height: 140px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .prompt-phase-grid .prompt-card:nth-child(3n) {
+            border-right: 2px solid var(--black);
+        }
+
+        .prompt-phase-grid .prompt-card:nth-last-child(n+4) {
+            border-bottom: 2px solid var(--black);
+        }
+
+        .prompt-card:hover {
+            background: var(--yellow);
+            transform: translate(-2px, -2px);
+        }
+
+        .prompt-card.expanded {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 700px;
+            max-height: 80vh;
+            overflow-y: auto;
+            z-index: 500;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            background: var(--white);
+            border: 2px solid var(--black);
+            color: var(--black);
+        }
+
+        .prompt-card.expanded::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.95);
+            z-index: -1;
+        }
+
+        .prompt-title {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 16px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+            color: var(--black);
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .prompt-subtitle {
+            font-size: 13px;
+            color: var(--secondary);
+            line-height: 1.4;
+            margin-bottom: 8px;
+        }
+
+        .prompt-value {
+            font-size: 12px;
+            color: var(--secondary);
+            font-style: italic;
+            margin-top: 12px;
+        }
+
+        .prompt-category {
+            display: inline-block;
+            background: var(--yellow);
+            color: var(--black);
+            padding: 4px 10px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            border: 1px solid var(--black);
+            margin-top: 12px;
+        }
+
+        .prompt-details {
+            display: none;
+        }
+
+        .prompt-card.expanded .prompt-details {
+            display: block;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid var(--black);
+            color: var(--black);
+        }
+
+        .prompt-card.expanded .prompt-details h4 {
+            color: var(--black);
+        }
+
+        .copy-prompt-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--yellow);
+            color: var(--black);
+            border: 2px solid var(--black);
+            padding: 10px 16px;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 24px;
+            margin-bottom: 24px;
+        }
+
+        .copy-prompt-btn:hover {
+            background: var(--black);
+            color: var(--yellow);
+            transform: translate(-2px, -2px);
+        }
+
+        .copy-prompt-btn.copied {
+            background: #00C853;
+            color: var(--white);
+            border-color: #00C853;
+        }
+
+        .prompt-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 30px;
+            height: 30px;
+            border: 2px solid var(--black);
+            background: var(--yellow);
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .prompt-close:hover {
+            background: var(--black);
+            color: var(--yellow);
+        }
+
+        @media (max-width: 1024px) {
+            .prompt-phase-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .prompt-phase-grid .prompt-card:nth-child(3n) {
+                border-right: none;
+            }
+
+            .prompt-phase-grid .prompt-card:nth-child(2n) {
+                border-right: 2px solid var(--black);
+            }
+
+            .prompt-phase-grid .prompt-card:nth-last-child(n+3) {
+                border-bottom: 2px solid var(--black);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .prompt-phase-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .prompt-phase-grid .prompt-card {
+                border-right: 2px solid var(--black);
+                border-bottom: 2px solid var(--black);
+            }
+
+            .prompt-card.expanded {
+                width: 95%;
+                max-height: 90vh;
+                padding: 28px;
+            }
+        }
+
+        /* Grid for skill cards */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+        }
+
+        .skills-grid .skill-card:nth-child(odd) {
+            border-right: 1px solid var(--border);
+        }
+
+        .skills-grid .skill-card:nth-last-child(n+3) {
+            border-bottom: 1px solid var(--border);
+        }
+
+        /* Placeholder */
+        .placeholder {
+            padding: 48px;
+            background: var(--off-white);
+            border: 2px dashed var(--border);
+            text-align: center;
+            color: var(--secondary);
+            font-size: 14px;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 240px;
+            }
+            .main, .hero {
+                margin-left: 240px;
+            }
+            .hero h1 {
+                font-size: 56px;
+                letter-spacing: -0.8px;
+            }
+            h2 {
+                font-size: 36px;
+            }
+            .grid-2, .skills-grid {
+                grid-template-columns: 1fr;
+            }
+            .grid-2 .card:nth-child(odd), .skills-grid .skill-card:nth-child(odd) {
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                position: static;
+                width: 100%;
+                height: auto;
+                border-right: none;
+                border-bottom: 2px solid var(--black);
+                padding: 24px;
+            }
+            .main, .hero {
+                margin-left: 0;
+            }
+            .section, .hero {
+                padding: 40px 24px;
+            }
+            .hero {
+                padding: 60px 24px;
+            }
+            .hero h1 {
+                font-size: 42px;
+                letter-spacing: -0.5px;
+            }
+            .hero-subheader {
+                font-size: 16px;
+            }
+        }
+
+        /* Intake Results Container */
+        #intake-results {
+            max-width: 800px;
+            padding: 0;
+            margin: 0;
+        }
+
+        #intake-results h2 {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--black);
+        }
+
+        #intake-results h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--black);
+            margin-bottom: 12px;
+        }
+
+        #intake-results p, #intake-results li {
+            font-size: 14px;
+            color: var(--secondary);
+            line-height: 1.7;
+        }
+
+        #intake-results ul {
+            margin-left: 24px;
+            margin-bottom: 24px;
+        }
+
+        /* Collapsible Sections */
+        .collapsible-section {
+            border-top: 1px solid var(--border);
+            margin-top: 0;
+        }
+
+        .collapsible-section:last-of-type {
+            border-bottom: 1px solid var(--border);
+        }
+
+        .collapsible-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .collapsible-header:hover h3 {
+            color: var(--black);
+        }
+
+        .collapsible-header h3 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            margin: 0;
+            color: var(--black);
+            transition: color 0.2s ease;
+        }
+
+        .collapsible-toggle {
+            font-size: 18px;
+            color: var(--yellow);
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
+            margin-left: 16px;
+        }
+
+        .collapsible-section.open .collapsible-toggle {
+            transform: rotate(180deg);
+        }
+
+        .collapsible-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s ease;
+        }
+
+        .collapsible-section.open .collapsible-body {
+            max-height: 2000px;
+        }
+
+        .collapsible-inner {
+            padding-bottom: 20px;
+            color: var(--secondary);
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        .collapsible-inner p {
+            margin-bottom: 16px;
+        }
+
+        .collapsible-inner ul {
+            margin-left: 28px;
+            margin-bottom: 16px;
+            list-style: disc;
+        }
+
+        .collapsible-inner li {
+            margin-bottom: 8px;
+        }
+
+        .cta-block {
+            margin-top: 48px;
+            padding: 40px;
+            background: var(--yellow);
+            border: 2px solid var(--black);
+            text-align: center;
+        }
+
+        .cta-block h3 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 32px;
+            font-weight: 700;
+            line-height: 1.3;
+            color: var(--black);
+            margin: 0;
+        }
+
+        .closing-block {
+            margin-top: 40px;
+            padding: 32px 0;
+            text-align: center;
+            color: var(--secondary);
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        .closing-block p {
+            margin: 0;
+            font-style: italic;
+        }
+
+        /* Design Principles: Numbered Sections */
+        .numbered-section {
+            position: relative;
+            padding-left: 60px;
+        }
+
+        .numbered-section::before {
+            content: attr(data-number);
+            position: absolute;
+            left: 0;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--yellow);
+            text-transform: uppercase;
+            letter-spacing: -1px;
+        }
+
+        /* Pill Badge Refinements */
+        .pill-badge {
+            display: inline-block;
+            background: var(--yellow);
+            color: var(--black);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+            border: 2px solid var(--black);
+        }
+
+        /* Construction Drawing Aesthetic */
+        .blueprint-grid {
+            display: grid;
+            gap: 0;
+            border: 2px solid var(--black);
+        }
+
+        .blueprint-grid > * {
+            border-right: 2px solid var(--black);
+            border-bottom: 2px solid var(--black);
+        }
+
+        .blueprint-grid > :last-child {
+            border-right: none;
+        }
+
+        .blueprint-grid > :nth-last-child(-n+2) {
+            border-bottom: none;
+        }
+
+        /* Barlow Condensed Typography Adjustments */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+        }
+
+        .hero h1 {
+            font-weight: 800;
+            letter-spacing: -1.5px;
+        }
+
+</style>
+</head>
+<body>
+    <div class="progress-bar"></div>
+
+    <div class="sidebar">
+        <div class="sidebar-logo" id="logo-scroll">Ops Playbook</div>
+
+        <div class="nav-section">
+            <span class="nav-label">Core</span>
+            <a class="nav-link" data-section="foundation">Foundation</a>
+            <a class="nav-link" data-section="os">OS</a>
+        </div>
+
+        <div class="nav-section">
+            <span class="nav-label">Deep Dives</span>
+            <a class="nav-link" data-section="lenses">Execution Lenses</a>
+            <a class="nav-link" data-section="areas">Operational Areas</a>
+            <a class="nav-link" data-section="cycle">Full Execution Cycle</a>
+            <a class="nav-link" data-section="optimization">Optimization Playbook</a>
+        </div>
+
+        <div class="nav-section">
+            <span class="nav-label">System</span>
+            <a class="nav-link" data-section="prompts">Prompts</a>
+        </div>
+
+        <div class="nav-section">
+            <span class="nav-label">The Build</span>
+            <a class="nav-link" data-section="operation-setup">Operation System Setup</a>
+            <a class="nav-link" data-section="system-layer">The System Layer</a>
+        </div>
+
+        <div class="nav-section">
+            <span class="nav-label">Integration</span>
+            <a class="nav-link" data-section="ai-tools">AI Tools</a>
+        </div>
+
+        <div class="nav-section">
+            <span class="nav-label">Context</span>
+            <a class="nav-link" data-section="why-built">Why I Built This</a>
+        </div>
+
+    </div>
+
+    <div class="main">
+        <!-- HERO -->
+        <div class="hero" id="hero">
+            <div class="hero-content">
+                <h1>Is Your Construction<br>Operation Ready for AI?</h1>
+                <p class="hero-subheader">Most teams are trying to use AI to fix their operations<br>But if the workflow isn't clear, AI won't help<br>It will just expose the gaps faster</p>
+
+                <!-- COLLAPSIBLE SECTIONS -->
+                <div class="collapsible-section">
+                    <div class="collapsible-header">
+                        <h3>The Reality</h3>
+                        <span class="collapsible-toggle">↓</span>
+                    </div>
+                    <div class="collapsible-body">
+                        <div class="collapsible-inner">
+                            <p>If you're being honest, you already feel it.</p>
+                            <p>Something isn't working.</p>
+                            <p style="font-weight: 500; color: var(--black);">Maybe it's the scheduling. Maybe it's the RFIs. Maybe it's the field teams never getting clear information until it's too late.</p>
+                            <p>But here's the thing: it's not random.</p>
+                            <p>You can trace almost every failure back to one core issue: <strong>there's no standard way work moves through your operation.</strong></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="collapsible-section">
+                    <div class="collapsible-header">
+                        <h3>Why This Matters</h3>
+                        <span class="collapsible-toggle">↓</span>
+                    </div>
+                    <div class="collapsible-body">
+                        <div class="collapsible-inner">
+                            <p>Most teams don't have one problem. They have the same problem showing up everywhere.</p>
+                            <ul>
+                                <li>weak visibility → bad scheduling → field confusion</li>
+                                <li>unclear ownership → missed follow-ups → delays</li>
+                                <li>people dependency → inconsistency → rework</li>
+                                <li>lack of scalability → what works at 2 jobs breaks at 10</li>
+                            </ul>
+                            <p style="font-style: italic; color: var(--secondary);">Different symptoms. Same issue.</p>
+                            <p>When you don't have a defined way work moves, every person becomes a bottleneck. You can't scale, you can't predict, you can't fix anything permanently.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="collapsible-section">
+                    <div class="collapsible-header">
+                        <h3>Where AI Fits</h3>
+                        <span class="collapsible-toggle">↓</span>
+                    </div>
+                    <div class="collapsible-body">
+                        <div class="collapsible-inner">
+                            <p>AI is not the fix. It's a multiplier.</p>
+                            <p>If you have clear workflows, AI can help you execute them faster and catch edge cases. But if your workflows are unclear? AI will just make your problems faster and bigger.</p>
+                            <p style="font-weight: 500; color: var(--black);">That's why this has to come first.</p>
+                            <p>Get control of your operations. Make the workflow clear. Then AI becomes a real tool instead of a band-aid.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="collapsible-section">
+                    <div class="collapsible-header">
+                        <h3>What This Is</h3>
+                        <span class="collapsible-toggle">↓</span>
+                    </div>
+                    <div class="collapsible-body">
+                        <div class="collapsible-inner">
+                            <p>This is a system to help you define and optimize the way work actually runs in your operation.</p>
+                            <p>It gives you a framework to map how work moves through your company — from bid to closeout. To see where it breaks. To fix it.</p>
+                            <p>Not a software. Not a new tool you have to learn. A way to think about how you operate.</p>
+                            <p>Once you see it clearly, you can build it into whatever tools you're already using.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="collapsible-section">
+                    <div class="collapsible-header">
+                        <h3>What You Get</h3>
+                        <span class="collapsible-toggle">↓</span>
+                    </div>
+                    <div class="collapsible-body">
+                        <div class="collapsible-inner">
+                            <ul>
+                                <li>A workflow mapping framework that works for construction</li>
+                                <li>A way to diagnose where your operation breaks and why</li>
+                                <li>Execution lenses that show whether you have visibility, accountability, and failure modes in place</li>
+                                <li>A repeatable process to fix breakdowns and scale without losing control</li>
+                                <li>The operating system for your business</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="collapsible-section">
+                    <div class="collapsible-header">
+                        <h3>Who This Is For</h3>
+                        <span class="collapsible-toggle">↓</span>
+                    </div>
+                    <div class="collapsible-body">
+                        <div class="collapsible-inner">
+                            <p>Contractors who are:</p>
+                            <ul>
+                                <li>Managing multiple jobs at once and losing visibility</li>
+                                <li>Scaling past what one person can run</li>
+                                <li>Tired of rework, surprises, and constant firefighting</li>
+                                <li>Ready to build processes that stick instead of depending on who's on the team</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CLOSING BLOCK -->
+                <div class="closing-block" style="margin-top: 64px; padding: 48px 0; text-align: center; border-top: 2px solid var(--black);">
+                    <h3 style="font-family: 'Barlow Condensed', sans-serif; font-size: 28px; font-weight: 800; text-transform: uppercase; letter-spacing: -1px; margin: 0 0 24px 0; color: var(--black);">AI isn't the starting point</h3>
+                    <h3 style="font-family: 'Barlow Condensed', sans-serif; font-size: 28px; font-weight: 800; text-transform: uppercase; letter-spacing: -1px; margin: 0 0 40px 0; color: var(--yellow);">Control is</h3>
+                    <p style="font-size: 16px; line-height: 1.8; color: var(--secondary); margin-bottom: 24px;">Because AI won't fix broken workflows<br>It just exposes them faster</p>
+                    <p style="font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: -0.5px; color: var(--black); margin: 0;">Get the foundation right first</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- FOUNDATION -->
+        <div class="section" id="foundation">
+            <h2>Foundation</h2>
+
+            <div class="blockquote">
+                Most teams look at projects by phase.<br>
+                Strong teams look at how the work actually runs.
+            </div>
+
+            <h3>Core Idea</h3>
+            <p>Every construction operation runs across the same set of areas:</p>
+            <ul style="margin-left: 28px; margin-bottom: 28px; color: var(--secondary);">
+                <li>Bidding</li>
+                <li>Kickoff</li>
+                <li>Scheduling</li>
+                <li>RFIs and submittals</li>
+                <li>Field execution</li>
+                <li>Closeout</li>
+            </ul>
+            <p style="margin-bottom: 16px;">But those areas don't tell you how well things are running.</p>
+            <p style="color: var(--secondary); font-weight: 500;">They only tell you where work is happening.</p>
+
+            <h3>The Shift</h3>
+            <p style="margin-bottom: 16px;">To understand performance, you need a second layer:</p>
+            <div class="blockquote">
+                The lenses that show how the work behaves.
+            </div>
+
+            <h3>The Execution Lenses</h3>
+            <p style="margin-bottom: 28px;">These are the patterns that determine whether work flows or breaks.</p>
+
+            <div style="margin-bottom: 64px;">
+                <div style="margin-top: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 0;">
+                    <div style="padding: 16px; border-left: 4px solid #FFB800; background: rgba(255, 184, 0, 0.05);">
+                        <h4 style="font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; text-transform: uppercase; color: #FFB800; margin-bottom: 8px;">Process</h4>
+                        <p style="font-size: 13px; color: #555555; line-height: 1.6;">Is there a defined way work moves, or does it vary by person?</p>
+                    </div>
+                    <div style="padding: 16px; border-left: 4px solid #FFB800; background: rgba(255, 184, 0, 0.05);">
+                        <h4 style="font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; text-transform: uppercase; color: #FFB800; margin-bottom: 8px;">Accountability</h4>
+                        <p style="font-size: 13px; color: #555555; line-height: 1.6;">Is ownership clear at every step, or does it get shared and lost?</p>
+                    </div>
+                    <div style="padding: 16px; border-left: 4px solid #FFB800; background: rgba(255, 184, 0, 0.05);">
+                        <h4 style="font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; text-transform: uppercase; color: #FFB800; margin-bottom: 8px;">Failure Mode</h4>
+                        <p style="font-size: 13px; color: #555555; line-height: 1.6;">Where does work typically stall, delay, or break down?</p>
+                    </div>
+                    <div style="padding: 16px; border-left: 4px solid #FFB800; background: rgba(255, 184, 0, 0.05);">
+                        <h4 style="font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; text-transform: uppercase; color: #FFB800; margin-bottom: 8px;">Visibility</h4>
+                        <p style="font-size: 13px; color: #555555; line-height: 1.6;">Can you see status in real time, or do you rely on updates?</p>
+                    </div>
+                    <div style="padding: 16px; border-left: 4px solid #FFB800; background: rgba(255, 184, 0, 0.05);">
+                        <h4 style="font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; text-transform: uppercase; color: #FFB800; margin-bottom: 8px;">Cost / Cash</h4>
+                        <p style="font-size: 13px; color: #555555; line-height: 1.6;">Where is time, margin, or cash being quietly lost?</p>
+                    </div>
+                    <div style="padding: 16px; border-left: 4px solid #FFB800; background: rgba(255, 184, 0, 0.05);">
+                        <h4 style="font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; text-transform: uppercase; color: #FFB800; margin-bottom: 8px;">People Dependency</h4>
+                        <p style="font-size: 13px; color: #555555; line-height: 1.6;">Does the workflow run on a system, or on specific individuals?</p>
+                    </div>
+                    <div style="padding: 16px; border-left: 4px solid #FFB800; background: rgba(255, 184, 0, 0.05); grid-column: 1;">
+                        <h4 style="font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; text-transform: uppercase; color: #FFB800; margin-bottom: 8px;">Scalability</h4>
+                        <p style="font-size: 13px; color: #555555; line-height: 1.6;">Does this process still work as volume increases, or does it break under pressure?</p>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Why This Matters</h3>
+            <div class="blockquote">
+                Most teams don't have a single problem.<br>
+                They have the same problem showing up across multiple areas.
+            </div>
+            <ul style="margin-left: 28px; margin-bottom: 28px; color: var(--secondary);">
+                <li>Weak visibility → bad scheduling → field confusion</li>
+                <li>Unclear ownership → missed follow-ups → delays</li>
+                <li>People dependency → inconsistency → rework</li>
+            </ul>
+            <p style="color: var(--secondary); font-style: italic;">Different symptoms. Same underlying issue.</p>
+
+            <h3>How to Use This</h3>
+            <p style="margin-bottom: 28px;">Think of it like a grid:</p>
+            <div class="card">
+                <p style="margin-bottom: 12px;"><strong>Operational Areas</strong> = where work happens</p>
+                <p><strong>Execution Lenses</strong> = how well it runs</p>
+            </div>
+            <p style="margin-top: 28px; margin-bottom: 28px;">Every part of your operation sits inside both.</p>
+            <p style="margin-bottom: 28px;">That's how you move from:</p>
+            <div class="blockquote">
+                "I think things are off"
+            </div>
+            <p style="text-align: center; margin-bottom: 28px; color: var(--secondary);">to:</p>
+            <div class="blockquote">
+                "I can see exactly where and why"
+            </div>
+
+            <h3>The Core Truth</h3>
+            <div class="card positive">
+                <p><strong>If you can see how work moves, you can control it.</strong></p>
+            </div>
+        </div>
+
+        <!-- OS -->
+        <div class="section" id="os">
+            <h2>OS</h2>
+
+            <h3>The problem with how most operations work</h3>
+            <p style="margin-bottom: 16px;">Every operator develops a system. It just happens by accident.</p>
+            <p style="margin-bottom: 16px;">They save files where it makes sense at the time. They write the owner report in whatever format they used on the last job. They track RFIs in a spreadsheet that was copied from someone else's spreadsheet three jobs ago. They remember the subcontractor's COI expires in April because they made a note somewhere.</p>
+            <p style="margin-bottom: 16px;">It works. Mostly. Until it doesn't.</p>
+            <p style="margin-bottom: 16px;">The moment a second project shows up — or a project engineer joins — or a principal asks to see the budget — the system starts showing its gaps. Files are in the wrong places. The PE is doing things differently. The principal can't navigate the folder without a guided tour.</p>
+            <p style="margin-bottom: 16px;">The PM works harder to cover the gaps. The gaps widen.</p>
+            <div class="blockquote">
+                This is not a talent problem. It is a systems problem. And it has a systems solution.
+            </div>
+
+            <h3>What the OS is</h3>
+            <p style="margin-bottom: 16px;">The Construction Operating System is a personal operating standard for how you run every project — from the first bid decision to the final lien waiver.</p>
+            <p style="margin-bottom: 28px; color: var(--secondary);">Same folder structure on every job. Same naming conventions on every file. Same weekly rhythm regardless of how busy the week was. Same gate checklists before mobilizing, same gate checklists before closing out.</p>
+
+            <p style="margin-bottom: 16px;">It is not a software tool. It is not an AI workflow. It is not a firm-wide initiative that requires a committee to approve. It is a document you read, implement on your next project, and refine as you go.</p>
+
+            <h3>The Result</h3>
+            <div class="card positive">
+                <p style="margin-bottom: 12px;"><strong>Every project looks identical on the inside.</strong></p>
+                <p style="margin-bottom: 0; font-size: 14px; color: var(--secondary);">Anyone on your team can navigate any of your jobs without a tour guide. You spend your time on judgment calls — not on rebuilding a system you already rebuilt on the last job.</p>
+            </div>
+        </div>
+
+        <!-- EXECUTION LENSES -->
+        <div class="section" id="lenses">
+            <h2>Execution Lenses</h2>
+
+            <h3>01 — Process</h3>
+            <p style="margin-bottom: 16px;"><strong>How clearly work is defined, structured, and repeatable.</strong></p>
+            <ul style="margin-left: 28px; margin-bottom: 28px; color: var(--secondary);">
+                <li>Are steps documented or improvised?</li>
+                <li>Is there a consistent way work gets done across jobs?</li>
+                <li>Can someone new follow the process without guessing?</li>
+            </ul>
+            <div class="card positive">
+                <p><strong>What this reveals:</strong> Whether your operation runs on structure or memory.</p>
+            </div>
+
+            <h3>02 — Accountability</h3>
+            <p style="margin-bottom: 16px;"><strong>How ownership is assigned and enforced.</strong></p>
+            <ul style="margin-left: 28px; margin-bottom: 28px; color: var(--secondary);">
+                <li>Does every step have a clear owner?</li>
+                <li>Is it obvious who is responsible when something stalls?</li>
+                <li>Are handoffs clean or ambiguous?</li>
+            </ul>
+            <div class="card positive">
+                <p><strong>What this reveals:</strong> Whether work moves forward or waits on "someone."</p>
+            </div>
+
+            <h3>03 — Failure Mode</h3>
+            <p style="margin-bottom: 16px;"><strong>What happens when something breaks.</strong></p>
+            <ul style="margin-left: 28px; margin-bottom: 28px; color: var(--secondary);">
+                <li>Are issues caught early or discovered late?</li>
+                <li>Is there a defined path to resolve problems?</li>
+                <li>Do the same issues repeat?</li>
+            </ul>
+            <div class="card positive">
+                <p><strong>What this reveals:</strong> Whether problems are contained or compound.</p>
+            </div>
+
+            <h3>04 — People Dependency</h3>
+            <p style="margin-bottom: 16px;"><strong>How much your operation relies on specific individuals.</strong></p>
+            <ul style="margin-left: 28px; margin-bottom: 28px; color: var(--secondary);">
+                <li>Does work depend on "that one person"?</li>
+                <li>Can others step in without disruption?</li>
+                <li>Is knowledge documented or tribal?</li>
+            </ul>
+            <div class="card positive">
+                <p><strong>What this reveals:</strong> How fragile or resilient your operation is.</p>
+            </div>
+
+            <h3>05 — Visibility</h3>
+            <p style="margin-bottom: 16px;"><strong>How easily you can see what's actually happening.</strong></p>
+            <ul style="margin-left: 28px; margin-bottom: 28px; color: var(--secondary);">
+                <li>Can you see project status in real time?</li>
+                <li>Are blockers visible without asking?</li>
+                <li>Do leaders rely on reports or reality?</li>
+            </ul>
+            <div class="card positive">
+                <p><strong>What this reveals:</strong> Whether you're managing proactively or reacting late.</p>
+            </div>
+
+            <h3>06 — Cost / Cash</h3>
+            <p style="margin-bottom: 16px;"><strong>How well financial performance is tracked and controlled.</strong></p>
+            <ul style="margin-left: 28px; margin-bottom: 28px; color: var(--secondary);">
+                <li>Are costs tied to actual progress?</li>
+                <li>Can you spot overruns early?</li>
+                <li>Is billing aligned with execution?</li>
+            </ul>
+            <div class="card positive">
+                <p><strong>What this reveals:</strong> Whether margin is controlled or slowly leaking.</p>
+            </div>
+
+            <h3>07 — Scalability</h3>
+            <p style="margin-bottom: 16px;"><strong>How well your operation holds up as you grow.</strong></p>
+            <ul style="margin-left: 28px; margin-bottom: 28px; color: var(--secondary);">
+                <li>Does adding work create chaos?</li>
+                <li>Do processes break under volume?</li>
+                <li>Can systems handle more projects without more stress?</li>
+            </ul>
+            <div class="card positive">
+                <p><strong>What this reveals:</strong> Whether growth creates leverage or friction.</p>
+            </div>
+        </div>
+
+        <!-- OPERATIONAL AREAS -->
+        <div class="section" id="areas">
+            <h2>Operational Areas</h2>
+
+            <h3>1. Bidding & Pipeline</h3>
+            <div class="card positive">
+                <p><strong>What good looks like</strong></p>
+                <p>A bid pipeline that is <strong>visible, owned, and actively managed without relying on memory</strong></p>
+            </div>
+            <p style="margin-top: 24px; margin-bottom: 16px;"><strong>In practice</strong></p>
+            <ul style="margin-left: 28px; margin-bottom: 28px; color: var(--secondary);">
+                <li>Every active bid is visible in <strong>one system</strong></li>
+                <li>Each bid has: a clear owner, a defined next step, a due date</li>
+                <li>Follow-ups are <strong>triggered automatically</strong>, not remembered</li>
+                <li>Stalled bids are <strong>flagged early</strong>, not discovered late</li>
+                <li>Leadership can answer instantly: What's active, What's at risk, What's likely to close</li>
+            </ul>
+            <p style="margin-bottom: 16px;"><strong>What this enables</strong></p>
+            <ul style="margin-left: 28px; margin-bottom: 28px; color: var(--secondary);">
+                <li>Faster response time</li>
+                <li>Higher hit rate</li>
+                <li>Less duplicated effort</li>
+            </ul>
+
+            <h3>2. Project Kickoff</h3>
+            <div class="card positive">
+                <p><strong>What good looks like</strong></p>
+                <p>A kickoff that is <strong>repeatable, structured, and independent of the individual PM</strong></p>
+            </div>
+            <p style="margin-top: 24px; margin-bottom: 16px;"><strong>In practice</strong></p>
+            <ul style="margin-left: 28px; margin-bottom: 28px; color: var(--secondary);">
+                <li>Every project follows the same <strong>Day 1 workflow</strong></li>
+                <li>All required inputs are: complete, verified, accessible</li>
+                <li>Ownership is defined across: setup, coordination, early execution</li>
+                <li>Any PM can step into a project without rebuilding context</li>
+                <li>Issues at startup are <strong>prevented</strong>, not discovered later</li>
+            </ul>
+            <p style="margin-bottom: 16px;"><strong>What this enables</strong></p>
+            <ul style="margin-left: 28px; margin-bottom: 28px; color: var(--secondary);">
+                <li>Clean project starts</li>
+                <li>Faster ramp-up</li>
+                <li>Fewer downstream issues</li>
+            </ul>
+
+            <h3>3. Scheduling</h3>
+            <div class="card positive">
+                <p><strong>What good looks like</strong></p>
+                <p>A schedule that acts as the <strong>single source of truth for execution</strong></p>
+            </div>
+            <p style="margin-top: 24px; margin-bottom: 16px;"><strong>In practice</strong></p>
+            <ul style="margin-left: 28px; margin-bottom: 28px; color: var(--secondary);">
+                <li>One <strong>live schedule</strong> exists — not multiple versions</li>
+                <li>All teams are aligned to the <strong>same current plan</strong></li>
+                <li>Updates are: immediate, visible, tied to execution</li>
+                <li>Ownership of the schedule is clear</li>
+                <li>Outdated schedules are <strong>eliminated</strong>, not managed</li>
+            </ul>
+            <p style="margin-bottom: 16px;"><strong>What this enables</strong></p>
+            <ul style="margin-left: 28px; margin-bottom: 28px; color: var(--secondary);">
+                <li>Coordinated execution</li>
+                <li>Reduced rework</li>
+                <li>Predictable timelines</li>
+            </ul>
+
+            <h3>4. RFIs & Submittals</h3>
+            <div class="card positive">
+                <p><strong>What good looks like</strong></p>
+                <p>A workflow where RFIs and submittals are <strong>tracked, owned, and predictable</strong></p>
+            </div>
+            <p style="margin-top: 24px; margin-bottom: 16px;"><strong>In practice</strong></p>
+            <ul style="margin-left: 28px; margin-bottom: 28px; color: var(--secondary);">
+                <li>Every item has: a status, an owner, a due date</li>
+                <li>All documents are <strong>linked and accessible in one place</strong></li>
+                <li>Delays are: visible early, actively followed up</li>
+                <li>Nothing relies on inbox tracking or memory</li>
+                <li>Anyone can check status without asking</li>
+            </ul>
+            <p style="margin-bottom: 16px;"><strong>What this enables</strong></p>
+            <ul style="margin-left: 28px; margin-bottom: 28px; color: var(--secondary);">
+                <li>Faster turnaround</li>
+                <li>Fewer delays</li>
+                <li>Less coordination overhead</li>
+            </ul>
+
+            <h3>5. Project Visibility</h3>
+            <div class="card positive">
+                <p><strong>What good looks like</strong></p>
+                <p>Real-time visibility into <strong>project health, risk, and performance without asking</strong></p>
+            </div>
+            <p style="margin-top: 24px; margin-bottom: 16px;"><strong>In practice</strong></p>
+            <ul style="margin-left: 28px; margin-bottom: 28px; color: var(--secondary);">
+                <li>Leadership has access to: live dashboards, current status, active risks</li>
+                <li>Risk identification is: structured, proactive</li>
+                <li>Issues are surfaced: early, automatically</li>
+                <li>Decisions are made based on <strong>current data</strong>, not updates</li>
+            </ul>
+            <p style="margin-bottom: 16px;"><strong>What this enables</strong></p>
+            <ul style="margin-left: 28px; margin-bottom: 28px; color: var(--secondary);">
+                <li>Faster decision-making</li>
+                <li>Early intervention</li>
+                <li>Reduced firefighting</li>
+            </ul>
+
+            <h3>6. Field Execution</h3>
+            <div class="card positive">
+                <p><strong>What good looks like</strong></p>
+                <p>Field execution that is <strong>clear, consistent, and not dependent on specific individuals</strong></p>
+            </div>
+            <p style="margin-top: 24px; margin-bottom: 16px;"><strong>In practice</strong></p>
+            <ul style="margin-left: 28px; margin-bottom: 28px; color: var(--secondary);">
+                <li>Daily assignments are: clearly defined, tied to the plan, communicated consistently</li>
+                <li>Crews know: what they are doing, where, and why</li>
+                <li>Direction does not rely on: last-minute conversations, specific individuals</li>
+                <li>Confusion is rare and resolved quickly</li>
+            </ul>
+            <p style="margin-bottom: 16px;"><strong>What this enables</strong></p>
+            <ul style="margin-left: 28px; margin-bottom: 28px; color: var(--secondary);">
+                <li>Higher productivity</li>
+                <li>Less downtime</li>
+                <li>More predictable output</li>
+            </ul>
+
+            <h3>7. Closeout</h3>
+            <div class="card positive">
+                <p><strong>What good looks like</strong></p>
+                <p>A closeout process that is <strong>structured, visible, and predictable</strong></p>
+            </div>
+            <p style="margin-top: 24px; margin-bottom: 16px;"><strong>In practice</strong></p>
+            <ul style="margin-left: 28px; margin-bottom: 28px; color: var(--secondary);">
+                <li>Closeout follows a defined workflow: punch, documentation, approvals, final billing</li>
+                <li>Each item has: a clear owner, a due date</li>
+                <li>Status is visible across all jobs</li>
+                <li>Nothing is discovered late</li>
+                <li>Final payment timing is <strong>predictable</strong></li>
+            </ul>
+            <p style="margin-bottom: 16px;"><strong>What this enables</strong></p>
+            <ul style="margin-left: 28px; margin-bottom: 28px; color: var(--secondary);">
+                <li>Faster project completion</li>
+                <li>Faster cash collection</li>
+                <li>Less administrative chaos</li>
+            </ul>
+        </div>
+
+        <!-- FULL EXECUTION CYCLE -->
+        <div class="section" id="cycle">
+            <h2>Full Execution Cycle</h2>
+            <p style="margin-bottom: 48px; font-size: 16px;">How the seven execution lenses apply across the complete project lifecycle—from lead intake to closeout.</p>
+
+            <h3>Process</h3>
+            <p style="margin-bottom: 12px;"><strong>What This Is:</strong> The formalization of the project lifecycle from lead intake through production and closeout into repeatable, documented steps.</p>
+            <p style="margin-bottom: 12px;"><strong>What We're Seeing:</strong> Firms are transitioning from "tribal knowledge" and verbal handoffs to mapped workflows that dictate exactly what happens at every project gate. There is a recurring demand for standardized templates to ensure consistency across diverse project types.</p>
+            <p style="margin-bottom: 12px;"><strong>Current State:</strong></p>
+            <ul style="margin-left: 28px; margin-bottom: 16px; color: var(--secondary);">
+                <li><strong>Methodology:</strong> Work flows are often "person-to-person" or managed through decentralized folder structures like Dropbox.</li>
+                <li><strong>Consistency:</strong> Each PM often utilizes a unique, non-standardized method for managing their specific jobs.</li>
+            </ul>
+            <p style="margin-bottom: 12px;"><strong>Breakdowns:</strong></p>
+            <ul style="margin-left: 28px; margin-bottom: 16px; color: var(--secondary);">
+                <li><strong>Handoffs:</strong> Critical project data is frequently lost during transition to operations because no central process exists.</li>
+                <li><strong>Duplication:</strong> Staff often perform "double entry" by manually moving data from emails into spreadsheets.</li>
+            </ul>
+            <p style="margin-bottom: 12px;"><strong>Desired State:</strong></p>
+            <ul style="margin-left: 28px; margin-bottom: 16px; color: var(--secondary);">
+                <li><strong>Templatization:</strong> Automatic creation of standardized project structures based on project type.</li>
+                <li><strong>Connectivity:</strong> A "single source of truth" where every project phase is linked in a continuous flow.</li>
+            </ul>
+            <div class="card negative" style="margin-bottom: 28px;">
+                <p style="margin-bottom: 8px;"><strong>Why It Matters:</strong> Without a standardized process, firms cannot efficiently utilize advanced tools like AI or automate mundane administrative tasks.</p>
+            </div>
+
+            <h3>Accountability</h3>
+            <p style="margin-bottom: 12px;"><strong>What This Is:</strong> The clear assignment of ownership for specific tasks and the enforcement of deadlines through automated notifications.</p>
+            <p style="margin-bottom: 12px;"><strong>What We're Seeing:</strong> Leaders are moving away from a "when everyone owns it, nobody owns it" culture by requiring the system to automatically assign responsible parties.</p>
+            <p style="margin-bottom: 12px;"><strong>Current State:</strong></p>
+            <ul style="margin-left: 28px; margin-bottom: 16px; color: var(--secondary);">
+                <li><strong>Ownership:</strong> Tasks often sit in "someone's court" without visibility for the rest of the team.</li>
+                <li><strong>Enforcement:</strong> Follow-ups are handled manually through repetitive emails or phone calls.</li>
+            </ul>
+            <p style="margin-bottom: 12px;"><strong>Breakdowns:</strong></p>
+            <ul style="margin-left: 28px; margin-bottom: 16px; color: var(--secondary);">
+                <li><strong>Stagnation:</strong> RFIs often stall for weeks because there is no clear owner or automated reminder.</li>
+                <li><strong>Ambiguity:</strong> PMs may oversee construction but have no accountability for or visibility into the budget.</li>
+            </ul>
+            <p style="margin-bottom: 12px;"><strong>Desired State:</strong></p>
+            <ul style="margin-left: 28px; margin-bottom: 16px; color: var(--secondary);">
+                <li><strong>Automated Assignment:</strong> Logic that automatically assigns an owner the moment a task is created.</li>
+                <li><strong>Gatekeeping:</strong> Systems that prevent a project from moving to the next phase until a specific owner signs off.</li>
+            </ul>
+            <div class="card negative" style="margin-bottom: 28px;">
+                <p style="margin-bottom: 8px;"><strong>Why It Matters:</strong> Clear accountability reduces the need for "micro-management" and high-frequency meetings, lowering overhead costs.</p>
+            </div>
+
+            <h3>Failure Mode</h3>
+            <p style="margin-bottom: 12px;"><strong>What This Is:</strong> The system's ability to detect, flag, and mitigate risks, such as schedule delays or resource overloads, before they become critical failures.</p>
+            <p style="margin-bottom: 12px;"><strong>What We're Seeing:</strong> Operations are shifting from reactive fire-fighting to proactive risk detection using "Stuck" status flags and automated dependency shifts.</p>
+            <p style="margin-bottom: 12px;"><strong>Current State:</strong></p>
+            <ul style="margin-left: 28px; margin-bottom: 16px; color: var(--secondary);">
+                <li><strong>Detection:</strong> Issues are often discovered late because leadership lacks a real-time snapshot of what is off-track.</li>
+                <li><strong>Mitigation:</strong> When a delay occurs, there is no automated "trickle-down" to update downstream schedules.</li>
+            </ul>
+            <p style="margin-bottom: 12px;"><strong>Breakdowns:</strong></p>
+            <ul style="margin-left: 28px; margin-bottom: 16px; color: var(--secondary);">
+                <li><strong>Information Silos:</strong> External emails from suppliers regarding ship-date changes are not integrated into the schedule.</li>
+                <li><strong>Compounding Delays:</strong> One missed task stalls an entire project because dependency logic is only held in a manager's head.</li>
+            </ul>
+            <p style="margin-bottom: 12px;"><strong>Desired State:</strong></p>
+            <ul style="margin-left: 28px; margin-bottom: 16px; color: var(--secondary);">
+                <li><strong>Proactive Alerts:</strong> Automated notifications when a task is marked "Stuck" or a due date passes.</li>
+                <li><strong>Dynamic Scheduling:</strong> Gantt charts with dependencies that automatically push all following tasks when an early-stage item is delayed.</li>
+            </ul>
+            <div class="card negative" style="margin-bottom: 28px;">
+                <p style="margin-bottom: 8px;"><strong>Why It Matters:</strong> Early failure detection protects project margins and prevents the "burnout risk" associated with constant crisis management.</p>
+            </div>
+
+            <h3>People Dependency</h3>
+            <p style="margin-bottom: 12px;"><strong>What This Is:</strong> Evaluating how much the operation relies on individual memory and "tribal knowledge" versus documented, accessible data.</p>
+            <p style="margin-bottom: 12px;"><strong>What We're Seeing:</strong> Firms are attempting to de-risk their operations by moving data out of individual PM emails and into a centralized "single source of truth".</p>
+            <p style="margin-bottom: 12px;"><strong>Current State:</strong></p>
+            <ul style="margin-left: 28px; margin-bottom: 16px; color: var(--secondary);">
+                <li><strong>Knowledge Base:</strong> Information is frequently stored in "people's heads" or individual desktop folder systems.</li>
+                <li><strong>Bottlenecks:</strong> Specific individuals become operational constraints because they are the only ones with knowledge or access.</li>
+            </ul>
+            <p style="margin-bottom: 12px;"><strong>Breakdowns:</strong></p>
+            <ul style="margin-left: 28px; margin-bottom: 16px; color: var(--secondary);">
+                <li><strong>Siloed Data:</strong> Global accounts are managed with different naming conventions, making it impossible to identify they belong to the same client.</li>
+                <li><strong>Retirement Risk:</strong> Critical knowledge held by "seasoned people" who are retiring creates a void.</li>
+            </ul>
+            <p style="margin-bottom: 12px;"><strong>Desired State:</strong></p>
+            <ul style="margin-left: 28px; margin-bottom: 16px; color: var(--secondary);">
+                <li><strong>Role-Based Access:</strong> Standardized views where any team member can step into a project and understand its status.</li>
+                <li><strong>Centralized Communication:</strong> All correspondence and files tied to a specific item so history is not lost if a PM leaves.</li>
+            </ul>
+            <div class="card negative" style="margin-bottom: 28px;">
+                <p style="margin-bottom: 8px;"><strong>Why It Matters:</strong> High people dependency makes an organization fragile; a system-based approach creates a "Center of Excellence" that survives individual departures.</p>
+            </div>
+
+            <h3>Visibility</h3>
+            <p style="margin-bottom: 12px;"><strong>What This Is:</strong> The ability for leadership and teams to see project health, resource capacity, and pipeline value in real-time.</p>
+            <p style="margin-bottom: 12px;"><strong>What We're Seeing:</strong> The most common request is for a "30,000-foot view" or Portfolio dashboard that allows managers to see status across all active jobs at once.</p>
+            <p style="margin-bottom: 12px;"><strong>Current State:</strong></p>
+            <ul style="margin-left: 28px; margin-bottom: 16px; color: var(--secondary);">
+                <li><strong>Reporting:</strong> Management relies on monthly manual roll-ups that are "strenuous to keep up to date."</li>
+                <li><strong>Granularity:</strong> Current tools may offer a high-level view but fail to "drill down" into the specific task causing a delay.</li>
+            </ul>
+            <p style="margin-bottom: 12px;"><strong>Breakdowns:</strong></p>
+            <ul style="margin-left: 28px; margin-bottom: 16px; color: var(--secondary);">
+                <li><strong>Blind Spots:</strong> Leadership lacks visibility into "who has capacity," leading to some crews being over capacity while others are idle.</li>
+                <li><strong>Lag Time:</strong> Decisions are based on "reports" rather than "reality," meaning problems are found too late to intervene.</li>
+            </ul>
+            <p style="margin-bottom: 12px;"><strong>Desired State:</strong></p>
+            <ul style="margin-left: 28px; margin-bottom: 16px; color: var(--secondary);">
+                <li><strong>Live Dashboards:</strong> Real-time visualizations of pipeline forecasting, project spend, and "items ready for production".</li>
+                <li><strong>Filtered Views:</strong> Custom interfaces for different users (e.g., friendly shop-floor views versus detailed PM tables).</li>
+            </ul>
+            <div class="card negative" style="margin-bottom: 28px;">
+                <p style="margin-bottom: 8px;"><strong>Why It Matters:</strong> High visibility enables "proactive management," allowing the business to accurately forecast revenue and staff projects appropriately.</p>
+            </div>
+
+            <h3>Cost / Cash</h3>
+            <p style="margin-bottom: 12px;"><strong>What This Is:</strong> The tracking of financial performance, including job costing, budget variances, and the alignment of billing with field progress.</p>
+            <p style="margin-bottom: 12px;"><strong>What We're Seeing:</strong> Firms are looking to automate the "trigger for billing" by linking it to the completion of field tasks or QA/QC sign-offs.</p>
+            <p style="margin-bottom: 12px;"><strong>Current State:</strong></p>
+            <ul style="margin-left: 28px; margin-bottom: 16px; color: var(--secondary);">
+                <li><strong>Accounting:</strong> Financial data often lives in disparate systems and must be manually reconciled with project spreadsheets.</li>
+                <li><strong>Tracking:</strong> Costs are often decoupled from progress; budgets are "kept over in Sarah's court" where PMs cannot see them.</li>
+            </ul>
+            <p style="margin-bottom: 12px;"><strong>Breakdowns:</strong></p>
+            <ul style="margin-left: 28px; margin-bottom: 16px; color: var(--secondary);">
+                <li><strong>Margin Leakage:</strong> Quotes are sometimes honored a year later without price escalation because scope and dates were not tracked.</li>
+                <li><strong>Documentation Lag:</strong> Invoicing is delayed by weeks because closeout documentation must be compiled manually.</li>
+            </ul>
+            <p style="margin-bottom: 12px;"><strong>Desired State:</strong></p>
+            <ul style="margin-left: 28px; margin-bottom: 16px; color: var(--secondary);">
+                <li><strong>Job Costing Integration:</strong> Automated feeds from accounting software that update "Actual vs. Estimated" costs on project boards.</li>
+                <li><strong>Real-time Time Tracking:</strong> Mobile apps where field crews log hours against specific CSI codes, feeding into project budget roll-ups.</li>
+            </ul>
+            <div class="card negative" style="margin-bottom: 28px;">
+                <p style="margin-bottom: 8px;"><strong>Why It Matters:</strong> Tying cost to execution ensures that "predictive revenue" is accurate and cash flow is optimized through faster billing cycles.</p>
+            </div>
+
+            <h3>Scalability</h3>
+            <p style="margin-bottom: 12px;"><strong>What This Is:</strong> The ability of an organization to handle increased project volume and complexity without a proportional increase in administrative stress or chaos.</p>
+            <p style="margin-bottom: 12px;"><strong>What We're Seeing:</strong> Companies recognize that their current manual processes "don't allow them to undertake as much new business" as they could potentially handle.</p>
+            <p style="margin-bottom: 12px;"><strong>Current State:</strong></p>
+            <ul style="margin-left: 28px; margin-bottom: 16px; color: var(--secondary);">
+                <li><strong>Volume Limits:</strong> Managers are limited by the number of accounts they can manually track.</li>
+                <li><strong>Friction:</strong> Increasing project volume leads to "monster boards" with too many columns that "just don't work inherently" under load.</li>
+            </ul>
+            <p style="margin-bottom: 12px;"><strong>Breakdowns:</strong></p>
+            <ul style="margin-left: 28px; margin-bottom: 16px; color: var(--secondary);">
+                <li><strong>Manual Bottlenecks:</strong> Growth is stalled because every new project requires hours of manual setup.</li>
+                <li><strong>System Fragmentation:</strong> As companies grow, they add more "siloed" modules that don't talk to each other.</li>
+            </ul>
+            <p style="margin-bottom: 12px;"><strong>Desired State:</strong></p>
+            <ul style="margin-left: 28px; margin-bottom: 16px; color: var(--secondary);">
+                <li><strong>System Leverage:</strong> Automations that handle handoffs automatically, allowing teams to "move a lot faster" with less manual work.</li>
+                <li><strong>Templatized Growth:</strong> The ability to "copy-paste" complex project structures to handle hundreds of similar jobs simultaneously.</li>
+            </ul>
+            <div class="card negative">
+                <p style="margin-bottom: 8px;"><strong>Why It Matters:</strong> Scalable systems transform growth from a source of "anger and frustration" into a source of operational leverage.</p>
+            </div>
+        </div>
+
+        <!-- OPTIMIZATION PLAYBOOK -->
+        <div class="section" id="optimization">
+            <h2>Optimization Playbook</h2>
+            <p style="margin-bottom: 48px; font-size: 16px;">Seven pillars for transforming operations from reactive and fragmented to structured, visible, and scalable.</p>
+
+            <h3>01 / Kill Data Silos</h3>
+            <div class="card positive">
+                <p><strong>Create One Source of Truth</strong></p>
+                <p style="margin-top: 12px; font-size: 14px;">When information is scattered across tools, spreadsheets, and inboxes, teams slow down and decisions become guesswork. Integrating systems and centralizing data ensures everyone is working from the same, up-to-date reality.</p>
+            </div>
+            <p style="margin-top: 24px; margin-bottom: 12px;"><strong>Value Captured</strong></p>
+            <p style="color: var(--secondary); font-size: 14px; margin-bottom: 48px;"><strong>Clarity, faster collaboration, and fewer costly mistakes.</strong></p>
+
+            <h3>02 / Automate the Mundane</h3>
+            <div class="card positive">
+                <p><strong>Let Technology Handle the Repeatable</strong></p>
+                <p style="margin-top: 12px; font-size: 14px;">Manual work drains time and introduces errors. Automating routine tasks—notifications, handoffs, data entry, scheduling—eliminates friction and restores focus to meaningful work.</p>
+            </div>
+            <p style="margin-top: 24px; margin-bottom: 12px;"><strong>Value Captured</strong></p>
+            <p style="color: var(--secondary); font-size: 14px; margin-bottom: 48px;"><strong>Higher productivity, fewer bottlenecks, and consistent execution.</strong></p>
+
+            <h3>03 / Standardize Intake</h3>
+            <div class="card positive">
+                <p><strong>Start Every Workflow With the Right Information</strong></p>
+                <p style="margin-top: 12px; font-size: 14px;">Unstructured requests lead to rework, missing details, and unclear ownership. Standardizing how work enters the system creates predictable pathways and clean data from day one.</p>
+            </div>
+            <p style="margin-top: 24px; margin-bottom: 12px;"><strong>Value Captured</strong></p>
+            <p style="color: var(--secondary); font-size: 14px; margin-bottom: 48px;"><strong>Smooth handoffs, better prioritization, and scalable processes.</strong></p>
+
+            <h3>04 / Executive Visibility</h3>
+            <div class="card positive">
+                <p><strong>Real-Time Insight for Decision Makers</strong></p>
+                <p style="margin-top: 12px; font-size: 14px;">Executives shouldn't depend on last-minute reports or anecdotes. Real-time dashboards surface performance, risks, and resource needs instantly so leaders can act proactively.</p>
+            </div>
+            <p style="margin-top: 24px; margin-bottom: 12px;"><strong>Value Captured</strong></p>
+            <p style="color: var(--secondary); font-size: 14px; margin-bottom: 48px;"><strong>Faster decisions, stronger alignment, and early risk detection.</strong></p>
+
+            <h3>05 / Define Clear Ownership</h3>
+            <div class="card positive">
+                <p><strong>Eliminate the "Who's Responsible?" Problem</strong></p>
+                <p style="margin-top: 12px; font-size: 14px;">Organizations break down when roles and responsibilities blur. Defining ownership at every stage—request, execution, review—removes ambiguity and strengthens accountability.</p>
+            </div>
+            <p style="margin-top: 24px; margin-bottom: 12px;"><strong>Value Captured</strong></p>
+            <p style="color: var(--secondary); font-size: 14px; margin-bottom: 48px;"><strong>Fewer dropped balls, faster resolution, and empowered teams.</strong></p>
+
+            <h3>06 / Build Repeatable Workflows</h3>
+            <div class="card positive">
+                <p><strong>Turn Tribal Knowledge Into Systems</strong></p>
+                <p style="margin-top: 12px; font-size: 14px;">If a process only exists in someone's head, it can't scale. Documenting workflows and turning them into repeatable systems ensures consistency no matter who is doing the work.</p>
+            </div>
+            <p style="margin-top: 24px; margin-bottom: 12px;"><strong>Value Captured</strong></p>
+            <p style="color: var(--secondary); font-size: 14px; margin-bottom: 48px;"><strong>Reliability, easier onboarding, and a foundation for continuous improvement.</strong></p>
+
+            <h3>07 / Measure What Matters</h3>
+            <div class="card positive">
+                <p><strong>Track Signals, Not Noise</strong></p>
+                <p style="margin-top: 12px; font-size: 14px;">Most organizations track too many metrics or the wrong ones. Identifying the few critical indicators—cycle time, response time, throughput, quality—creates clarity around performance.</p>
+            </div>
+            <p style="margin-top: 24px; margin-bottom: 12px;"><strong>Value Captured</strong></p>
+            <p style="color: var(--secondary); font-size: 14px;"><strong>Data-driven decisions, targeted optimizations, and measurable ROI.</strong></p>
+        </div>
+
+        <!-- PROMPTS -->
+        <div class="section" id="prompts">
+            <h2>Prompts</h2>
+            <p style="margin-bottom: 48px; font-size: 16px;">The complete operational stack: 25 boards across six operational zones, each designed to eliminate a specific friction point and create visibility where blindness exists today. Click any card to explore the full prompt.</p>
+
+            <div id="prompts-container">
+                <!-- Cards will be inserted here by JavaScript -->
+            </div>
+
+            <div style="margin-top: 48px; padding: 24px; border: 2px solid var(--black); background: var(--off-white);">
+                <p style="margin-bottom: 12px;"><strong>What This Stack Delivers</strong></p>
+                <p style="font-size: 14px; color: var(--secondary);">These 25 boards aren't just tools—they're the structural backbone of modern construction operations. Together they create visibility where blindness exists, accountability where ambiguity lives, and data-driven decisions where intuition used to rule. Each board solves a specific operational problem; together, they transform your company from reactive to structured, from tribal to systematic, from dependent on individuals to powered by repeatable systems.</p>
+            </div>
+        </div>
+
+        <!-- THE BUILD -->
+        <div class="section" id="build">
+            <h2>The Build</h2>
+            <div class="placeholder">Proof of work: visual gallery, AI text examples, prompt library coming...</div>
+        </div>
+
+        <!-- OPERATION SYSTEM SETUP -->
+        <div class="section" id="operation-setup">
+            <h2>Operation System Setup</h2>
+            <div style="margin-bottom: 60px;">
+
+                <p style="font-size: 18px; font-weight: 500; color: var(--secondary); margin-top: 32px; margin-bottom: 24px;">Add these frameworks and workflows into your system. They become the standard for how work runs across your jobs.</p>
+
+                <!-- SETUP SECTION -->
+                <div style="margin-top: 48px; margin-bottom: 48px;">
+                    <h4 style="font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: -0.5px; color: var(--black); margin-bottom: 20px; border-left: 4px solid var(--yellow); padding-left: 16px;">Setup</h4>
+                    <ul style="margin-left: 28px; color: var(--secondary); font-size: 16px; line-height: 1.8; list-style: none;">
+                        <li style="margin-bottom: 12px;">Pick a system</li>
+                        <li style="margin-bottom: 12px;">Create a workspace for your operations</li>
+                        <li style="margin-bottom: 12px;">Add your workflows (bids, scheduling, RFIs, field, closeout)</li>
+                        <li>Apply the frameworks from this playbook to each one</li>
+                    </ul>
+                    <p style="font-size: 16px; color: var(--secondary); margin-top: 24px; font-style: italic;">Once set up, everything runs inside this structure.</p>
+                </div>
+
+                <!-- CORE TOOLS TABLE -->
+                <div style="margin-top: 48px; margin-bottom: 48px;">
+                    <h4 style="font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: -0.5px; color: var(--black); margin-bottom: 20px; border-left: 4px solid var(--yellow); padding-left: 16px;">Core Tools (Simple Version)</h4>
+                    <table style="width: 100%; border-collapse: collapse; margin-top: 16px;">
+                        <thead>
+                            <tr style="border-bottom: 2px solid var(--black);">
+                                <th style="text-align: left; padding: 12px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 14px;">Tool</th>
+                                <th style="text-align: left; padding: 12px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 14px;">Purpose</th>
+                                <th style="text-align: left; padding: 12px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 14px;">Impact</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom: 1px solid var(--border);">
+                                <td style="padding: 12px; font-size: 15px;">Your System</td>
+                                <td style="padding: 12px; font-size: 15px;">Where work is tracked</td>
+                                <td style="padding: 12px; font-size: 15px;">One place to run jobs</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid var(--border);">
+                                <td style="padding: 12px; font-size: 15px;">Communication</td>
+                                <td style="padding: 12px; font-size: 15px;">Moves work forward</td>
+                                <td style="padding: 12px; font-size: 15px;">Reduced back and forth</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 12px; font-size: 15px;">This Playbook</td>
+                                <td style="padding: 12px; font-size: 15px;">Defines how work runs</td>
+                                <td style="padding: 12px; font-size: 15px;">Consistency across projects</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- WHAT MAKES THIS WORK -->
+                <div style="margin-top: 48px; padding: 32px; border: 2px solid var(--black); background: rgba(255, 184, 0, 0.05); margin-bottom: 48px;">
+                    <h4 style="font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: -0.5px; color: var(--black); margin-bottom: 24px;">What Makes This Work</h4>
+
+                    <div style="margin-bottom: 24px;">
+                        <p style="font-size: 15px; font-weight: 600; color: var(--black); margin-bottom: 8px;"><span style="color: var(--yellow); font-weight: 800;">01</span> — Start with One Workflow</p>
+                        <p style="font-size: 15px; color: var(--secondary); margin-left: 28px;">Don't try to fix everything. Pick one: bids, scheduling, RFIs, field execution. Fix that first.</p>
+                    </div>
+
+                    <div style="margin-bottom: 24px;">
+                        <p style="font-size: 15px; font-weight: 600; color: var(--black); margin-bottom: 8px;"><span style="color: var(--yellow); font-weight: 800;">02</span> — Everything Builds on the Same System</p>
+                        <p style="font-size: 15px; color: var(--secondary); margin-left: 28px;">Once one workflow is tight: others follow the same structure, nothing needs to be rebuilt, consistency increases across jobs.</p>
+                    </div>
+
+                    <div style="margin-bottom: 24px;">
+                        <p style="font-size: 15px; font-weight: 600; color: var(--black); margin-bottom: 8px;"><span style="color: var(--yellow); font-weight: 800;">03</span> — Workflows Connect</p>
+                        <p style="font-size: 15px; color: var(--secondary); margin-left: 28px;">Each part of your operation feeds the next: Bids → Kickoff → Scheduling → Field → Closeout. When one breaks, it impacts everything downstream.</p>
+                    </div>
+
+                    <div style="margin-bottom: 24px;">
+                        <p style="font-size: 15px; font-weight: 600; color: var(--black); margin-bottom: 8px;"><span style="color: var(--yellow); font-weight: 800;">04</span> — It Gets Better Over Time</p>
+                        <p style="font-size: 15px; color: var(--secondary); margin-left: 28px;">As you use this: you see patterns faster, you fix issues earlier, your system gets tighter.</p>
+                    </div>
+
+                    <div>
+                        <p style="font-size: 15px; font-weight: 600; color: var(--black); margin-bottom: 8px;"><span style="color: var(--yellow); font-weight: 800;">05</span> — Works with What You Already Use</p>
+                        <p style="font-size: 15px; color: var(--secondary); margin-left: 28px;">This is not tied to a specific tool. You can apply this to: spreadsheets, project management tools, job tracking systems. The structure matters more than the software.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- THE SYSTEM LAYER -->
+        <div class="section" id="system-layer">
+            <h2>The System Layer</h2>
+
+            <p style="font-size: 18px; font-weight: 500; color: var(--secondary); margin-top: 32px; margin-bottom: 12px;">This is what most teams are missing.</p>
+            <p style="font-size: 16px; color: var(--secondary); margin-bottom: 48px; font-weight: 500;">Not a tool. Not a workflow. <strong>A system.</strong></p>
+
+            <!-- WHAT THE SYSTEM HOLDS - COLLAPSIBLE -->
+            <div style="margin-bottom: 32px; border: 2px solid var(--border); border-radius: 4px; overflow: hidden; background: var(--white);">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 32px; cursor: pointer; background: var(--off-white); border-bottom: 2px solid var(--border); transition: all 0.2s ease;" class="system-layer-toggle">
+                    <h4 style="font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: -0.5px; color: var(--black); margin: 0; border-bottom: 3px solid var(--yellow); padding-bottom: 12px; display: inline-block;">What the System Holds</h4>
+                    <span style="font-size: 20px; color: var(--yellow); transition: transform 0.3s ease; font-weight: bold;" class="system-toggle-icon">↓</span>
+                </div>
+                <div style="max-height: 0; overflow: hidden; transition: max-height 0.35s ease;" class="system-layer-content">
+                    <div style="padding: 32px;">
+                        <ul style="margin-left: 28px; color: var(--secondary); font-size: 16px; line-height: 1.8; list-style: none;">
+                            <li style="margin-bottom: 12px;">how work is structured</li>
+                            <li style="margin-bottom: 12px;">who owns what</li>
+                            <li style="margin-bottom: 12px;">how things move</li>
+                            <li>where problems show up</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- WHY THIS MATTERS - COLLAPSIBLE -->
+            <div style="margin-bottom: 32px; border: 2px solid var(--border); border-radius: 4px; overflow: hidden; background: var(--white);">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 32px; cursor: pointer; background: var(--off-white); border-bottom: 2px solid var(--border); transition: all 0.2s ease;" class="system-layer-toggle">
+                    <h4 style="font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: -0.5px; color: var(--black); margin: 0;">Why This Matters</h4>
+                    <span style="font-size: 20px; color: var(--yellow); transition: transform 0.3s ease; font-weight: bold;" class="system-toggle-icon">↓</span>
+                </div>
+                <div style="max-height: 0; overflow: hidden; transition: max-height 0.35s ease;" class="system-layer-content">
+                    <div style="padding: 32px;">
+                        <div style="margin-bottom: 32px; padding: 24px; border-left: 4px solid #ff6b6b; background: rgba(255, 107, 107, 0.04);">
+                            <p style="font-size: 16px; font-weight: 600; color: var(--black); margin-bottom: 16px;">Most teams operate like this:</p>
+                            <ul style="margin-left: 28px; color: var(--secondary); font-size: 16px; line-height: 1.8; list-style: none;">
+                                <li style="margin-bottom: 12px;">knowledge lives in people</li>
+                                <li style="margin-bottom: 12px;">work is tracked in multiple places</li>
+                                <li>follow-up is required to move things</li>
+                            </ul>
+                        </div>
+
+                        <div style="padding: 24px; border-left: 4px solid var(--yellow); background: rgba(255, 184, 0, 0.04);">
+                            <p style="font-size: 16px; font-weight: 600; color: var(--black); margin-bottom: 16px;">A system replaces that with:</p>
+                            <ul style="margin-left: 28px; color: var(--secondary); font-size: 16px; line-height: 1.8; list-style: none;">
+                                <li style="margin-bottom: 12px;">clear structure</li>
+                                <li style="margin-bottom: 12px;">visible workflows</li>
+                                <li>defined ownership</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CORE SKILLS - COLLAPSIBLE -->
+            <div style="margin-bottom: 32px; border: 2px solid var(--border); border-radius: 4px; overflow: hidden; background: var(--white);">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 32px; cursor: pointer; background: var(--off-white); border-bottom: 2px solid var(--border); transition: all 0.2s ease;" class="system-layer-toggle">
+                    <h4 style="font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: -0.5px; color: var(--black); margin: 0;">The Core Skills (Operations Version)</h4>
+                    <span style="font-size: 20px; color: var(--yellow); transition: transform 0.3s ease; font-weight: bold;" class="system-toggle-icon">↓</span>
+                </div>
+                <div style="max-height: 0; overflow: hidden; transition: max-height 0.35s ease;" class="system-layer-content">
+                    <div style="padding: 32px;">
+                        <p style="font-size: 16px; color: var(--secondary); margin-bottom: 24px;">These are the skills behind a tight operation:</p>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+                            <ul style="margin-left: 0; color: var(--secondary); font-size: 16px; line-height: 1.8; list-style: none;">
+                                <li style="margin-bottom: 12px;">mapping workflows</li>
+                                <li style="margin-bottom: 12px;">identifying gaps</li>
+                                <li style="margin-bottom: 12px;">defining ownership</li>
+                                <li style="margin-bottom: 12px;">creating visibility</li>
+                                <li>reducing friction</li>
+                            </ul>
+                            <ul style="margin-left: 0; color: var(--secondary); font-size: 16px; line-height: 1.8; list-style: none;">
+                                <li style="margin-bottom: 12px;">improving coordination</li>
+                                <li style="margin-bottom: 12px;">connecting office and field</li>
+                                <li style="margin-bottom: 12px;">standardizing processes</li>
+                                <li style="margin-bottom: 12px;">understanding cost impact</li>
+                                <li>thinking in systems</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HOW IT ALL CONNECTS - COLLAPSIBLE -->
+            <div style="margin-bottom: 32px; border: 2px solid var(--border); border-radius: 4px; overflow: hidden; background: var(--white);">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 32px; cursor: pointer; background: var(--off-white); border-bottom: 2px solid var(--border); transition: all 0.2s ease;" class="system-layer-toggle">
+                    <h4 style="font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: -0.5px; color: var(--black); margin: 0;">How It All Connects</h4>
+                    <span style="font-size: 20px; color: var(--yellow); transition: transform 0.3s ease; font-weight: bold;" class="system-toggle-icon">↓</span>
+                </div>
+                <div style="max-height: 0; overflow: hidden; transition: max-height 0.35s ease;" class="system-layer-content">
+                    <div style="padding: 32px;">
+                        <p style="font-size: 16px; color: var(--secondary); margin-bottom: 24px;">Each workflow builds on the next:</p>
+                        <ul style="margin-left: 28px; color: var(--secondary); font-size: 16px; line-height: 2; list-style: none;">
+                            <li>define the work</li>
+                            <li style="color: var(--secondary);">↓</li>
+                            <li>structure how it moves</li>
+                            <li style="color: var(--secondary);">↓</li>
+                            <li>automate what you can</li>
+                            <li style="color: var(--secondary);">↓</li>
+                            <li>make it visible</li>
+                            <li style="color: var(--secondary);">↓</li>
+                            <li>improve it over time</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- THE GOAL - COLLAPSIBLE -->
+            <div style="margin-bottom: 0; border: 2px solid var(--black); border-radius: 4px; overflow: hidden; background: var(--white);">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 32px; cursor: pointer; background: var(--yellow); border-bottom: 2px solid var(--black); transition: all 0.2s ease;" class="system-layer-toggle">
+                    <h4 style="font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 700; text-transform: uppercase; letter-spacing: -0.5px; color: var(--black); margin: 0;">The Goal</h4>
+                    <span style="font-size: 20px; color: var(--black); transition: transform 0.3s ease; font-weight: bold;" class="system-toggle-icon">↓</span>
+                </div>
+                <div style="max-height: 0; overflow: hidden; transition: max-height 0.35s ease;" class="system-layer-content">
+                    <div style="padding: 48px; background: var(--yellow);">
+                        <div style="max-width: 700px;">
+                            <p style="font-size: 15px; color: var(--black); margin-bottom: 32px; font-style: italic; line-height: 1.8;">The goal isn't to use better tools.</p>
+
+                            <p style="font-size: 20px; color: var(--black); margin-bottom: 32px; font-weight: 700; line-height: 1.4;">The goal is to run a system where:</p>
+
+                            <div style="margin-bottom: 0;">
+                                <div style="display: flex; margin-bottom: 24px;">
+                                    <div style="width: 40px; height: 40px; background: var(--black); color: var(--yellow); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; margin-right: 20px; flex-shrink: 0;">01</div>
+                                    <div>
+                                        <p style="font-size: 16px; font-weight: 600; color: var(--black); margin: 0 0 4px 0;">Work moves without chasing</p>
+                                        <p style="font-size: 14px; color: var(--black); margin: 0; opacity: 0.8;">Tasks progress automatically through your system</p>
+                                    </div>
+                                </div>
+
+                                <div style="display: flex; margin-bottom: 24px;">
+                                    <div style="width: 40px; height: 40px; background: var(--black); color: var(--yellow); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; margin-right: 20px; flex-shrink: 0;">02</div>
+                                    <div>
+                                        <p style="font-size: 16px; font-weight: 600; color: var(--black); margin: 0 0 4px 0;">Issues show up early</p>
+                                        <p style="font-size: 14px; color: var(--black); margin: 0; opacity: 0.8;">Problems are visible before they become critical</p>
+                                    </div>
+                                </div>
+
+                                <div style="display: flex; margin-bottom: 24px;">
+                                    <div style="width: 40px; height: 40px; background: var(--black); color: var(--yellow); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; margin-right: 20px; flex-shrink: 0;">03</div>
+                                    <div>
+                                        <p style="font-size: 16px; font-weight: 600; color: var(--black); margin: 0 0 4px 0;">Everything is visible</p>
+                                        <p style="font-size: 14px; color: var(--black); margin: 0; opacity: 0.8;">You always know what's happening across your operation</p>
+                                    </div>
+                                </div>
+
+                                <div style="display: flex;">
+                                    <div style="width: 40px; height: 40px; background: var(--black); color: var(--yellow); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; margin-right: 20px; flex-shrink: 0;">04</div>
+                                    <div>
+                                        <p style="font-size: 16px; font-weight: 600; color: var(--black); margin: 0 0 4px 0;">The operation scales</p>
+                                        <p style="font-size: 14px; color: var(--black); margin: 0; opacity: 0.8;">Your system grows without growing your overhead</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI TOOLS -->
+        <div class="section" id="ai-tools">
+            <h2>AI Tools</h2>
+
+            <!-- THERE'S NO SHORTAGE -->
+            <div style="margin-bottom: 48px; padding: 32px; border: 2px solid var(--border); background: var(--off-white); border-radius: 4px;">
+                <h3 style="font-family: 'Barlow Condensed', sans-serif; font-size: 24px; font-weight: 700; text-transform: uppercase; letter-spacing: -0.5px; color: var(--black); margin-top: 0; margin-bottom: 20px; border-bottom: 3px solid var(--yellow); padding-bottom: 12px; display: inline-block;">There's No Shortage of AI Tools</h3>
+                <p style="font-size: 16px; color: var(--secondary); margin-bottom: 16px; line-height: 1.8;">There's no shortage of AI tools right now</p>
+                <ul style="margin-left: 28px; margin-bottom: 24px; color: var(--secondary); font-size: 16px; line-height: 1.8; list-style: none;">
+                    <li style="margin-bottom: 8px;">Claude</li>
+                    <li style="margin-bottom: 8px;">ChatGPT</li>
+                    <li style="margin-bottom: 8px;">Perplexity</li>
+                    <li style="margin-bottom: 8px;">Gemini</li>
+                    <li>whatever new one dropped this week</li>
+                </ul>
+                <p style="font-size: 16px; color: var(--secondary); margin-bottom: 24px; line-height: 1.8;">The list keeps growing</p>
+                <p style="font-size: 16px; color: var(--black); font-weight: 600;">That's not the problem</p>
+            </div>
+
+            <!-- THE REAL QUESTION -->
+            <div style="margin-bottom: 48px;">
+                <h3 style="font-family: 'Barlow Condensed', sans-serif; font-size: 24px; font-weight: 700; text-transform: uppercase; letter-spacing: -0.5px; color: var(--black); margin-top: 0; margin-bottom: 24px; border-left: 4px solid var(--yellow); padding-left: 16px;">The Real Question</h3>
+                <p style="font-size: 16px; color: var(--secondary); margin-bottom: 20px; line-height: 1.8;">It's not "which tool should I use"</p>
+                <p style="font-size: 16px; color: var(--black); font-weight: 600; margin-bottom: 16px;">It's:</p>
+                <ul style="margin-left: 28px; color: var(--secondary); font-size: 16px; line-height: 1.8; list-style: none;">
+                    <li style="margin-bottom: 12px;">How are you actually using them</li>
+                    <li style="margin-bottom: 12px;">Where do they fit into your day to day work</li>
+                    <li style="margin-bottom: 12px;">How do they connect to each other</li>
+                    <li>How do they support your workflows instead of sitting off to the side</li>
+                </ul>
+            </div>
+
+            <!-- WHAT MOST PEOPLE DO -->
+            <div style="margin-bottom: 48px; padding: 32px; border-left: 4px solid #ff6b6b; background: rgba(255, 107, 107, 0.04); border-radius: 4px;">
+                <h3 style="font-family: 'Barlow Condensed', sans-serif; font-size: 24px; font-weight: 700; text-transform: uppercase; letter-spacing: -0.5px; color: var(--black); margin-top: 0; margin-bottom: 20px;">What Most People Do</h3>
+                <ul style="margin-left: 28px; color: var(--secondary); font-size: 16px; line-height: 1.8; list-style: none;">
+                    <li style="margin-bottom: 12px;">They try a tool</li>
+                    <li style="margin-bottom: 12px;">Ask it a few questions</li>
+                    <li style="margin-bottom: 12px;">Maybe get something useful</li>
+                    <li>Then go right back to how they were working before</li>
+                </ul>
+                <p style="font-size: 16px; color: var(--black); font-weight: 600; margin-top: 20px; margin-bottom: 0;">Nothing really changes</p>
+            </div>
+
+            <!-- WHAT ACTUALLY WORKS -->
+            <div style="margin-bottom: 48px; padding: 32px; border-left: 4px solid var(--yellow); background: rgba(255, 184, 0, 0.04); border-radius: 4px;">
+                <h3 style="font-family: 'Barlow Condensed', sans-serif; font-size: 24px; font-weight: 700; text-transform: uppercase; letter-spacing: -0.5px; color: var(--black); margin-top: 0; margin-bottom: 20px;">What Actually Works</h3>
+                <p style="font-size: 16px; color: var(--secondary); margin-bottom: 20px; line-height: 1.8;">AI becomes valuable when it's connected to how your work runs</p>
+                <p style="font-size: 16px; color: var(--secondary); margin-bottom: 24px; line-height: 1.8;">Not separate from it</p>
+                <p style="font-size: 16px; color: var(--black); font-weight: 600; margin-bottom: 16px;">That means:</p>
+                <ul style="margin-left: 28px; color: var(--secondary); font-size: 16px; line-height: 1.8; list-style: none;">
+                    <li style="margin-bottom: 12px;">Using it inside real workflows</li>
+                    <li style="margin-bottom: 12px;">Using it at the right steps</li>
+                    <li style="margin-bottom: 12px;">Using it to support decisions, not replace them</li>
+                    <li>Combining tools where it makes sense</li>
+                </ul>
+            </div>
+
+            <!-- WHERE THIS FITS -->
+            <div style="margin-bottom: 64px;">
+                <h3 style="font-family: 'Barlow Condensed', sans-serif; font-size: 24px; font-weight: 700; text-transform: uppercase; letter-spacing: -0.5px; color: var(--black); margin-top: 0; margin-bottom: 20px; border-left: 4px solid var(--yellow); padding-left: 16px;">Where This Fits</h3>
+                <p style="font-size: 16px; color: var(--secondary); margin-bottom: 20px; line-height: 1.8;">This is a starting point</p>
+                <p style="font-size: 16px; color: var(--secondary); margin-bottom: 32px; line-height: 1.8;">A quick way to understand how AI fits into your operations</p>
+                <p style="font-size: 16px; color: var(--secondary); margin-bottom: 12px; line-height: 1.8;">I'm working on putting together a deeper breakdown</p>
+                <ul style="margin-left: 28px; color: var(--secondary); font-size: 16px; line-height: 1.8; list-style: none;">
+                    <li style="margin-bottom: 12px;">How to actually use these tools</li>
+                    <li style="margin-bottom: 12px;">How to combine them</li>
+                    <li>And where they create real impact in construction workflows</li>
+                </ul>
+            </div>
+
+            <!-- EMAIL CTA -->
+            <div style="padding: 60px; border: 3px solid var(--black); background: var(--yellow); border-radius: 4px; margin-top: 80px;">
+                <div style="max-width: 680px;">
+                    <div style="margin-bottom: 40px;">
+                        <h3 style="font-family: 'Barlow Condensed', sans-serif; font-size: 32px; font-weight: 800; text-transform: uppercase; letter-spacing: -1px; color: var(--black); margin: 0 0 12px 0; line-height: 1.2;">Get the Guide</h3>
+                        <div style="width: 60px; height: 4px; background: var(--black); margin-bottom: 24px;"></div>
+                    </div>
+
+                    <p style="font-size: 18px; color: var(--black); margin-bottom: 12px; line-height: 1.6; font-weight: 500;">The complete breakdown on how to use AI tools inside your construction workflows</p>
+                    <p style="font-size: 16px; color: var(--black); margin-bottom: 40px; line-height: 1.8; opacity: 0.85;">Not theory. Real strategies for integrating AI into your operations so it actually changes how you work.</p>
+
+                    <form id="ai-guide-form" style="display: flex; flex-direction: column; gap: 16px;">
+                        <div style="display: flex; gap: 12px;">
+                            <input
+                                type="email"
+                                placeholder="your@email.com"
+                                required
+                                style="flex: 1; padding: 18px 20px; border: 2px solid var(--black); font-family: 'Inter', sans-serif; font-size: 16px; color: var(--black); background: var(--white); transition: all 0.2s ease;"
+                                onfocus="this.style.boxShadow='0 8px 0 rgba(0,0,0,0.1)';"
+                                onblur="this.style.boxShadow='none';"
+                            />
+                            <button
+                                type="submit"
+                                style="padding: 18px 36px; background: var(--black); color: var(--yellow); border: 2px solid var(--black); font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 800; text-transform: uppercase; letter-spacing: -0.5px; cursor: pointer; transition: all 0.2s ease; white-space: nowrap; font-size: 15px;"
+                                onmouseover="this.style.background='transparent'; this.style.color='var(--black)'; this.style.transform='scale(1.02)';"
+                                onmouseout="this.style.background='var(--black)'; this.style.color='var(--yellow)'; this.style.transform='scale(1)';"
+                            >
+                                Notify Me
+                            </button>
+                        </div>
+
+                        <div style="display: flex; gap: 8px; align-items: flex-start;">
+                            <input type="checkbox" style="margin-top: 4px; cursor: pointer;" />
+                            <label style="font-size: 13px; color: var(--black); opacity: 0.8; line-height: 1.6; cursor: pointer;">I want the guide and occasional updates about construction operations. No spam.</label>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- WHY I BUILT THIS -->
+        <div class="section" id="why-built">
+            <h2>Why I Built This</h2>
+            <p style="font-size: 16px; line-height: 1.8; color: var(--secondary); margin-bottom: 24px;">I've spent the last few years working with contractors—sitting in calls, looking at how jobs actually run, and seeing where things break.</p>
+
+            <p style="font-size: 16px; line-height: 1.8; color: var(--secondary); margin-bottom: 32px; font-style: italic;">Not in theory. In real projects.</p>
+
+            <p style="font-size: 16px; line-height: 1.8; color: var(--black); font-weight: 500; margin-bottom: 16px;">Same patterns, over and over:</p>
+            <ul style="margin-left: 28px; margin-bottom: 32px; color: var(--secondary); font-size: 16px; line-height: 1.8;">
+                <li>work getting stuck between people</li>
+                <li>constant follow-up to keep things moving</li>
+                <li>no clear visibility into what's actually happening</li>
+                <li>problems showing up late</li>
+            </ul>
+
+            <p style="font-size: 16px; line-height: 1.8; color: var(--black); font-weight: 500; margin-bottom: 8px;">It's not a lack of effort.</p>
+            <p style="font-size: 16px; line-height: 1.8; color: var(--secondary); margin-bottom: 32px;">It's how the work is structured.</p>
+
+            <p style="font-size: 16px; line-height: 1.8; color: var(--secondary); margin-bottom: 24px;">When AI started getting attention, I saw the same thing happen: people jumping into tools without fixing the underlying workflows.</p>
+
+            <p style="font-size: 16px; line-height: 1.8; color: var(--secondary); margin-bottom: 32px;">So instead of starting with AI, I started here.</p>
+
+            <p style="font-size: 16px; line-height: 1.8; color: var(--black); font-weight: 500; margin-bottom: 16px;">This playbook is a way to make that visible:</p>
+            <ul style="margin-left: 28px; margin-bottom: 32px; color: var(--secondary); font-size: 16px; line-height: 1.8;">
+                <li>how work actually moves</li>
+                <li>where it breaks</li>
+                <li>what to fix first</li>
+            </ul>
+
+            <p style="font-size: 16px; line-height: 1.8; color: var(--secondary); margin-bottom: 24px;">No overcomplication. No theory.</p>
+            <p style="font-size: 16px; line-height: 1.8; color: var(--secondary);">Just what I keep seeing across teams—and how to improve it.</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // Progress Bar
+        window.addEventListener('scroll', () => {
+            const windowHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrolled = (window.scrollY / windowHeight) * 100;
+            document.querySelector('.progress-bar').style.width = scrolled + '%';
+        });
+
+        // Sidebar Navigation
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('.section, #hero');
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const sectionId = link.dataset.section;
+                const section = document.getElementById(sectionId);
+                navLinks.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+                section.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // Logo scroll to top
+        const logoScroll = document.getElementById('logo-scroll');
+        logoScroll.addEventListener('click', () => {
+            const hero = document.getElementById('hero');
+            navLinks.forEach(l => l.classList.remove('active'));
+            hero.scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // System Layer Collapsibles
+        document.querySelectorAll('.system-layer-toggle').forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                const content = toggle.nextElementSibling;
+                const icon = toggle.querySelector('.system-toggle-icon');
+                const isOpen = content.style.maxHeight && content.style.maxHeight !== '0px';
+
+                if (isOpen) {
+                    content.style.maxHeight = '0';
+                    icon.style.transform = 'rotate(0deg)';
+                } else {
+                    content.style.maxHeight = content.scrollHeight + 'px';
+                    icon.style.transform = 'rotate(180deg)';
+                }
+            });
+        });
+
+        // Update active nav on scroll
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 300) {
+                    current = section.getAttribute('id');
+                }
+            });
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.dataset.section === current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // INTAKE FORM HANDLER
+        let intakeData = {
+            stage1: {}, stage2: {}, stage3: {}, stage4: {}, stage5: {}
+        };
+
+        function nextStage(current) {
+            if (validateStage(current)) {
+                captureStage(current);
+                document.getElementById('stage-' + current).style.display = 'none';
+                document.getElementById('stage-' + (current + 1)).style.display = 'block';
+            }
+        }
+
+        function prevStage(current) {
+            document.getElementById('stage-' + current).style.display = 'none';
+            document.getElementById('stage-' + (current - 1)).style.display = 'block';
+        }
+
+        function confirmStage(stage) {
+            if (validateStage(stage)) {
+                captureStage(stage);
+                nextStage(stage);
+            }
+        }
+
+        function validateStage(stage) {
+            if (stage === 1) {
+                const contractorType = document.querySelector('input[name="contractor-type"]:checked');
+                const primaryRole = document.querySelector('select[name="primary-role"]').value;
+                const projectSize = document.querySelector('input[name="project-size"]:checked');
+                const activeProjects = document.querySelector('input[name="active-projects"]:checked');
+
+                if (!contractorType || !primaryRole || !projectSize || !activeProjects) {
+                    alert('Please complete all required fields.');
+                    return false;
+                }
+            } else if (stage === 2) {
+                const opsFocus = document.querySelector('select[name="ops-focus"]').value;
+                const opsOutcome = document.querySelector('input[name="ops-outcome"]:checked');
+
+                if (!opsFocus || !opsOutcome) {
+                    alert('Please complete all required fields.');
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        function captureStage(stage) {
+            if (stage === 1) {
+                intakeData.stage1 = {
+                    contractorType: document.querySelector('input[name="contractor-type"]:checked').value,
+                    primaryRole: document.querySelector('select[name="primary-role"]').value,
+                    specialty: document.querySelector('input[name="specialty"]').value,
+                    projectSize: document.querySelector('input[name="project-size"]:checked').value,
+                    activeProjects: document.querySelector('input[name="active-projects"]:checked').value
+                };
+            } else if (stage === 2) {
+                intakeData.stage2 = {
+                    opsFocus: document.querySelector('select[name="ops-focus"]').value,
+                    opsOutcome: document.querySelector('input[name="ops-outcome"]:checked').value
+                };
+            } else if (stage === 3) {
+                intakeData.stage3 = {
+                    dataInputs: Array.from(document.querySelectorAll('input[name="data-inputs"]:checked')).map(x => x.value),
+                    inputChannels: Array.from(document.querySelectorAll('input[name="input-channels"]:checked')).map(x => x.value)
+                };
+            } else if (stage === 4) {
+                intakeData.stage4 = {
+                    requiredOutputs: Array.from(document.querySelectorAll('input[name="required-outputs"]:checked')).map(x => x.value),
+                    hardOutputs: Array.from(document.querySelectorAll('input[name="hard-outputs"]:checked')).map(x => x.value)
+                };
+            } else if (stage === 5) {
+                intakeData.stage5 = {
+                    painPoints: Array.from(document.querySelectorAll('input[name="pain-points"]:checked')).map(x => x.value),
+                    failureExample: document.querySelector('textarea[name="failure-example"]').value,
+                    successVision: document.querySelector('textarea[name="success-vision"]').value
+                };
+            }
+        }
+
+        function submitIntake() {
+            try {
+                // Validate stage 5 before submission
+                const painPoints = Array.from(document.querySelectorAll('input[name="pain-points"]:checked'));
+                if (painPoints.length === 0) {
+                    alert('Please select at least one pain point to generate your analysis.');
+                    return;
+                }
+
+                captureStage(5);
+                const gaps = performGapAnalysis();
+                displayResults(gaps);
+            } catch (error) {
+                console.error('Error generating analysis:', error);
+                alert('There was an error generating your analysis. Please check your inputs and try again.');
+            }
+        }
+
+        function performGapAnalysis() {
+            const gaps = [];
+            const d = intakeData;
+
+            // CRITICAL GAPS
+            const unstructuredChannels = d.stage3.inputChannels.filter(c => ['Email chains', 'Verbal / phone calls', 'Paper / physical documents', 'Text / messaging apps', 'No consistent method'].includes(c)).length;
+            if (unstructuredChannels >= 2) {
+                gaps.push({
+                    severity: 'CRITICAL',
+                    title: 'Fragmented information capture',
+                    explanation: 'Information flows through multiple unstructured channels without a system to route it. This creates delays, duplicate work, and loss of data.'
+                });
+            }
+
+            const hardOutputCount = d.stage4.hardOutputs.length;
+            const totalOutputs = d.stage4.requiredOutputs.length;
+            if (hardOutputCount >= totalOutputs * 0.5) {
+                gaps.push({
+                    severity: 'CRITICAL',
+                    title: 'Output production is manually constrained',
+                    explanation: 'Your role requires producing outputs that your current system cannot deliver consistently. This is a capacity problem that limits your effectiveness.'
+                });
+            }
+
+            if (d.stage5.painPoints.includes('Information arrives too late') || d.stage5.painPoints.includes('Can\'t see risks early')) {
+                gaps.push({
+                    severity: 'CRITICAL',
+                    title: 'Reactive decision-making loop',
+                    explanation: 'You are operating in response mode, not anticipation mode. By the time information reaches you, problems have already begun.'
+                });
+            }
+
+            // MODERATE GAPS
+            if (d.stage5.painPoints.includes('Chasing updates manually') || d.stage5.painPoints.includes('Reporting is manual')) {
+                gaps.push({
+                    severity: 'MODERATE',
+                    title: 'Status collection is a manual tax on your time',
+                    explanation: 'You are manually gathering and assembling status information that the system should pull automatically. This diverts your time from analysis and strategy.'
+                });
+            }
+
+            if (d.stage5.painPoints.includes('Subcontractors don\'t update')) {
+                gaps.push({
+                    severity: 'MODERATE',
+                    title: 'Field / subcontractor adoption gap',
+                    explanation: 'Field teams and subcontractors do not actively use your system. The data you have is either stale or requires manual transcription, creating two sources of truth.'
+                });
+            }
+
+            if (!d.stage3.dataInputs.includes('Schedule baseline & updates')) {
+                gaps.push({
+                    severity: 'MODERATE',
+                    title: 'Schedule data not flowing into the system',
+                    explanation: 'Schedule is managed outside your workflow. This creates a disconnect between what you plan and what you can track and report on.'
+                });
+            }
+
+            if (d.stage4.requiredOutputs.includes('Risk alerts') && d.stage4.hardOutputs.includes('Risk alerts')) {
+                gaps.push({
+                    severity: 'MODERATE',
+                    title: 'Risk visibility is a desired but unmet output',
+                    explanation: 'You want to surface risks proactively but cannot do so consistently with your current system. This capability needs to be built, not just tooled.'
+                });
+            }
+
+            // LOW GAPS
+            if (d.stage5.painPoints.includes('Tasks fall through the cracks') || d.stage5.painPoints.includes('No clear ownership')) {
+                gaps.push({
+                    severity: 'LOW',
+                    title: 'Accountability structure is unclear in the system',
+                    explanation: 'Tasks move through your system but ownership is ambiguous. This requires explicit role definition and task assignment protocols.'
+                });
+            }
+
+            return gaps;
+        }
+
+        function displayResults(gaps) {
+            const d = intakeData;
+            let html = '';
+
+            // HEADER
+            html += '<div style="margin-bottom: 48px;">';
+            html += '<h2 style="font-family: \'Space Mono\', monospace; font-size: 28px; margin: 0 0 16px 0; font-weight: 700;">Your workflow gap analysis</h2>';
+            html += '<p style="font-size: 15px; color: var(--secondary); line-height: 1.7; margin: 0;">Based on your inputs, here are the critical gaps — and a prompt you can use to go deeper.</p>';
+            html += '</div>';
+
+            // GAPS BY SEVERITY
+            const criticalGaps = gaps.filter(g => g.severity === 'CRITICAL');
+            const moderateGaps = gaps.filter(g => g.severity === 'MODERATE');
+            const lowGaps = gaps.filter(g => g.severity === 'LOW');
+
+            if (criticalGaps.length > 0) {
+                html += '<div style="margin-bottom: 48px;">';
+                html += '<div style="font-family: \'Space Mono\', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: #df2f4a; font-weight: 700; margin-bottom: 24px;">CRITICAL</div>';
+                criticalGaps.forEach(gap => {
+                    html += '<div style="margin-bottom: 32px;">';
+                    html += '<h3 style="font-size: 18px; margin: 0 0 12px 0; font-weight: 600;">' + gap.title + '</h3>';
+                    html += '<p style="font-size: 14px; color: var(--secondary); line-height: 1.7; margin: 0;">' + gap.explanation + '</p>';
+                    html += '</div>';
+                });
+                html += '</div>';
+            }
+
+            if (moderateGaps.length > 0) {
+                html += '<div style="margin-bottom: 48px;">';
+                html += '<div style="font-family: \'Space Mono\', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: #ffcb00; font-weight: 700; margin-bottom: 24px;">MODERATE</div>';
+                moderateGaps.forEach(gap => {
+                    html += '<div style="margin-bottom: 32px;">';
+                    html += '<h3 style="font-size: 18px; margin: 0 0 12px 0; font-weight: 600;">' + gap.title + '</h3>';
+                    html += '<p style="font-size: 14px; color: var(--secondary); line-height: 1.7; margin: 0;">' + gap.explanation + '</p>';
+                    html += '</div>';
+                });
+                html += '</div>';
+            }
+
+            if (lowGaps.length > 0) {
+                html += '<div style="margin-bottom: 48px;">';
+                html += '<div style="font-family: \'Space Mono\', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: #888; font-weight: 700; margin-bottom: 24px;">LOW</div>';
+                lowGaps.forEach(gap => {
+                    html += '<div style="margin-bottom: 32px;">';
+                    html += '<h3 style="font-size: 18px; margin: 0 0 12px 0; font-weight: 600;">' + gap.title + '</h3>';
+                    html += '<p style="font-size: 14px; color: var(--secondary); line-height: 1.7; margin: 0;">' + gap.explanation + '</p>';
+                    html += '</div>';
+                });
+                html += '</div>';
+            }
+
+            // DIVIDER
+            html += '<div style="border-top: 2px solid var(--black); margin: 64px 0;"></div>';
+
+            // FIRST-PRINCIPLES PROMPT
+            html += '<h2 style="font-family: \'Space Mono\', monospace; font-size: 24px; margin: 0 0 32px 0; font-weight: 700;">Generated first-principles prompt</h2>';
+
+            html += '<div style="background: #F5F2E8; border: 2px solid var(--black); padding: 32px; margin-bottom: 48px; font-family: \'Space Mono\', monospace; font-size: 13px; line-height: 1.8; color: var(--secondary);">';
+
+            html += '<strong style="color: var(--black);">CONTEXT</strong><br>';
+            html += 'I work for a ' + d.stage1.contractorType + ' specializing in ' + d.stage1.specialty + '. I manage ' + d.stage1.activeProjects + ' active projects in the ' + d.stage1.projectSize + ' range. My primary role is ' + d.stage1.primaryRole + '.<br><br>';
+
+            html += '<strong style="color: var(--black);">OPERATIONS FOCUS</strong><br>';
+            html += 'The area of operations I am trying to improve: ' + d.stage2.opsFocus + '<br>';
+            html += 'The fundamental outcome I am designing toward: ' + d.stage2.opsOutcome + '<br><br>';
+
+            html += '<strong style="color: var(--black);">CURRENT DATA INPUTS</strong><br>';
+            html += 'Information that feeds my work today: ' + d.stage3.dataInputs.join(', ') + '<br>';
+            html += 'How this information currently arrives: ' + d.stage3.inputChannels.join(', ') + '<br><br>';
+
+            html += '<strong style="color: var(--black);">REQUIRED OUTPUTS</strong><br>';
+            html += 'What my role needs to produce: ' + d.stage4.requiredOutputs.join(', ') + '<br>';
+            html += 'Outputs I consistently struggle to deliver: ' + d.stage4.hardOutputs.join(', ') + '<br><br>';
+
+            html += '<strong style="color: var(--black);">IDENTIFIED WORKFLOW GAPS</strong><br>';
+            gaps.forEach(gap => {
+                html += '- [' + gap.severity + '] ' + gap.title + '<br>';
+            });
+
+            if (d.stage5.failureExample) {
+                html += '<br><strong style="color: var(--black);">SPECIFIC FAILURE EXAMPLE</strong><br>' + d.stage5.failureExample.replace(/\n/g, '<br>') + '<br>';
+            }
+
+            if (d.stage5.successVision) {
+                html += '<br><strong style="color: var(--black);">SUCCESS DEFINITION (6 months)</strong><br>' + d.stage5.successVision.replace(/\n/g, '<br>') + '<br>';
+            }
+
+            html += '<br><strong style="color: var(--black);">FIRST-PRINCIPLES CHALLENGE</strong><br>';
+            html += 'Given these inputs, outputs, and gaps — treat this as a system design problem, not a software selection problem. Answer:<br><br>';
+            html += '1. What are the irreducible truths about this role that any system must be built around?<br>';
+            html += '2. Where is the single highest-leverage intervention — the one fix that unlocks the most downstream value?<br>';
+            html += '3. What does the minimum viable system look like that eliminates the critical gaps without over-engineering?<br>';
+            html += '4. What behaviors or structural changes need to happen at the field / subcontractor level for any system to work?<br>';
+            html += '5. How should information flow — from field to PM to executive — so that each role sees only what they need, when they need it, without manual assembly?<br>';
+
+            html += '</div>';
+
+            // DESIGN PRINCIPLES
+            html += '<h3 style="font-family: \'Space Mono\', monospace; font-size: 18px; margin: 0 0 24px 0; font-weight: 700;">Design principles to apply:</h3>';
+            html += '<ul style="font-size: 14px; line-height: 1.8; color: var(--secondary); margin: 0; padding: 0 0 0 24px;">';
+            html += '<li>Every role lands on a view tailored to their priorities (PMs: tasks + risks; executives: portfolio metrics; field: mobile task lists)</li>';
+            html += '<li>Daily actions within 2–3 clicks</li>';
+            html += '<li>Guided flows for compliance; flexible flows for iterative work</li>';
+            html += '<li>Information priority: risks → resources → costs</li>';
+            html += '<li>Build modular so the system can scale</li>';
+            html += '<li>Connect to existing tools and habits — do not require a behavior revolution to get value</li>';
+            html += '</ul>';
+
+            document.getElementById('intake-form').style.display = 'none';
+            document.getElementById('intake-results').innerHTML = html;
+            document.getElementById('intake-results').style.display = 'block';
+        }
+
+        // Prompt Cards Data
+        const prompts = [
+            {
+                title: 'Bid Pipeline / CRM',
+                category: 'Pre-Project',
+                subtitle: 'Lead → Won/Lost workflow with estimator view and executive dashboard',
+                value: 'Surfaces pipeline health and velocity without memory or manual rollups',
+                prompt: `Build a complete Bid Pipeline Tracker that allows estimators and business development staff to capture and track every construction opportunity from initial lead through final award decision.
+
+Workflow: Lead → Qualifying → Bidding → Submitted → Won / Lost / No-Bid
+
+Key Fields: Project name, client, owner, bid date, estimated value, bid/no-bid decision, probability %, assigned estimator, result status
+
+Views & Layers:
+• Estimator view — simple input status for logging opportunities and updating bid status
+• Manager/Executive dashboard — pipeline value by stage, win rates, total pipeline value, estimator workload
+
+Design Notes: Desktop office use. Number-first KPI cards (win rate, bids due this week) with click-through to individual opportunity details.`
+            },
+            {
+                title: 'Subcontractor Prequalification',
+                category: 'Pre-Project',
+                subtitle: 'Vendor database with insurance, bonding, and certification tracking',
+                value: 'Prevents unqualified subs from reaching your projects; proactively surfaces renewal requirements',
+                prompt: `Build a complete Subcontractor Prequalification Tracker that allows project managers and procurement staff to maintain an approved vendor database with qualification status for every subcontractor.
+
+Key Fields: Company name, trade categories, insurance certificate expiration dates, bonding limits, EMR/safety ratings, references, qualification documents
+
+Workflow: Pending Review → Under Evaluation → Approved → Expired
+Automated triggers when certificates are 30 days from expiring.
+
+Views & Layers:
+• Procurement view — log new subs and upload documents
+• Compliance dashboard — approved vs. expired subs by trade, upcoming expirations, subs requiring renewal action
+
+Design Notes: Desktop office use. Status-driven card views (Approved / Expiring Soon / Expired), one-click document access, automated email notifications to trigger the renewal workflow.`
+            },
+            {
+                title: 'Permit & Entitlement Tracking',
+                category: 'Pre-Project',
+                subtitle: 'Permits across applications with timeline views and approval tracking',
+                value: 'Eliminates surprise delays; makes critical path dependencies visible',
+                prompt: `Build a complete Permit & Entitlement Tracker that allows project coordinators and development managers to track every permit application from submission through agency approval across all active projects.
+
+Key Fields: Permit type, project name, submitting agency, submission date, assigned reviewer/contact, required documents, expected turnaround, actual approval date, rejection/resubmission notes
+
+Workflow: Drafting → Submitted → Under Review → Revisions Requested → Approved → Issued
+
+Views & Layers:
+• Coordinator view — log submissions, update status, flag delays
+• Executive dashboard — permits by project, aging applications, bottlenecked agencies, upcoming critical-path permits
+
+Design Notes: Desktop use. Timeline/Gantt views for expected vs. actual durations, red/yellow/green indicators for at-risk permits, click-through from project summaries to individual permit details.`
+            },
+            {
+                title: 'Design Review Coordination',
+                category: 'Pre-Project',
+                subtitle: 'Design packages by discipline through review cycles with ownership',
+                value: 'Keeps design moving through phases; prevents lost feedback or orphaned tasks',
+                prompt: `Build a complete Design Review Coordinator that allows project managers and design coordinators to track every design package submission by discipline through internal and external review cycles.
+
+Key Fields: Package name, discipline (civil, structural, MEP, architectural), project phase, current reviewer, submission date, review status, open comments, blocking issues, target permit submission date
+
+Workflow: In Progress → Submitted for Review → Comments Issued → Revised → Approved for Permit
+
+Views & Layers:
+• Coordinator view — log packages, assign reviewers, track comment resolution
+• Discipline lead view — review queue and outstanding comments by package
+• PM dashboard — design completion by discipline, packages blocking permit, review cycle durations
+
+Design Notes: Desktop collaboration. Board views grouped by discipline, visual flags for packages on the critical path to permit, comment threading and linking.`
+            },
+            {
+                title: 'Owner Dashboard',
+                category: 'Active Project',
+                subtitle: 'Client-facing simplified project status portal with key milestones',
+                value: 'Reduces communication overhead and builds client confidence through transparency',
+                prompt: `Build a complete Owner Status Portal that allows project managers to provide clients/owners a simplified, at-a-glance view of their project without requiring Procore access.
+
+Key Fields: Project name, current phase, overall completion %, open owner decisions/approvals needed (with due dates), upcoming milestones (next 30 days), budget status, PM narrative update
+
+Workflow: PM Updates → Owner Views (weekly)
+
+Views & Layers:
+• PM input view — fast 15-minute weekly updates using dropdowns and text fields
+• Client-facing dashboard — big-number completion %, decision items requiring action, milestone timeline, budget health in green/yellow/red with plain-English summaries
+
+Design Notes: Mobile and tablet optimized for owners. Card-based navigation, minimal scrolling, zero training required.`
+            },
+            {
+                title: 'Subcontractor Coordination Tracker',
+                category: 'Active Project',
+                subtitle: 'Daily on-site status and coordination conflicts with escalation pathways',
+                value: 'Surfaces coordination issues before they cascade; makes daily execution decisions data-driven',
+                prompt: `Build a complete Subcontractor Coordination Board that allows GC superintendents to track the daily status of every subcontractor on site and surface coordination conflicts before they cause delays.
+
+Key Fields: Sub name, trade/scope, current status, work area/zone, blocking issues, dependencies, target completion, daily notes
+
+Workflow: Scheduled → Mobilized → In Progress → Complete + Blocked flag
+
+Views & Layers:
+• Daily update view — fast morning notes, one-click flags, status dropdowns, quick notes
+• Coordination dashboard — today's active trades, blocked subs with dependency chains, area conflicts, rolling 2-week lookahead
+
+Design Notes: Mobile/tablet field use. Large tap targets, card-based views grouped by status or work area, red-flag alerts for mutual blocking or zone conflicts.`
+            },
+            {
+                title: 'RFI / Submittal Watch List',
+                category: 'Active Project',
+                subtitle: 'High-priority critical path items from Procore with owner and due date',
+                value: 'Keeps critical items visible and followed up; prevents delays from becoming project delays',
+                prompt: `Build a complete Critical Path Item Tracker that allows project managers to mirror and manage high-priority open items from Procore that are blocking project progress.
+
+Key Fields: Item type (RFI, submittal, change order, punch), Procore reference ID, description, responsible party, Procore due date, PM urgency flag (critical/high/normal), follow-up owner, last action date, next step
+Procore remains system of record.
+
+Workflow: Imported → Flagged → In Pursuit → Resolved
+
+Views & Layers:
+• PM working view — flag urgency, assign follow-up owners, add pursuit notes, set reminder cadences
+• Team accountability dashboard — critical items by age, items with no activity in 48+ hours, follow-up owner workload
+
+Design Notes: Desktop use. Manual or periodic import from Procore exports, one-click escalation flags, automated reminders by urgency level.`
+            },
+            {
+                title: 'Procurement Tracker',
+                category: 'Active Project',
+                subtitle: 'Long-lead materials from order through delivery with lead time',
+                value: 'Prevents supply chain surprises; makes ordering decisions visible to the whole team',
+                prompt: `Build a complete Long-Lead Procurement Tracker that allows project managers and procurement coordinators to track every critical material package from order through delivery.
+
+Key Fields: Item/package description, spec section, vendor, PO number, order date, lead time, promised delivery date, actual delivery date, lined scheduled activity, required-on-site date, variance notes
+
+Workflow: Identified → Quoted → Ordered → In Fabrication → Shipped → Delivered → Released to Field
+
+Views & Layers:
+• Procurement view — log orders, update vendor status, flag delivery risks
+• PM schedule-impact view — items by required-on-site date with delivery variance against linked activities
+• Executive dashboard — total committed spend, at-risk deliveries, vendor performance trends
+
+Design Notes: Desktop use. Timeline views comparing promised vs. required dates, red flags where delivery exceeds required-on-site date, clear ownership handoff between estimating, procurement, accounting, and field.`
+            },
+            {
+                title: 'Meeting Action Items',
+                category: 'Active Project',
+                subtitle: 'Captures and tracks action items from meetings with owner and deadline',
+                value: 'Ensures follow-up happens consistently; makes meeting decisions actionable',
+                prompt: `Build a complete Meeting Action Item Tracker that allows project managers and coordinators to capture, assign, and chase down every action item generated from OAC meetings, coordination meetings, and subcontractor kickoffs.
+
+Key Fields: Meeting type, meeting date, action item description, responsible party, due date, priority, status, linked project/trade
+
+Workflow: Captured → Assigned → In Progress → Complete + Overdue auto-flag based on due date
+
+Views & Layers:
+• Fast capture view — quick-assign dropdowns and bulk entry during or after meetings
+• Accountability dashboard — open items by owner, overdue items with aging, items by meeting type, weekly outstanding digest
+
+Design Notes: Desktop meeting use and mobile follow-up. Automated reminder emails at 3 days before and 1 day overdue, one-click status updates, meeting-grouped views for OAC prep.`
+            },
+            {
+                title: 'Project Extras / Change Management',
+                category: 'Active Project',
+                subtitle: 'Change orders and scope modifications from request through approval',
+                value: 'Prevents scope creep from going untracked; makes pricing and approval decisions structured',
+                prompt: `Build a complete Change Order & Scope Tracker that allows PMs, estimators, and owners to manage change requests from initiation through pricing, approval, and execution.
+
+Key Fields: Change description, originating party (owner/PM/sub), scope impact, cost impact estimate, estimated schedule impact, owner approval required (yes/no), estimated approval date, actual approval, execution status, final cost, final schedule impact
+
+Workflow: Requested → Estimated → Submitted to Owner → Approved/Rejected → Executed → Closed
+
+Views & Layers:
+• PM intake view — quick scope description and initial impact estimate
+• Estimating view — receive scope, provide pricing, flag schedule impacts
+• Owner dashboard — pending approval changes with cost/schedule summaries
+• Executive dashboard — total change value by project, open/approved/executed by project
+
+Design Notes: Desktop change management. Scope/cost/schedule impact clearly separated, approval workflows with decision history, linked to RFI/submittal for traceability.`
+            },
+            {
+                title: 'Certification & Training Matrix',
+                category: 'Safety & Compliance',
+                subtitle: 'Employee certifications and licenses with expiration dates and renewal triggers',
+                value: 'Proactively surfaces renewal requirements; prevents compliance gaps from surprising you on-site',
+                prompt: `Build a complete Certification & Training Matrix that allows HR and safety managers to track every required certification for every field and office employee with proactive renewal management.
+
+Key Fields: Employee name, role, certification type (SHA 10/30, First Aid/CPR, equipment operator, confined space, fall protection, etc.), issue date, expiration date, certifying body, assigned trainer, document upload, renewal status
+
+Workflow: Due for Training → Scheduled → Completed → Active → Expiring Soon → Expired
+Automated triggers at 60, 30, and 7 days before expiry.
+
+Views & Layers:
+• HR/Safety admin view — log certifications, upload documentation, assign training sessions
+• Employee lookup view — all certs for a single person (field-ready compliance check)
+• Compliance dashboard — cert coverage by type, expiring-this-month count, expired employees, trainer workload
+
+Design Notes: Desktop administration and mobile field verification. Red/yellow/green status by employee, one-click certificate access, automated reminders to employees and supervisors, exportable compliance reports for audits and bid packages.`
+            },
+            {
+                title: 'Safety Audit Schedule',
+                category: 'Safety & Compliance',
+                subtitle: 'Audits, findings, and corrective actions with closure verification',
+                value: 'Makes audit cadence predictable; ensures findings don\'t disappear without closure',
+                prompt: `Build a complete Safety Audit & Corrective Action Tracker that allows safety managers and project leadership to schedule audits, document findings, and drive corrective actions to closure across all projects.
+
+Key Fields: Project name, audit type (scheduled, random, incident-triggered), auditor, audit date, cadence, findings with severity (critical, major, minor, observation), corrective action required, responsible party, due date, close-out documentation, reference link to HammerTech
+
+Workflow: Scheduled → Completed → Findings Issued → Corrective Action Assigned → In Progress → Verified Closed
+
+Views & Layers:
+• Safety coordinator view — schedule audits, log findings, assign corrective actions
+• Project/super view — their open corrective actions and upcoming audits
+• Executive safety dashboard — audit completion rates by project, open findings by severity, overdue corrective actions, trends over time
+
+Design Notes: Desktop administration with mobile field close-out. Photo upload for verification, automated reminders for upcoming audits and overdue actions.`
+            },
+            {
+                title: 'Incident Follow-Up Tracker',
+                category: 'Safety & Compliance',
+                subtitle: 'Investigation and corrective action process with timeline and verification',
+                value: 'Prevents incidents from becoming patterns; ensures lessons are learned and applied',
+                prompt: `Build a complete Incident Resolution Tracker that allows safety managers and project leadership to manage the full investigation and corrective action process after an incident is captured in the field safety tool.
+
+Key Fields: Incident reference ID (from HammerTech), incident date, project, type (injury, near-miss, property damage, environmental), severity, investigation owner, root cause category, contributing factors, corrective actions with owners/due dates, verification evidence, lessons learned
+
+Workflow: Reported → Under Investigation → Root Cause Identified → Corrective Actions Assigned → In Progress → Verified Closed → Closed with Lessons Shared
+
+Views & Layers:
+• Safety manager view — document findings, assign root cause, create corrective action items
+• Responsible party view — assigned corrective actions with due dates and upload verification
+• Executive dashboard — open investigations by severity, corrective action closure rates, time-to-close, recurring root cause trends
+
+Design Notes: Desktop investigation with mobile corrective action updates. Automated escalation for high-severity incidents, verification photo/document requirements before closure, clear audit trail.`
+            },
+            {
+                title: 'Compliance Documentation Repository',
+                category: 'Safety & Compliance',
+                subtitle: 'Permits, insurance, safety plans, and regulatory documents by project',
+                value: 'Makes documentation accessible and auditable; reduces scrambling during inspections or disputes',
+                prompt: `Build a complete Compliance Documentation Repository that allows project managers, safety staff, and executive leadership to store, organize, and quickly access all regulatory and compliance documents by project and document type.
+
+Key Fields: Document type (permit, insurance certificate, safety plan, OSHA forms, inspection reports, CYA correspondence), project name, upload date, document date, expiration date (if applicable), required for bid/milestone, uploaded by, version control
+
+Workflow: Uploaded → Organized → Searchable → Accessible for Audit
+
+Views & Layers:
+• PM/coordinator view — upload documents by project and type, flag as required for specific milestones
+• Safety/compliance view — all safety-related docs, certification documents, inspection reports by project
+• Audit/executive view — complete document inventory by project, missing required documents, document aging
+
+Design Notes: Desktop document management. Simple folder structure by project and type, full-text search capability, expiration date alerts, version control for updated documents, exportable document lists for audits.`
+            },
+            {
+                title: 'Employee Onboarding',
+                category: 'People & Operations',
+                subtitle: 'New hire checklist from offer through 90-day mark with responsibility ownership',
+                value: 'Ensures consistency in team integration; makes it clear what new employees need to succeed',
+                prompt: `Build a complete Employee Onboarding Tracker that allows HR and field supervisors to manage every new hire through a structured checklist from offer acceptance to 90-day completion.
+
+Key Fields: Employee name, position, hire date, department, assigned supervisor, start date, checklist items (offer letter, I-9, direct deposit, safety orientation, tool access, PPE, site assignment), 30/60/90-day check-in dates
+
+Workflow: Offer Accepted → Pre-Start Paperwork → Day 1 Ready → Orientation Complete → 30-Day Check → 60-Day Check → 90-Day Complete
+Triggered automatically when HR creates the new hire record.
+
+Views & Layers:
+• HR admin view — create new hires, track paperwork and compliance items
+• Supervisor view — incoming employees with field-side tasks (PPE, site assignment, check-ins)
+• HR dashboard — onboarding pipeline, bottlenecked items by department, incomplete I-9s, check-in completion rates
+
+Design Notes: Desktop HR administration with mobile supervisor updates. Automated task assignments at each stage, reminder notifications for upcoming check-ins, clear HR → field leadership handoff.`
+            },
+            {
+                title: 'Equipment & Fleet Management',
+                category: 'People & Operations',
+                subtitle: 'Real-time equipment status and availability with maintenance schedules',
+                value: 'Prevents equipment from becoming a bottleneck; makes scheduling and purchasing data-driven',
+                prompt: `Build a complete Equipment & Fleet Visibility Board that allows fleet managers and project managers to track the real-time status, location, and availability of every piece of equipment across all projects.
+
+Key Fields: Equipment ID/name, type/category, assigned project, current location, assigned operator, utilization status (deployed, idle, in transit, in shop), last service date, next service due, service provider, hourly/mileage reading
+
+Workflow: Available → Assigned → Deployed → Returned + flags for Idle, Service Due, Double-Booked
+
+Views & Layers:
+• Fleet coordinator view — update locations, log service, manage assignments with conflict checking
+• PM request view — equipment on their project, ability to flag release dates or request transfers
+• Executive dashboard — fleet utilization rates, idle equipment over 7 days, overdue service, equipment double-booked on overlapping dates
+
+Design Notes: Desktop fleet management with mobile field updates. Automated alerts for service due (7-day, overdue), idle equipment notifications, double-booking warnings.`
+            },
+            {
+                title: 'Subcontractor Payment Status',
+                category: 'People & Operations',
+                subtitle: 'Payment applications tracked from submission through paid with lien waivers',
+                value: 'Prevents cash flow disputes; keeps payment processing predictable and transparent',
+                prompt: `Build a complete Subcontractor Payment Status Tracker that allows project managers, project accountants, and AP staff to provide visibility into every pay application from submission through payment.
+
+Key Fields: Subcontractor name, project, pay period/application number, submitted amount, submitted date, PM approval status, approved amount, accounting received date, scheduled payment date, check/ACH number, payment date
+
+Workflow: Submitted → PM Review → Approved → In Accounting → Payment Scheduled → Paid + flags for On Hold and Disputed
+
+Views & Layers:
+• PM review view — approve/reject applications and flag holds with notes
+• Accounting view — processing queue with aging and batch scheduling
+• Sub-facing external dashboard with aging and cycle time metrics
+
+Design Notes: Desktop processing with mobile PM approvals. Automated status notifications to subs at each stage transition, clear PM → accounting handoff, single source of truth bridging Procore and the accounting system.`
+            },
+            {
+                title: 'IT & Systems Requests',
+                category: 'People & Operations',
+                subtitle: 'Technology requests and support tickets with priority and resolution tracking',
+                value: 'Ensures tech issues get attention; prevents tools from becoming blockers',
+                prompt: `Build a complete IT & Systems Request Tracker that allows all employees to submit technology requests and IT staff to manage the queue from request through resolution.
+
+Key Fields: Requester name, department, request type (software access, hardware issue, new hire setup, license request, general support), urgency, description, assigned IT tech, requested software/system, approval status, resolution notes, completion date
+
+Workflow: Submitted → Triaged → In Progress → Pending Approval → Resolved → Closed + Waiting on User flag
+
+Views & Layers:
+• Employee submission form — dropdowns for request type and urgency
+• IT team queue — tickets by priority, age, assigned tech, status with workload balancing
+• IT manager dashboard — open tickets by category, recurring patterns, license inventory/utilization
+
+Design Notes: Desktop IT administration with mobile submission and status checks. Automated confirmation on submit, status update notifications, escalation alerts for tickets aging beyond SLA, self-service status lookup.`
+            },
+            {
+                title: 'Company Calendar & Capacity Planning',
+                category: 'People & Operations',
+                subtitle: 'Team availability and project assignments across the company',
+                value: 'Makes bottlenecks visible; enables better decisions around staffing and scheduling',
+                prompt: `Build a complete Resource & Workforce Planner that allows operations leadership to see current PM and superintendent assignments across all projects and plan future staffing against the BD pipeline.
+
+Key Fields: Employee name, role (PM, super, APM, PE), current project assignment(s), allocation %, assignment start/end dates, availability date, skills/project type experience, pipeline projects with estimated start dates and staffing needs
+
+Workflow: Assigned → Wrapping Up → Available → Tentatively Assigned → Confirmed
+Linked between active project assignments and pipeline opportunities.
+
+Views & Layers:
+• Operations view — update assignments, flag upcoming availability, slot resources against pipeline pursuits
+• BD/Preconstruction view — pipeline projects with staffing requirements and available/soon-available resources
+• Executive dashboard — utilization by role, over-allocated individuals, resources available in 30/60/90 days, pipeline projects without assigned staff
+
+Design Notes: Desktop planning. Timeline/Gantt views for resource allocation over time, visual flags for over-allocation and understaffed pipeline, connection between bid pipeline board and workforce availability.`
+            },
+            {
+                title: 'Punch List Closeout Coordinator',
+                category: 'Post-Project',
+                subtitle: 'Final punch items by subcontractor with status and sign-off',
+                value: 'Keeps closeout moving without stalling; makes it clear what\'s blocking final payment',
+                prompt: `Build a complete Punch List Closeout Coordinator that allows project managers to track and drive the final closeout sprint by subcontractor, aggregating punch status without replacing Procore's item-level detail.
+
+Key Fields: Project name, subcontractor/trade, sub contact name and phone, total open items (from Procore), items completed this week, remaining count, committed completion date, barriers/notes, PM follow-up status
+
+Workflow: Items Issued → Sub Notified → In Progress → Final Walkdown Scheduled → Complete → Backcharge if Unresolved
+Flags: No Response, Behind Schedule, Backcharge Pending
+
+Views & Layers:
+• PM working view — update counts, log sub contact activity with quick notes and last contact date
+• Closeout dashboard — total open items by trade, subs with no progress, commitments due this week, overall closeout % trending toward CO
+
+Design Notes: Desktop PM coordination. Simple manual entry from Procore punch reports, automated reminders for committed dates approaching, one-click sub contact access.`
+            },
+            {
+                title: 'Warranty Claim Management',
+                category: 'Post-Project',
+                subtitle: 'Owner warranty requests post-closeout with subcontractor assignment',
+                value: 'Tracks post-project obligations; ensures warranty issues don\'t become relationship problems',
+                prompt: `Build a complete Warranty Claim Tracker that allows project managers and service coordinators to manage every owner warranty request from submission through resolution after project closeout when Procore is archived.
+
+Key Fields: Project/property name, owner contact, claim date, issue description, trade/scope involved, responsible party (sub or in-house), sub contact, warranty expiration date, response deadline, site visit date, resolution description, resolution date, backup documentation
+
+Workflow: Claim Received → Assigned → Scheduled → Work Complete → Owner Verified → Closed
+Flags: Warranty Expired, Sub Non-Responsive, Backcharge Issued
+
+Views & Layers:
+• Service coordinator view — log claims, assign responsibility, track response commitments
+• Responsible party view — open claims with deadlines and required actions
+• Management dashboard — open claims by project, aging past response deadline, claims by trade (recurring issues), sub warranty performance ratings
+
+Design Notes: Desktop coordination with mobile field verification. Automated reminders at response deadline, escalation for non-responsive subs, photo/document requirements for closure, persistent post-closeout record.`
+            },
+            {
+                title: 'Lessons Learned Repository',
+                category: 'Post-Project',
+                subtitle: 'Structured insights from each project capturing what worked and what to repeat or avoid',
+                value: 'Turns project experience into repeatable knowledge; compounds learning across the organization',
+                prompt: `Build a complete Lessons Learned Repository that allows project managers to capture structured insights at project closeout and leadership and estimators to search and apply those learnings to future work.
+
+Key Fields: Project name, project type, client, completion date, lesson category (estimating, execution, subcontractor, design, owner coordination, safety, procurement), lesson type (what went well / to improve / to repeat / to avoid), detailed description, recommended action, responsible department, tagged subcontractors with performance notes (star performer / acceptable / do not re-hire)
+
+Workflow: Draft → PM Submitted → Leadership Reviewed → Published to Library
+
+Views & Layers:
+• PM closeout capture form — structured prompts by category ensuring consistent captures
+• Searchable company library — filterable by project type, category, subcontractor, and keyword for preconstruction and estimating teams
+• Leadership dashboard — submission compliance by PM, trending issues, subcontractor performance patterns, most-referenced lessons
+
+Design Notes: Desktop closeout entry and quick reference lookup. Required fields prevent empty closeouts, tagging enables powerful filtering, subcontractor performance aggregates across projects.`
+            },
+            {
+                title: 'Portfolio Status Dashboard',
+                category: 'Executive & Portfolio',
+                subtitle: 'Weekly project health updates for leadership with profitability and risk status',
+                value: 'Gives executives the real picture instantly; reduces guesswork in decision-making',
+                prompt: `Build a complete Portfolio Status Dashboard that allows project managers to submit weekly status updates and executive leadership to see every active project's health at a glance across the company.
+
+Key Fields: Project name, PM, owner/client, contract value, current phase, percent complete, health status (green/yellow/red) with PM narrative, schedule status, budget status, open critical issues count, top risk/blocker, next major milestone
+
+Workflow: PM Updates Weekly → Leadership Reviews (no complex dependencies)
+
+Views & Layers:
+• PM quick-update view — 10-minute weekly input with status dropdowns, single key update field, critical issues count
+• Executive dashboard — all projects in card or table view sortable by health/phase/PM, total portfolio value, projects at risk, click-through to individual project detail with history
+
+Design Notes: Desktop executive consumption and mobile PM updates. Number-first layout showing project count by health, total portfolio value, percent of projects on track.`
+            },
+            {
+                title: 'Resource & Workforce Planning',
+                category: 'Executive & Portfolio',
+                subtitle: 'PM and superintendent assignments against pipeline with capacity view',
+                value: 'Makes staffing bottlenecks visible; enables hiring and development decisions based on pipeline',
+                prompt: `Build a complete Resource & Workforce Planner that allows operations leadership to see current PM and superintendent assignments across all projects and plan future staffing against the BD pipeline.
+
+Key Fields: Employee name, role (PM, super, APM, PE), current project assignment(s), allocation %, assignment start/end dates, availability date, skills/project type experience, pipeline projects with estimated start dates and staffing needs
+
+Workflow: Assigned → Wrapping Up → Available → Tentatively Assigned → Confirmed
+Linked between active project assignments and pipeline opportunities.
+
+Views & Layers:
+• Operations view — update assignments, flag upcoming availability, slot resources against pipeline pursuits
+• BD/Preconstruction view — pipeline projects with staffing requirements and available/soon-available resources
+• Executive dashboard — utilization by role, over-allocated individuals, resources available in 30/60/90 days, pipeline projects without assigned staff
+
+Design Notes: Desktop planning. Timeline/Gantt views for resource allocation over time, visual flags for over-allocation and understaffed pipeline, connection between bid pipeline board and workforce availability.`
+            },
+            {
+                title: 'Strategic Initiatives Tracker',
+                category: 'Executive & Portfolio',
+                subtitle: 'Company-level projects and improvements with ownership, timeline, and status',
+                value: 'Ensures strategic work doesn\'t get lost in daily project demands; tracks company evolution',
+                prompt: `Build a complete Strategic Initiatives Tracker that allows executive leadership and initiative owners to track company-level projects that fall outside of construction project work and are invisible to Procore.
+
+Key Fields: Initiative name, category (technology/ERP, facilities, certification/compliance, marketing, HR/culture, process improvement), executive sponsor, initiative owner, start date, target completion, current phase, status (on track / at risk / blocked / complete), budget, key milestones with dates, blockers or decisions needed
+
+Workflow: Proposed → Approved → In Progress → Milestone Review → Complete + On Hold flag with reason
+
+Views & Layers:
+• Initiative owner view — update progress, log milestone completions, flag blockers or resource needs
+• Department view — initiatives by category with upcoming milestones and ownership
+• Executive dashboard — all active initiatives by status, initiatives needing decisions, milestone completions this quarter, resource/budget allocation across strategic priorities
+
+Design Notes: Desktop executive review and planning. Timeline views showing initiative roadmap across quarters, clear milestone tracking without over-engineering, simple structure that makes company-level work visible alongside project work.`
+            }
+        ];
+
+        // Organize prompts by category/phase
+        const phaseOrder = [
+            'Pre-Project',
+            'Active Project',
+            'Safety & Compliance',
+            'People & Operations',
+            'Post-Project',
+            'Executive & Portfolio'
+        ];
+
+        const phaseLabels = {
+            'Pre-Project': 'PRE-PROJECT: Setup & Qualification',
+            'Active Project': 'ACTIVE PROJECT: Execution & Coordination',
+            'Safety & Compliance': 'SAFETY & COMPLIANCE: Risk Prevention',
+            'People & Operations': 'PEOPLE & OPERATIONS: Team & Systems',
+            'Post-Project': 'POST-PROJECT: Learning & Growth',
+            'Executive & Portfolio': 'EXECUTIVE & PORTFOLIO: Leadership & Strategy'
+        };
+
+        const prompts_by_phase = {};
+        phaseOrder.forEach(phase => {
+            prompts_by_phase[phase] = prompts.filter(p => p.category === phase);
+        });
+
+        // Render Prompt Cards organized by phase
+        const container = document.getElementById('prompts-container');
+        phaseOrder.forEach(phase => {
+            const phaseSection = document.createElement('div');
+            phaseSection.className = 'prompt-phase';
+
+            const phaseTitle = document.createElement('h3');
+            phaseTitle.className = 'prompt-phase-title';
+            const titleSpan = document.createElement('span');
+            titleSpan.textContent = phaseLabels[phase];
+            phaseTitle.appendChild(titleSpan);
+
+            // Add click handler to toggle collapse
+            phaseTitle.addEventListener('click', () => {
+                phaseSection.classList.toggle('collapsed');
+            });
+
+            phaseSection.appendChild(phaseTitle);
+
+            const grid = document.createElement('div');
+            grid.className = 'prompt-phase-grid';
+
+            prompts_by_phase[phase].forEach(prompt => {
+                const card = document.createElement('div');
+                card.className = 'prompt-card';
+                // Format the prompt with proper sections
+                const formatPrompt = (text) => {
+                    let html = '';
+                    const lines = text.split('\n');
+                    let currentSection = '';
+                    let inList = false;
+
+                    for (let i = 0; i < lines.length; i++) {
+                        const line = lines[i].trim();
+
+                        if (!line) {
+                            if (inList) {
+                                html += '</ul>';
+                                inList = false;
+                            }
+                            html += '<br>';
+                            continue;
+                        }
+
+                        // Section headers
+                        if (line.match(/^(Workflow|Key Fields|Views & Layers|Design Notes|Flags|Build a complete)/) || line.endsWith(':')) {
+                            if (inList) {
+                                html += '</ul>';
+                                inList = false;
+                            }
+                            html += `<p style="margin: 20px 0 12px 0; font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--black);">${line}</p>`;
+                        }
+                        // List items
+                        else if (line.startsWith('•')) {
+                            if (!inList) {
+                                html += '<ul style="margin: 12px 0; padding-left: 28px; color: var(--secondary);">';
+                                inList = true;
+                            }
+                            html += `<li style="margin-bottom: 8px; line-height: 1.5;">${line.substring(1).trim()}</li>`;
+                        }
+                        // Regular paragraphs
+                        else {
+                            if (inList) {
+                                html += '</ul>';
+                                inList = false;
+                            }
+                            html += `<p style="margin: 12px 0; line-height: 1.6; font-size: 14px;">${line}</p>`;
+                        }
+                    }
+
+                    if (inList) {
+                        html += '</ul>';
+                    }
+
+                    return html;
+                };
+
+                card.innerHTML = `
+                    <div>
+                        <span class="prompt-title">${prompt.title}</span>
+                        <p class="prompt-subtitle">${prompt.subtitle}</p>
+                        <p class="prompt-value">${prompt.value}</p>
+                        <span class="prompt-category">${prompt.category}</span>
+                    </div>
+                    <div class="prompt-details">
+                        <h4 style="font-family: 'Barlow Condensed', sans-serif; font-size: 18px; margin-top: 0; margin-bottom: 16px; text-transform: uppercase; letter-spacing: -0.5px; border-bottom: 2px solid var(--yellow); padding-bottom: 12px;">${prompt.title}</h4>
+                        <button class="copy-prompt-btn" data-prompt="${prompt.title}">
+                            📋 Copy Prompt
+                        </button>
+                        <div style="line-height: 1.6; font-size: 14px; color: var(--black);">
+                            ${formatPrompt(prompt.prompt)}
+                        </div>
+                    </div>
+                `;
+
+                card.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    // Close any other open cards
+                    document.querySelectorAll('.prompt-card.expanded').forEach(c => c.classList.remove('expanded'));
+                    card.classList.add('expanded');
+                    document.body.style.overflow = 'hidden';
+
+                    // Add close button
+                    if (!card.querySelector('.prompt-close')) {
+                        const closeBtn = document.createElement('div');
+                        closeBtn.className = 'prompt-close';
+                        closeBtn.innerHTML = '✕';
+                        closeBtn.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            card.classList.remove('expanded');
+                            document.body.style.overflow = '';
+                        });
+                        card.appendChild(closeBtn);
+                    }
+
+                    // Add copy button functionality
+                    setTimeout(() => {
+                        const copyBtn = card.querySelector('.copy-prompt-btn');
+                        if (copyBtn && !copyBtn.hasListener) {
+                            copyBtn.hasListener = true;
+                            copyBtn.addEventListener('click', (e) => {
+                                e.stopPropagation();
+                                const fullText = `${prompt.title}\n\n${prompt.prompt}`;
+                                navigator.clipboard.writeText(fullText).then(() => {
+                                    copyBtn.innerHTML = '✓ Copied!';
+                                    copyBtn.classList.add('copied');
+                                    setTimeout(() => {
+                                        copyBtn.innerHTML = '📋 Copy Prompt';
+                                        copyBtn.classList.remove('copied');
+                                    }, 2000);
+                                });
+                            });
+                        }
+                    }, 0);
+                });
+
+                grid.appendChild(card);
+            });
+
+            phaseSection.appendChild(grid);
+            container.appendChild(phaseSection);
+        });
+
+        // Close card when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.prompt-card')) {
+                document.querySelectorAll('.prompt-card.expanded').forEach(card => {
+                    card.classList.remove('expanded');
+                });
+                document.body.style.overflow = '';
+            }
+        });
+
+        // Close card on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.prompt-card.expanded').forEach(card => {
+                    card.classList.remove('expanded');
+                });
+                document.body.style.overflow = '';
+            }
+        });
+
+        // Collapsible sections toggle
+        document.querySelectorAll('.collapsible-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const section = header.closest('.collapsible-section');
+                section.classList.toggle('open');
+            });
+        });
+
+        // AI Guide Form - Supabase Integration
+        if (window.supabase) {
+            const SUPABASE_URL = 'https://fappsarnztagfboncywm.supabase.co';
+            const SUPABASE_ANON_KEY = 'sb_publishable_YjY4HfaOEKWYKafCALOg8A_gnmIRlPy';
+            const { createClient } = window.supabase;
+            const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+            const aiGuideForm = document.getElementById('ai-guide-form');
+            if (aiGuideForm) {
+                aiGuideForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+
+                    const emailInput = aiGuideForm.querySelector('input[type="email"]');
+                    const checkboxInput = aiGuideForm.querySelector('input[type="checkbox"]');
+                    const submitButton = aiGuideForm.querySelector('button[type="submit"]');
+
+                    const email = emailInput.value.trim();
+                    const optedIn = checkboxInput.checked;
+
+                    if (!email) {
+                        alert('Please enter your email address.');
+                        return;
+                    }
+
+                    // Disable submit button during request
+                    submitButton.disabled = true;
+                    const originalText = submitButton.textContent;
+                    submitButton.textContent = 'Sending...';
+
+                    try {
+                        const { data, error } = await supabase
+                            .from('ai_guide_signups')
+                            .insert([{ email, opted_in: optedIn }]);
+
+                        if (error) {
+                            if (error.code === '23505') {
+                                submitButton.textContent = 'Already signed up!';
+                            } else {
+                                submitButton.textContent = 'Error. Try again.';
+                            }
+                        } else {
+                            submitButton.textContent = '✓ Thanks for signing up!';
+                            emailInput.value = '';
+                            emailInput.style.background = '#FFFFFF';
+                            checkboxInput.checked = false;
+                        }
+                    } catch (err) {
+                        submitButton.textContent = 'Error. Try again.';
+                        console.error('Submission error:', err);
+                    }
+
+                    // Reset button after 3 seconds
+                    setTimeout(() => {
+                        submitButton.textContent = originalText;
+                        submitButton.disabled = false;
+                    }, 3000);
+                });
+            }
+        }
+
+    </script>
+</body>
+</html>
