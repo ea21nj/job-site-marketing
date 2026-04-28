@@ -512,90 +512,505 @@
             display: none;
         }
 
-        .framework-page {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            margin-top: 62px;
-            display: none;
-            flex-direction: column;
-            overflow-y: auto;
-            padding: 48px;
-            background: #FAFAF9;
-            z-index: 10;
-        }
-
-        .framework-page.active {
+        .userguide-container {
             display: flex;
+            flex: 1;
+            overflow: auto;
+            padding: 60px;
+            background: #FAFAF9;
         }
 
-        .framework-page {
-            display: block;
-            padding: 48px !important;
-        }
-
-        .framework-toc {
+        .userguide-container.hidden {
             display: none;
         }
 
-        .framework-toc h2 {
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: #6B7280;
-            margin-bottom: 16px;
-            border-bottom: 1px solid #E5E7EB;
-            padding-bottom: 12px;
+        .userguide-content {
+            max-width: 1100px;
+            margin: 0 auto;
+            width: 100%;
         }
 
-        .framework-toc ul {
+        .userguide-content h1 {
+            font-size: 56px;
+            font-weight: 700;
+            margin-bottom: 48px;
+            color: #1F2937;
+        }
+
+        .userguide-content p {
+            font-size: 20px;
+            line-height: 1.9;
+            color: #4B5563;
+            margin-bottom: 20px;
+        }
+
+        .userguide-content h3 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-top: 24px;
+            margin-bottom: 12px;
+            color: #1F2937;
+        }
+
+        .userguide-content ul {
+            margin-left: 32px;
+            margin-bottom: 20px;
+        }
+
+        .userguide-content li {
+            margin-bottom: 14px;
+            color: #4B5563;
+            font-size: 20px;
+            line-height: 1.9;
+        }
+
+        .ai-features {
+            margin: 40px 0;
+            padding: 32px;
+            background: white;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+        }
+
+        .ai-features h2 {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #1F2937;
+            font-family: Georgia, serif;
+        }
+
+        .ai-features > p {
+            font-size: 18px;
+            color: #6B6B6B;
+            margin-bottom: 24px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-top: 24px;
+        }
+
+        .feature-card {
+            padding-top: 20px;
+            border-top: 1px solid #E5E7EB;
+            space-y: 12px;
+        }
+
+        .feature-icon {
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+
+        .feature-card p {
+            font-size: 15px;
+            line-height: 1.7;
+            color: #6B6B6B;
+        }
+
+        .feature-card strong {
+            color: #1F2937;
+            font-weight: 600;
+        }
+
+        .promptbuilder-container {
+            display: flex;
+            flex: 1;
+            overflow: auto;
+            padding: 60px;
+            background: #FAFAF9;
+        }
+
+        .promptbuilder-container.hidden {
+            display: none;
+        }
+
+        .themes-container {
+            display: flex;
+            flex: 1;
+            overflow: auto;
+            padding: 60px;
+            background: #FAFAF9;
+        }
+
+        .themes-container.hidden {
+            display: none;
+        }
+
+        .themes-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .themes-content h1 {
+            font-size: 56px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: #1F2937;
+        }
+
+        .themes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 24px;
+            margin-top: 48px;
+        }
+
+        .principle-card {
+            background: white;
+            border-radius: 12px;
+            border: 1px solid #E5E7EB;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .principle-card:hover {
+            border-color: #D1D5DB;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+            transform: translateY(-4px);
+        }
+
+        .principle-number {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            font-size: 32px;
+            font-weight: 700;
+            color: #E5E7EB;
+            z-index: 1;
+        }
+
+        .principle-header {
+            padding: 28px 24px 16px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .principle-header h3 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1F2937;
+            margin-bottom: 10px;
+            margin-top: 0;
+        }
+
+        .principle-goal {
+            font-size: 14px;
+            color: #6B7280;
+            margin: 0;
+            font-weight: 500;
+            line-height: 1.5;
+        }
+
+        .principle-list {
             list-style: none;
             margin: 0;
-            padding: 0;
+            padding: 20px 24px 24px;
+            flex: 1;
         }
 
-        .framework-toc li {
-            margin-bottom: 8px;
-        }
-
-        .framework-toc button {
-            background: none;
-            border: none;
+        .principle-list li {
+            font-size: 14px;
             color: #4B5563;
-            cursor: pointer;
-            text-align: left;
-            font-size: 13px;
-            padding: 6px 0;
+            margin-bottom: 12px;
+            padding-left: 20px;
+            position: relative;
+            line-height: 1.5;
+        }
+
+        .principle-list li:before {
+            content: "▪";
+            position: absolute;
+            left: 4px;
+            color: #1F2937;
+            font-weight: 700;
+        }
+
+        .principle-list li:last-child {
+            margin-bottom: 0;
+        }
+
+        .promptbuilder-content {
+            max-width: 1200px;
+            margin: 0 auto;
             width: 100%;
-            transition: all 0.2s ease;
-            font-family: 'Space Grotesk', sans-serif;
         }
 
-        .framework-toc button:hover {
-            color: #FF8A3D;
-            padding-left: 8px;
+        .promptbuilder-content h1 {
+            font-size: 56px;
+            font-weight: 700;
+            margin-bottom: 40px;
+            color: #1F2937;
         }
 
-        .framework-toc button.active {
-            color: #FF8A3D;
-            font-weight: 600;
-            background: #FFF5ED;
-            padding-left: 8px;
-            border-radius: 4px;
-            padding: 6px 8px;
+        .promptbuilder-wrapper {
+            display: flex;
+            gap: 32px;
         }
 
-        .framework-content {
+        .promptbuilder-sidebar {
+            width: 160px;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 12px;
+            flex-shrink: 0;
         }
 
-        .framework-content > .collapsible-part {
-            width: 100%;
+        .sidebar-tab {
+            padding: 12px 16px;
+            background: white;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #4B5563;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+        }
+
+        .sidebar-tab:hover {
+            background: #F3F4F6;
+            border-color: #D1D5DB;
+        }
+
+        .sidebar-tab.active {
+            background: #1F2937;
+            color: white;
+            border-color: #1F2937;
+        }
+
+        .promptbuilder-main {
+            flex: 1;
+        }
+
+        .prompt-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            margin-bottom: 40px;
+        }
+
+        .prompt-form.hidden {
+            display: none;
+        }
+
+        .form-section {
+            background: white;
+            padding: 24px;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+        }
+
+        .form-section h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #1F2937;
+        }
+
+        .form-section label {
+            display: flex;
+            margin-bottom: 12px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #4B5563;
+            align-items: center;
+        }
+
+        .form-section input[type="checkbox"],
+        .form-section input[type="radio"] {
+            margin-right: 8px;
+            cursor: pointer;
+        }
+
+        .prompt-output {
+            background: white;
+            padding: 32px;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            margin-top: 40px;
+        }
+
+        .prompt-output h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #1F2937;
+        }
+
+        .prompt-text {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #4B5563;
+            white-space: pre-wrap;
+            word-break: break-word;
+            font-family: 'Courier New', monospace;
+            min-height: 200px;
+            padding: 16px;
+            background: #F8F7F5;
+            border: 1px solid #E5E7EB;
+            border-radius: 4px;
+        }
+
+        .prompt-actions {
+            margin-top: 20px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .prompt-btn {
+            padding: 10px 20px;
+            border: 1px solid #D9D7D2;
+            background: white;
+            color: #1F2937;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .prompt-btn:hover {
+            background: #F8F7F5;
+            border-color: #1F2937;
+        }
+
+        .prompt-btn.primary {
+            background: #1F2937;
+            color: white;
+            border-color: #1F2937;
+        }
+
+        .prompt-btn.primary:hover {
+            background: #374151;
+        }
+
+        .collapsible-card {
+            background: white;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 28px;
+            background: #F9FAFB;
+            cursor: pointer;
+            border-bottom: 1px solid #E5E7EB;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        .card-header:hover {
+            background: #F3F4F6;
+        }
+
+        .header-title {
+            font-weight: 600;
+            color: #1F2937;
+            font-size: 20px;
+        }
+
+        .toggle-icon {
+            font-size: 28px;
+            font-weight: 300;
+            color: #6B7280;
+            transition: transform 0.3s ease;
+        }
+
+        .card-header.expanded .toggle-icon {
+            transform: rotate(45deg);
+        }
+
+        .card-content {
+            display: none;
+            padding: 32px;
+            color: #4B5563;
+        }
+
+        .card-content.expanded {
+            display: block;
+        }
+
+        .card-content p {
+            margin-bottom: 16px;
+            font-size: 20px;
+            line-height: 1.9;
+        }
+
+        .framework-tile {
+            background: white;
+            border-radius: 12px;
+            border: 1px solid #E5E7EB;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .framework-tile:hover {
+            border-color: #D1D5DB;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .userguide-content > .framework-tile:nth-child(2),
+        .userguide-content > .framework-tile:nth-child(3),
+        .userguide-content > .framework-tile:nth-child(4) {
+            margin-bottom: 24px;
+        }
+
+        .card-header {
+            border-bottom: none;
+            background: linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%);
+        }
+
+        .card-header:hover {
+            background: linear-gradient(135deg, #F3F4F6 0%, #ECECF1 100%);
+        }
+
+        .header-title {
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .card-content {
+            font-size: 16px;
+        }
+
+        .card-content p {
+            font-size: 16px;
+            margin-bottom: 14px;
+            line-height: 1.8;
+        }
+
+        .card-content h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .card-content ul {
+            margin-left: 24px;
+            margin-bottom: 12px;
+        }
+
+        .card-content li {
+            margin-bottom: 10px;
+            font-size: 16px;
+            line-height: 1.8;
         }
 
         .section-card-container {
@@ -673,86 +1088,6 @@
             backdrop-filter: blur(10px);
         }
 
-        .framework-page h1 {
-            font-size: 42px;
-            font-weight: 700;
-            margin-bottom: 12px;
-            text-transform: uppercase;
-            letter-spacing: -0.5px;
-            color: #1F2937;
-        }
-
-        .framework-intro {
-            display: none;
-        }
-
-        .framework-intro-visible {
-            background: #F9FAFB;
-            border-left: 4px solid #FF8A3D;
-            padding: 20px 24px;
-            border-radius: 8px;
-            margin-bottom: 32px;
-            font-size: 14px;
-            line-height: 1.8;
-            color: #4B5563;
-        }
-
-        .framework-page h2 {
-            font-size: 24px;
-            font-weight: 700;
-            margin-top: 32px;
-            margin-bottom: 16px;
-            text-transform: uppercase;
-            letter-spacing: -0.25px;
-            border-top: 1px solid #E5E7EB;
-            padding-top: 24px;
-            color: #1F2937;
-        }
-
-        .framework-page h3 {
-            font-size: 16px;
-            font-weight: 700;
-            margin-top: 20px;
-            margin-bottom: 12px;
-            color: #1F2937;
-        }
-
-        .framework-page p {
-            font-size: 14px;
-            line-height: 1.8;
-            margin-bottom: 12px;
-            color: #4B5563;
-        }
-
-        .framework-page ul, .framework-page ol {
-            margin-left: 24px;
-            margin-bottom: 16px;
-            font-size: 14px;
-            line-height: 1.8;
-            color: #4B5563;
-        }
-
-        .framework-page li {
-            margin-bottom: 8px;
-        }
-
-        .framework-page .subsection {
-            margin-bottom: 24px;
-            padding-left: 24px;
-            border-left: 3px solid #FF8A3D;
-        }
-
-        .framework-page strong {
-            font-weight: 700;
-            color: #1F2937;
-        }
-
-        .framework-page code {
-            background: #F3F4F6;
-            padding: 2px 6px;
-            border: 1px solid #D1D5DB;
-            border-radius: 6px;
-            font-family: 'Space Grotesk', monospace;
             font-size: 13px;
             color: #6B7280;
         }
@@ -824,398 +1159,14 @@
 </head>
 <body>
     <div class="top-nav">
-        <button class="nav-btn active" data-page="framework">Framework</button>
-        <button class="nav-btn" data-page="showcase">Styles</button>
+        <button class="nav-btn active" data-page="showcase">Styles</button>
+        <button class="nav-btn" data-page="userguide">User Guide</button>
+        <button class="nav-btn" data-page="promptbuilder">Prompt Builder</button>
+        <button class="nav-btn" data-page="themes">Themes</button>
     </div>
 
-    <div class="framework-page active">
-        <div class="framework-toc">
-            <h2>Sections</h2>
-            <ul id="toc-list">
-                <li><button data-section="part-1">Part 1: What is Vibe Coding</button></li>
-                <li><button data-section="part-2">Part 2: Core Mental Model</button></li>
-                <li><button data-section="part-3">Part 3: Data Building Blocks</button></li>
-                <li><button data-section="part-4">Part 4: UI Widgets</button></li>
-                <li><button data-section="part-5">Part 5: Side Panels</button></li>
-                <li><button data-section="part-6">Part 6: Automation Logic</button></li>
-                <li><button data-section="part-7">Part 7: Walkthrough</button></li>
-                <li><button data-section="part-8">Part 8: Prompt AI Right</button></li>
-                <li><button data-section="part-9">Part 9: Beginner Mistakes</button></li>
-                <li><button data-section="part-10">Part 10: Build Checklist</button></li>
-            </ul>
-        </div>
-
-        <div class="framework-content">
-            <h1>Vibe Coding Framework</h1>
-
-            <div class="framework-intro">
-                <strong>Master the mental model behind modern app building.</strong> Learn to think in terms of data, UI, logic, and outcomes instead of syntax. This 10-part framework teaches you how to design systems that actually work.
-            </div>
-
-            <div class="section-card-container">
-                <div class="section-card" data-section="part-2">
-                    <h2>The 5 Layers</h2>
-                    <p>Every app is made of five layers. Think in this order:</p>
-                    <div class="layer-grid">
-                        <div class="layer-box">Goal</div>
-                        <div class="layer-box">Data</div>
-                        <div class="layer-box">UI</div>
-                        <div class="layer-box">Logic</div>
-                        <div class="layer-box">Output</div>
-                    </div>
-                </div>
-
-                <div class="section-card" data-section="part-3">
-                    <h2>Data Building Blocks</h2>
-                    <ul>
-                        <li><strong>Tables:</strong> One per noun (Delivery, Project, Customer)</li>
-                        <li><strong>Fields:</strong> Text, Status, Date, Person, Number, Relation</li>
-                        <li><strong>Relationships:</strong> Connect your system (Delivery belongs to Project)</li>
-                    </ul>
-                </div>
-
-                <div class="section-card" data-section="part-5">
-                    <h2>Side Panels</h2>
-                    <p>Keep users in context. Slide details out instead of opening new screens.</p>
-                    <ul>
-                        <li>Details Panel — Full record + files + comments</li>
-                        <li>Activity Panel — Every change, who, when</li>
-                        <li>AI Panel — Summarize, draft, suggest</li>
-                    </ul>
-                </div>
-
-                <div class="section-card" data-section="part-6">
-                    <h2>Automation Formula</h2>
-                    <div class="flow-row">
-                        <div class="flow-item"><strong>Trigger</strong><br>Status changes</div>
-                        <span>→</span>
-                        <div class="flow-item"><strong>Condition</strong><br>Only if status = Delayed</div>
-                        <span>→</span>
-                        <div class="flow-item"><strong>Action</strong><br>Send notification</div>
-                    </div>
-                </div>
-
-                <div class="section-card" data-section="part-7">
-                    <h2>Delivery Tracker Example</h2>
-                    <ul>
-                        <li><strong>Goal:</strong> Know when deliveries are late and act fast</li>
-                        <li><strong>Data:</strong> Deliveries table with ETA, Status, Owner</li>
-                        <li><strong>UI:</strong> Table view + Card view + Dashboard</li>
-                        <li><strong>Logic:</strong> Auto-flag late items</li>
-                    </ul>
-                </div>
-
-                <div class="section-card" data-section="part-8">
-                    <h2>Prompt Structure</h2>
-                    <p><strong>First:</strong> "Help me define the data model"</p>
-                    <p><strong>Then:</strong> "Now design the UI views"</p>
-                    <p><strong>Then:</strong> "Now define automation rules"</p>
-                    <p>AI is a copilot, not the pilot. You steer.</p>
-                </div>
-
-                <div class="section-card" data-section="part-9">
-                    <h2>Beginner Mistakes</h2>
-                    <ul>
-                        <li>Skipping data modeling</li>
-                        <li>Designing UI before data exists</li>
-                        <li>Over-automating on day one</li>
-                        <li>Building dashboards before workflows work</li>
-                        <li>Using AI without context</li>
-                    </ul>
-                </div>
-
-                <div class="section-card" data-section="part-10">
-                    <h2>Your First Build</h2>
-                    <ul>
-                        <li>One clear goal</li>
-                        <li>One primary table</li>
-                        <li>One simple workflow</li>
-                        <li>One automation</li>
-                        <li>One dashboard</li>
-                    </ul>
-                    <p><strong>If you can do that, you are officially vibe coding.</strong></p>
-                </div>
-            </div>
-
-            <div class="collapsible-part">
-            <div class="collapsible-header" data-section="part-1">Part 1: What "Vibe Coding" Actually Is</div>
-            <div class="collapsible-content">
-                <p><strong>Vibe coding is not typing magic prompts.</strong></p>
-                <p><strong>Vibe coding is designing systems using intent instead of syntax.</strong></p>
-
-                <h3>Traditional Coding vs. Vibe Coding</h3>
-                <p><strong>Traditional coding asks:</strong></p>
-                <p>"How do I write this in JavaScript?"</p>
-                <p><strong>Vibe coding asks:</strong></p>
-                <p>"What needs to exist, what should happen, and what should the user see?"</p>
-
-                <h3>The Key Insight</h3>
-                <p><strong>Every modern no code or low code tool works the same way under the hood.</strong></p>
-                <p>They just hide the code and expose the building blocks.</p>
-                <p><strong>Your job is to learn the building blocks.</strong></p>
-            </div>
-        </div>
-
-        <div class="collapsible-part">
-            <div class="collapsible-header" data-section="part-2">Part 2: The Core Mental Model</div>
-            <div class="collapsible-content">
-                <p><strong>Memorize This</strong></p>
-                <p>Every app is made of five layers. Always think in this order.</p>
-
-                <h2>1. Goal</h2>
-        <p>What problem does this solve in one sentence.</p>
-        <div class="subsection">
-            <p><strong>Bad:</strong> "I want a dashboard."</p>
-            <p><strong>Good:</strong> "I want to see which deliveries are late so I can follow up fast."</p>
-        </div>
-
-        <h2>2. Data (What exists)</h2>
-        <p>Data is just things and facts about them.</p>
-        <p>Think in nouns.</p>
-        <p><strong>Examples:</strong> Delivery, Project, Customer, Habit, Task, Employee</p>
-        <p>Each thing becomes a table. Each fact becomes a field.</p>
-        <p><strong>If you skip this step, everything breaks later.</strong></p>
-
-        <h2>3. UI (What the user touches)</h2>
-        <p>This is not about beauty. It is about speed and clarity.</p>
-        <p><strong>Ask:</strong></p>
-        <ul>
-            <li>What does the user need to see first</li>
-            <li>What do they click most</li>
-            <li>What do they update most often</li>
-        </ul>
-        <p>UI is made of views and panels, not screens.</p>
-
-        <h2>4. Logic (What happens automatically)</h2>
-        <p>Logic replaces memory and manual work.</p>
-        <div class="subsection">
-            <p>If this happens → Then do this → Unless this condition exists</p>
-        </div>
-        <p>No emotions. No guessing.</p>
-
-        <h2>5. Output (Proof it works)</h2>
-        <p>If the system is working, what should it produce.</p>
-        <ul>
-            <li>Dashboards</li>
-            <li>Alerts</li>
-            <li>Reports</li>
-            <li>Exports</li>
-            <li>Audit trails</li>
-        </ul>
-        <p><strong>If there is no output, the system has no value.</strong></p>
-            </div>
-        </div>
-
-        <div class="collapsible-part">
-            <div class="collapsible-header" data-section="part-3">Part 3: Data Building Blocks</div>
-            <div class="collapsible-content">
-                <p><strong>Learn These First</strong></p>
-
-                <h3>Tables</h3>
-        <p>A table stores one type of thing.</p>
-        <p><strong>Rule:</strong> One table per noun.</p>
-
-        <h3>Fields (Columns)</h3>
-        <p>Fields describe the thing.</p>
-        <p><strong>Common field types you must know:</strong></p>
-        <ul>
-            <li><strong>Text:</strong> Name, description, notes</li>
-            <li><strong>Status:</strong> Controlled states like New, In Progress, Done</li>
-            <li><strong>Date:</strong> Due date, ETA, created date</li>
-            <li><strong>Person:</strong> Owner, assigned to</li>
-            <li><strong>Number:</strong> Cost, quantity, score</li>
-            <li><strong>Attachment:</strong> Photos, PDFs, invoices</li>
-            <li><strong>Relation:</strong> Links one table to another</li>
-        </ul>
-
-        <h3>Relationships (Critical)</h3>
-        <p>Relationships connect your system.</p>
-        <div class="subsection">
-            <p>Delivery belongs to Project<br>Project has many Deliveries</p>
-        </div>
-        <p>This unlocks rollups, dashboards, and automation.</p>
-        <p><strong>If something feels manual, you probably missed a relationship.</strong></p>
-            </div>
-        </div>
-
-        <div class="collapsible-part">
-            <div class="collapsible-header" data-section="part-4">Part 4: UI Widgets Explained Like You're Five</div>
-            <div class="collapsible-content">
-                <h3>Table View</h3>
-        <p><strong>Best for:</strong> Editing lots of data fast.</p>
-        <p><strong>Use when:</strong> Office work, Planning, Bulk updates</p>
-
-        <h3>Card View</h3>
-        <p><strong>Best for:</strong> One item at a time.</p>
-        <p><strong>Use when:</strong> Field work, Reviews, Mobile users</p>
-
-        <h3>Kanban Board</h3>
-        <p><strong>Best for:</strong> Workflow by status.</p>
-        <p><strong>Use when:</strong> Things move through stages (Sales, approvals, production)</p>
-
-        <h3>Calendar</h3>
-        <p><strong>Best for:</strong> Time focused.</p>
-        <p><strong>Use when:</strong> Deadlines matter more than status</p>
-
-        <h3>Timeline or Gantt</h3>
-        <p><strong>Best for:</strong> Sequence and overlap.</p>
-        <p><strong>Use when:</strong> Dependencies exist, Projects span days or weeks</p>
-
-        <h3>Dashboard Tiles</h3>
-        <p><strong>Best for:</strong> High level awareness.</p>
-        <p><strong>Use when:</strong> Leaders need answers in 10 seconds</p>
-            </div>
-        </div>
-
-        <div class="collapsible-part">
-            <div class="collapsible-header" data-section="part-5">Part 5: Side Panels (Your Secret Weapon)</div>
-            <div class="collapsible-content">
-                <p>Side panels keep users in context.</p>
-        <p>Instead of opening new screens, you slide details out.</p>
-
-        <h3>Details Panel</h3>
-        <ul>
-            <li>Full record info</li>
-            <li>Files</li>
-            <li>Comments</li>
-            <li>Related items</li>
-        </ul>
-
-        <h3>Activity Panel</h3>
-        <p>Shows every change. Who did what. When it happened.</p>
-        <p><strong>This builds trust.</strong></p>
-
-        <h3>AI Panel</h3>
-        <ul>
-            <li>Summarize updates</li>
-            <li>Draft messages</li>
-            <li>Suggest next steps</li>
-        </ul>
-        <p><strong>AI is strongest when it reacts to your data, not generic prompts.</strong></p>
-            </div>
-        </div>
-
-        <div class="collapsible-part">
-            <div class="collapsible-header" data-section="part-6">Part 6: Automation Logic (No Coding Required)</div>
-            <div class="collapsible-content">
-                <p>Automation is always written like this:</p>
-        <div class="subsection">
-            <p><strong>Trigger → Condition → Action</strong></p>
-        </div>
-
-        <h3>Triggers</h3>
-        <ul>
-            <li>Status changes</li>
-            <li>Date arrives</li>
-            <li>Record created</li>
-            <li>Field updated</li>
-        </ul>
-
-        <h3>Conditions</h3>
-        <p><strong>Only run if:</strong></p>
-        <ul>
-            <li>Status equals Delayed</li>
-            <li>Date is within 2 days</li>
-            <li>Owner is empty</li>
-        </ul>
-
-        <h3>Actions</h3>
-        <ul>
-            <li>Send notification</li>
-            <li>Create task</li>
-            <li>Update status</li>
-            <li>Assign owner</li>
-            <li>Post comment</li>
-            <li>Call webhook</li>
-        </ul>
-        <p><strong>Start simple. One rule per problem.</strong></p>
-            </div>
-        </div>
-
-        <div class="collapsible-part">
-            <div class="collapsible-header" data-section="part-7">Part 7: Example Walkthrough (End to End)</div>
-            <div class="collapsible-content">
-                <p><strong>Simple Delivery Tracker</strong></p>
-
-        <h3>Goal</h3>
-        <p>Know when deliveries are late and act fast.</p>
-
-        <h3>Data</h3>
-        <p><strong>Table: Deliveries</strong></p>
-        <ul>
-            <li>Delivery Name</li>
-            <li>Project (relation)</li>
-            <li>Vendor</li>
-            <li>ETA (date)</li>
-            <li>Status</li>
-            <li>Owner</li>
-            <li>Notes</li>
-        </ul>
-
-        <h3>UI</h3>
-        <ul>
-            <li>Table view for planners</li>
-            <li>Card view for field updates</li>
-            <li>Dashboard showing late deliveries and deliveries arriving this week</li>
-            <li>Side panel with photos and comments</li>
-        </ul>
-
-        <h3>Logic</h3>
-        <ul>
-            <li>If ETA is within 24 hours and status not Delivered → Send reminder</li>
-            <li>If ETA passes and status not Delivered → Mark Delayed, Notify owner, Flag dashboard</li>
-        </ul>
-
-        <h3>Output</h3>
-        <ul>
-            <li>Daily late delivery list</li>
-            <li>Weekly performance chart</li>
-            <li>Audit log of changes</li>
-        </ul>
-            </div>
-        </div>
-
-        <div class="collapsible-part">
-            <div class="collapsible-header" data-section="part-8">Part 8: How to Prompt AI the Right Way</div>
-            <div class="collapsible-content">
-                <p><strong>Do not say:</strong> "Build me an app"</p>
-        <p><strong>Say:</strong> "Help me define the data model for a delivery tracking app. I need tables, fields, and relationships."</p>
-        <p><strong>Then:</strong> "Now design the UI views for planners and field users."</p>
-        <p><strong>Then:</strong> "Now define automation rules."</p>
-        <p><strong>AI is a copilot, not the pilot.</strong></p>
-        <p>You steer. AI fills in details.</p>
-            </div>
-        </div>
-
-        <div class="collapsible-part">
-            <div class="collapsible-header" data-section="part-9">Part 9: Common Beginner Mistakes</div>
-            <div class="collapsible-content">
-                <ul>
-            <li>Skipping data modeling</li>
-            <li>Trying to design UI before data exists</li>
-            <li>Over automating on day one</li>
-            <li>Building dashboards before workflows work</li>
-            <li>Using AI without context</li>
-        </ul>
-        <p><strong>Slow down. Structure first. Speed comes later.</strong></p>
-            </div>
-        </div>
-
-        <div class="collapsible-part">
-            <div class="collapsible-header" data-section="part-10">Part 10: Your First Build Checklist</div>
-            <div class="collapsible-content">
-                <ul>
-            <li>One clear goal</li>
-            <li>One primary table</li>
-            <li>One simple workflow</li>
-            <li>One automation</li>
-            <li>One dashboard</li>
-        </ul>
-        <p><strong>If you can do that, you are officially vibe coding.</strong></p>
-            </div>
-        </div>
     <div class="main-content">
-        <div class="showcase-container hidden">
+        <div class="showcase-container">
             <div class="container">
                 <div class="sidebar">
                     <h2>Design Styles</h2>
@@ -1320,6 +1271,598 @@
                 </div>
             </div>
         </div>
+        <div class="userguide-container hidden">
+            <div class="userguide-content">
+                <h1>User Guide</h1>
+
+                <div class="framework-tile">
+                    <div class="card-header" data-part="intro">
+                        <span class="header-title">💡 What "vibe coding" actually is</span>
+                    </div>
+                    <div class="card-content">
+                        <p><strong>Vibe coding is not typing magic prompts.</strong></p>
+                        <p><strong>Vibe coding is designing systems using intent instead of syntax.</strong></p>
+
+                        <h3>Traditional coding asks</h3>
+                        <p>"How do I write this in JavaScript?"</p>
+
+                        <h3>Vibe coding asks</h3>
+                        <p>"What needs to exist, what should happen, and what should the user see?"</p>
+
+                        <p>Every modern no code or low code tool works the same way under the hood. They just hide the code and expose the building blocks.</p>
+
+                        <p><strong>Your job is to learn the building blocks.</strong></p>
+                    </div>
+                </div>
+
+                <div class="framework-tile">
+                    <div class="card-header" data-part="prompting">
+                        <span class="header-title">✏️ How to Prompt AI the Right Way</span>
+                    </div>
+                    <div class="card-content">
+                        <h3>Do not say</h3>
+                        <p>"Build me an app"</p>
+
+                        <h3>Say</h3>
+                        <p>"Help me define the data model for a delivery tracking app. I need tables, fields, and relationships."</p>
+
+                        <h3>Then</h3>
+                        <p>"Now design the UI views for planners and field users."</p>
+
+                        <h3>Then</h3>
+                        <p>"Now define automation rules."</p>
+
+                        <p><strong>AI is a copilot, not the pilot.</strong></p>
+
+                        <p><strong>You steer. AI fills in details.</strong></p>
+
+                        <p>Break your request into layers: data → interface → automation. This gives AI the structure it needs to help you effectively.</p>
+                    </div>
+                </div>
+
+                <div class="framework-tile">
+                    <div class="card-header" data-part="checklist">
+                        <span class="header-title">📐 Your First Build Checklist</span>
+                    </div>
+                    <div class="card-content">
+                        <ul>
+                            <li>One clear goal</li>
+                            <li>One primary table</li>
+                            <li>One simple workflow</li>
+                            <li>One automation</li>
+                            <li>One dashboard</li>
+                        </ul>
+
+                        <p><strong>If you can do that, you are officially vibe coding.</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="promptbuilder-container hidden">
+            <div class="promptbuilder-content">
+                <h1>Prompt Builder</h1>
+                <p style="font-size: 18px; color: #6B6B6B; margin-bottom: 32px;">Build structured prompts for AI by selecting key attributes of your system.</p>
+
+                <div class="promptbuilder-wrapper">
+                    <div class="promptbuilder-sidebar">
+                        <button class="sidebar-tab active" data-tab="general">General</button>
+                        <button class="sidebar-tab" data-tab="construction">Construction</button>
+                        <button class="sidebar-tab" data-tab="logistics">Logistics</button>
+                        <button class="sidebar-tab" data-tab="manufacturing">Manufacturing</button>
+                        <button class="sidebar-tab" data-tab="realestate">Real Estate</button>
+                        <button class="sidebar-tab" data-tab="marketing">Marketing</button>
+                        <button class="sidebar-tab" data-tab="healthcare">Health Care</button>
+                    </div>
+
+                    <div class="promptbuilder-main">
+                        <div class="prompt-form prompt-form-general" id="promptForm">
+                    <div class="form-section">
+                        <h3>Type of System</h3>
+                        <label><input type="radio" name="systemType" value="Project Management"> Project Management</label>
+                        <label><input type="radio" name="systemType" value="Issue Tracking"> Issue Tracking</label>
+                        <label><input type="radio" name="systemType" value="Field Service"> Field Service Management</label>
+                        <label><input type="radio" name="systemType" value="Sales"> Sales Pipeline</label>
+                        <label><input type="radio" name="systemType" value="Customer Support"> Customer Support</label>
+                        <label><input type="radio" name="systemType" value="Operations"> Operations & Planning</label>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Primary Users</h3>
+                        <label><input type="checkbox" name="users" value="Project Manager"> Project Manager</label>
+                        <label><input type="checkbox" name="users" value="Team Lead"> Team Lead</label>
+                        <label><input type="checkbox" name="users" value="Individual Contributor"> Individual Contributor</label>
+                        <label><input type="checkbox" name="users" value="Executive"> Executive / Leadership</label>
+                        <label><input type="checkbox" name="users" value="Client"> Client / Stakeholder</label>
+                        <label><input type="checkbox" name="users" value="Admin"> Administrator</label>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Core Outcome</h3>
+                        <label><input type="checkbox" name="outcome" value="Reduce delays"> Reduce delays or bottlenecks</label>
+                        <label><input type="checkbox" name="outcome" value="Improve visibility"> Improve visibility across teams</label>
+                        <label><input type="checkbox" name="outcome" value="Automated decisions"> Enable automated decision-making</label>
+                        <label><input type="checkbox" name="outcome" value="Cost tracking"> Track and optimize costs</label>
+                        <label><input type="checkbox" name="outcome" value="Quality assurance"> Ensure quality and compliance</label>
+                        <label><input type="checkbox" name="outcome" value="Scalability"> Support growth and scaling</label>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Key Workflows</h3>
+                        <label><input type="checkbox" name="workflows" value="Intake & qualification"> Intake & qualification</label>
+                        <label><input type="checkbox" name="workflows" value="Planning & design"> Planning & design</label>
+                        <label><input type="checkbox" name="workflows" value="Execution & delivery"> Execution & delivery</label>
+                        <label><input type="checkbox" name="workflows" value="Approval & sign-off"> Approval & sign-off</label>
+                        <label><input type="checkbox" name="workflows" value="Reporting & analysis"> Reporting & analysis</label>
+                        <label><input type="checkbox" name="workflows" value="Escalation"> Escalation & exception handling</label>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Critical Data</h3>
+                        <label><input type="checkbox" name="data" value="Status tracking"> Status & state tracking</label>
+                        <label><input type="checkbox" name="data" value="Timeline management"> Timeline & schedule data</label>
+                        <label><input type="checkbox" name="data" value="Budget & cost"> Budget & cost information</label>
+                        <label><input type="checkbox" name="data" value="Resource allocation"> Resource allocation & capacity</label>
+                        <label><input type="checkbox" name="data" value="Risk tracking"> Risk & issue tracking</label>
+                        <label><input type="checkbox" name="data" value="Performance metrics"> Performance & KPI metrics</label>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Interface Style</h3>
+                        <label><input type="radio" name="style" value="Blueprint industrial"> Blueprint/Industrial aesthetic</label>
+                        <label><input type="radio" name="style" value="Email-inspired"> Email-inspired (3-column)</label>
+                        <label><input type="radio" name="style" value="Dashboard"> Dashboard/Analytics-focused</label>
+                        <label><input type="radio" name="style" value="Mobile-first"> Mobile-first responsive</label>
+                        <label><input type="radio" name="style" value="Minimalist"> Clean & minimalist</label>
+                    </div>
+                        </div>
+
+                        <div class="prompt-form prompt-form-construction hidden" id="promptFormConstruction">
+                            <div class="form-section">
+                                <h3>Type of Contractor</h3>
+                                <label><input type="radio" name="contractorType" value="General Contractor"> General Contractor</label>
+                                <label><input type="radio" name="contractorType" value="Home Builder"> Home Builder</label>
+                                <label><input type="radio" name="contractorType" value="Subcontractor"> Subcontractor</label>
+                            </div>
+
+                            <div class="form-section">
+                                <h3>What do you specialize in?</h3>
+                                <input type="text" name="specialization" placeholder="e.g., Framing, HVAC, Electrical, Concrete..." style="width: 100%; padding: 8px; border: 1px solid #E5E7EB; border-radius: 4px; font-size: 14px;">
+                            </div>
+
+                            <div class="form-section">
+                                <h3>Who is the Primary User / Role?</h3>
+                                <label><input type="checkbox" name="primaryRole" value="Project Manager"> Project Manager</label>
+                                <label><input type="checkbox" name="primaryRole" value="Superintendent"> Superintendent / Site Lead</label>
+                                <label><input type="checkbox" name="primaryRole" value="Estimator"> Estimator / Preconstruction Lead</label>
+                                <label><input type="checkbox" name="primaryRole" value="Procurement Manager"> Procurement Manager / Buyer</label>
+                                <label><input type="checkbox" name="primaryRole" value="Operations Executive"> Operations Executive (VP Ops, COO)</label>
+                                <label><input type="checkbox" name="primaryRole" value="Foreman"> Foreman / Trade Partner</label>
+                                <label><input type="checkbox" name="primaryRole" value="Financial Controller"> Financial Controller</label>
+                                <label><input type="checkbox" name="primaryRole" value="Owner"> Owner / Developer Rep</label>
+                            </div>
+
+                            <div class="form-section">
+                                <h3>What is the fundamental outcome we're designing for?</h3>
+                                <label><input type="checkbox" name="outcome" value="Eliminate rework"> Eliminate rework and errors</label>
+                                <label><input type="checkbox" name="outcome" value="Improve visibility"> Improve visibility across teams and departments</label>
+                                <label><input type="checkbox" name="outcome" value="Shorten cycle"> Shorten project cycle times (from intake → closeout)</label>
+                                <label><input type="checkbox" name="outcome" value="Improve predictability"> Improve predictability of cost and schedule</label>
+                                <label><input type="checkbox" name="outcome" value="Reduce bottlenecks"> Reduce bottlenecks in procurement and logistics</label>
+                                <label><input type="checkbox" name="outcome" value="Improve accountability"> Improve subcontractor accountability and coordination</label>
+                                <label><input type="checkbox" name="outcome" value="Data accuracy"> Increase data accuracy and single source of truth</label>
+                                <label><input type="checkbox" name="outcome" value="Safety compliance"> Enhance safety and compliance</label>
+                            </div>
+
+                            <div class="form-section">
+                                <h3>What part of operations are we tackling?</h3>
+                                <label><input type="checkbox" name="operations" value="Project Intake"> Project Intake & Qualification</label>
+                                <label><input type="checkbox" name="operations" value="Preconstruction"> Preconstruction (Estimating, Design, Permitting)</label>
+                                <label><input type="checkbox" name="operations" value="Procurement"> Procurement & Supply Chain</label>
+                                <label><input type="checkbox" name="operations" value="Field Execution"> Field Execution & Production Planning</label>
+                                <label><input type="checkbox" name="operations" value="Financial Management"> Financial Management & Reporting</label>
+                                <label><input type="checkbox" name="operations" value="Safety Quality"> Safety & Quality Assurance</label>
+                                <label><input type="checkbox" name="operations" value="Closeout"> Closeout & Handoffs</label>
+                                <label><input type="checkbox" name="operations" value="Portfolio"> Portfolio / Executive Oversight</label>
+                            </div>
+
+                            <div class="form-section">
+                                <h3>What information must come in?</h3>
+                                <label><input type="checkbox" name="inputs" value="RFIs"> RFIs, Submittals, and Drawings</label>
+                                <label><input type="checkbox" name="inputs" value="Material Requests"> Material Requests / POs</label>
+                                <label><input type="checkbox" name="inputs" value="Resource availability"> Resource availability (crew, equipment, suppliers)</label>
+                                <label><input type="checkbox" name="inputs" value="Schedule baseline"> Schedule baseline & updates</label>
+                                <label><input type="checkbox" name="inputs" value="Budget"> Budget / Forecast data</label>
+                                <label><input type="checkbox" name="inputs" value="Site conditions"> Site conditions & daily logs</label>
+                                <label><input type="checkbox" name="inputs" value="External approvals"> External approvals (permits, inspections, sign-offs)</label>
+                                <label><input type="checkbox" name="inputs" value="Stakeholder requirements"> Customer or stakeholder requirements</label>
+                            </div>
+
+                            <div class="form-section">
+                                <h3>What do we expect the system to produce?</h3>
+                                <label><input type="checkbox" name="outputs" value="Status dashboards"> Status dashboards (project, division, portfolio)</label>
+                                <label><input type="checkbox" name="outputs" value="Forecast performance"> Forecast vs. actual performance (schedule & cost)</label>
+                                <label><input type="checkbox" name="outputs" value="Risk alerts"> Risk alerts (delays, overruns, scope creep)</label>
+                                <label><input type="checkbox" name="outputs" value="Subcontractor scorecards"> Subcontractor scorecards</label>
+                                <label><input type="checkbox" name="outputs" value="KPI reports"> KPI reports (safety, quality, productivity)</label>
+                                <label><input type="checkbox" name="outputs" value="Centralized logs"> Centralized logs (RFIs, change orders, daily reports)</label>
+                                <label><input type="checkbox" name="outputs" value="Automated reminders"> Automated reminders / notifications</label>
+                                <label><input type="checkbox" name="outputs" value="Leadership insights"> Decision-ready insights for leadership</label>
+                            </div>
+                        </div>
+
+                        <div class="prompt-form prompt-form-logistics hidden" id="promptFormLogistics">
+                            <div class="form-section">
+                                <h3>Primary Business Type</h3>
+                                <label><input type="radio" name="logisticsType" value="3PL Provider"> 3PL Provider</label>
+                                <label><input type="radio" name="logisticsType" value="Shipper"> Shipper</label>
+                                <label><input type="radio" name="logisticsType" value="Freight Forwarder"> Freight Forwarder</label>
+                                <label><input type="radio" name="logisticsType" value="Warehouse Operator"> Warehouse Operator</label>
+                            </div>
+
+                            <div class="form-section">
+                                <h3>Primary User / Role</h3>
+                                <label><input type="checkbox" name="logisticsRole" value="Operations Manager"> Operations Manager</label>
+                                <label><input type="checkbox" name="logisticsRole" value="Dispatcher"> Dispatcher</label>
+                                <label><input type="checkbox" name="logisticsRole" value="Warehouse Manager"> Warehouse Manager</label>
+                                <label><input type="checkbox" name="logisticsRole" value="Driver"> Driver / Field Staff</label>
+                                <label><input type="checkbox" name="logisticsRole" value="Finance"> Finance / CFO</label>
+                                <label><input type="checkbox" name="logisticsRole" value="Customer Success"> Customer Success Manager</label>
+                            </div>
+
+                            <div class="form-section">
+                                <h3>Core Outcome</h3>
+                                <label><input type="checkbox" name="logisticsOutcome" value="Reduce delivery times"> Reduce delivery times and improve on-time performance</label>
+                                <label><input type="checkbox" name="logisticsOutcome" value="Optimize routes"> Optimize routes and fuel costs</label>
+                                <label><input type="checkbox" name="logisticsOutcome" value="Visibility"> Improve shipment visibility and tracking</label>
+                                <label><input type="checkbox" name="logisticsOutcome" value="Inventory accuracy"> Improve inventory accuracy and warehouse efficiency</label>
+                                <label><input type="checkbox" name="logisticsOutcome" value="Exception handling"> Reduce exceptions and improve exception handling</label>
+                                <label><input type="checkbox" name="logisticsOutcome" value="Customer satisfaction"> Improve customer satisfaction and SLA compliance</label>
+                            </div>
+
+                            <div class="form-section">
+                                <h3>Critical Data Points</h3>
+                                <label><input type="checkbox" name="logisticsData" value="Shipments"> Shipment tracking & status</label>
+                                <label><input type="checkbox" name="logisticsData" value="Inventory"> Inventory levels and locations</label>
+                                <label><input type="checkbox" name="logisticsData" value="Routes"> Route optimization and planning</label>
+                                <label><input type="checkbox" name="logisticsData" value="Vehicle"> Vehicle/asset tracking and utilization</label>
+                                <label><input type="checkbox" name="logisticsData" value="Costs"> Cost tracking and profitability per shipment</label>
+                                <label><input type="checkbox" name="logisticsData" value="Exceptions"> Exception alerts and exceptions management</label>
+                            </div>
+                        </div>
+
+                        <div class="prompt-form prompt-form-manufacturing hidden" id="promptFormManufacturing">
+                            <div class="form-section">
+                                <h3>Manufacturing Type</h3>
+                                <label><input type="radio" name="mfgType" value="Discrete"> Discrete Manufacturing</label>
+                                <label><input type="radio" name="mfgType" value="Process"> Process Manufacturing</label>
+                                <label><input type="radio" name="mfgType" value="Job Shop"> Job Shop</label>
+                                <label><input type="radio" name="mfgType" value="Contract Manufacturing"> Contract Manufacturing</label>
+                            </div>
+
+                            <div class="form-section">
+                                <h3>Primary User / Role</h3>
+                                <label><input type="checkbox" name="mfgRole" value="Production Manager"> Production Manager</label>
+                                <label><input type="checkbox" name="mfgRole" value="Plant Manager"> Plant Manager</label>
+                                <label><input type="checkbox" name="mfgRole" value="Quality Manager"> Quality Manager</label>
+                                <label><input type="checkbox" name="mfgRole" value="Maintenance"> Maintenance / Technician</label>
+                                <label><input type="checkbox" name="mfgRole" value="Procurement"> Procurement Manager</label>
+                                <label><input type="checkbox" name="mfgRole" value="Supply Chain"> Supply Chain Director</label>
+                            </div>
+
+                            <div class="form-section">
+                                <h3>Core Outcome</h3>
+                                <label><input type="checkbox" name="mfgOutcome" value="Reduce downtime"> Reduce equipment downtime and maintenance costs</label>
+                                <label><input type="checkbox" name="mfgOutcome" value="Improve quality"> Improve product quality and reduce defects</label>
+                                <label><input type="checkbox" name="mfgOutcome" value="Optimize scheduling"> Optimize production scheduling and capacity planning</label>
+                                <label><input type="checkbox" name="mfgOutcome" value="Raw materials"> Improve raw material traceability and supply chain</label>
+                                <label><input type="checkbox" name="mfgOutcome" value="Compliance"> Ensure regulatory compliance and traceability</label>
+                                <label><input type="checkbox" name="mfgOutcome" value="Labor productivity"> Improve labor productivity and utilization</label>
+                            </div>
+
+                            <div class="form-section">
+                                <h3>Critical Data Points</h3>
+                                <label><input type="checkbox" name="mfgData" value="Production"> Production schedules and work orders</label>
+                                <label><input type="checkbox" name="mfgData" value="Equipment"> Equipment status and maintenance logs</label>
+                                <label><input type="checkbox" name="mfgData" value="Quality"> Quality metrics and defect tracking</label>
+                                <label><input type="checkbox" name="mfgData" value="Inventory"> Inventory and bill of materials</label>
+                                <label><input type="checkbox" name="mfgData" value="Labor"> Labor hours and productivity metrics</label>
+                                <label><input type="checkbox" name="mfgData" value="Costs"> Cost tracking and variance analysis</label>
+                            </div>
+                        </div>
+
+                        <div class="prompt-form prompt-form-realestate hidden" id="promptFormRealEstate">
+                            <div class="form-section">
+                                <h3>Business Model</h3>
+                                <label><input type="radio" name="reType" value="Agent/Brokerage"> Agent/Brokerage</label>
+                                <label><input type="radio" name="reType" value="Developer"> Developer</label>
+                                <label><input type="radio" name="reType" value="Property Manager"> Property Manager</label>
+                                <label><input type="radio" name="reType" value="Investment Firm"> Investment Firm</label>
+                            </div>
+
+                            <div class="form-section">
+                                <h3>Primary User / Role</h3>
+                                <label><input type="checkbox" name="reRole" value="Agent"> Real Estate Agent</label>
+                                <label><input type="checkbox" name="reRole" value="Broker"> Broker/Team Lead</label>
+                                <label><input type="checkbox" name="reRole" value="Property Manager"> Property Manager</label>
+                                <label><input type="checkbox" name="reRole" value="Leasing"> Leasing Manager</label>
+                                <label><input type="checkbox" name="reRole" value="Finance"> Finance/Accounting</label>
+                                <label><input type="checkbox" name="reRole" value="Investor"> Investor/Owner</label>
+                            </div>
+
+                            <div class="form-section">
+                                <h3>Core Outcome</h3>
+                                <label><input type="checkbox" name="reOutcome" value="Faster deals"> Close deals faster and improve conversion</label>
+                                <label><input type="checkbox" name="reOutcome" value="Visibility"> Centralize property and tenant information</label>
+                                <label><input type="checkbox" name="reOutcome" value="Tenant management"> Improve tenant management and retention</label>
+                                <label><input type="checkbox" name="reOutcome" value="Maintenance"> Streamline maintenance and repairs</label>
+                                <label><input type="checkbox" name="reOutcome" value="Financials"> Improve financial tracking and reporting</label>
+                                <label><input type="checkbox" name="reOutcome" value="Compliance"> Ensure lease compliance and document management</label>
+                            </div>
+
+                            <div class="form-section">
+                                <h3>Critical Data Points</h3>
+                                <label><input type="checkbox" name="reData" value="Properties"> Property listings and details</label>
+                                <label><input type="checkbox" name="reData" value="Leases"> Lease agreements and terms</label>
+                                <label><input type="checkbox" name="reData" value="Tenants"> Tenant information and history</label>
+                                <label><input type="checkbox" name="reData" value="Showings"> Showing schedules and feedback</label>
+                                <label><input type="checkbox" name="reData" value="Financials"> Income and expense tracking</label>
+                                <label><input type="checkbox" name="reData" value="Maintenance"> Maintenance requests and history</label>
+                            </div>
+                        </div>
+
+                        <div class="prompt-form prompt-form-marketing hidden" id="promptFormMarketing">
+                            <div class="form-section">
+                                <h3>Organization Type</h3>
+                                <label><input type="radio" name="mkgType" value="In-house Team"> In-house Marketing Team</label>
+                                <label><input type="radio" name="mkgType" value="Agency"> Agency</label>
+                                <label><input type="radio" name="mkgType" value="SaaS/Tech"> SaaS/Tech Company</label>
+                                <label><input type="radio" name="mkgType" value="E-commerce"> E-commerce Brand</label>
+                            </div>
+
+                            <div class="form-section">
+                                <h3>Primary User / Role</h3>
+                                <label><input type="checkbox" name="mkgRole" value="CMO"> CMO / Marketing Director</label>
+                                <label><input type="checkbox" name="mkgRole" value="Campaign Manager"> Campaign Manager</label>
+                                <label><input type="checkbox" name="mkgRole" value="Content"> Content Creator / Strategist</label>
+                                <label><input type="checkbox" name="mkgRole" value="Analytics"> Analytics / Data Analyst</label>
+                                <label><input type="checkbox" name="mkgRole" value="Social"> Social Media Manager</label>
+                                <label><input type="checkbox" name="mkgRole" value="Sales"> Sales/Growth Lead</label>
+                            </div>
+
+                            <div class="form-section">
+                                <h3>Core Outcome</h3>
+                                <label><input type="checkbox" name="mkgOutcome" value="Campaign ROI"> Measure campaign ROI and attribution</label>
+                                <label><input type="checkbox" name="mkgOutcome" value="Lead quality"> Improve lead quality and conversion</label>
+                                <label><input type="checkbox" name="mkgOutcome" value="Campaign speed"> Speed up campaign creation and deployment</label>
+                                <label><input type="checkbox" name="mkgOutcome" value="Content planning"> Centralize content planning and calendar</label>
+                                <label><input type="checkbox" name="mkgOutcome" value="Audience insights"> Better understand audience behavior and segments</label>
+                                <label><input type="checkbox" name="mkgOutcome" value="Cross-channel"> Coordinate messaging across channels</label>
+                            </div>
+
+                            <div class="form-section">
+                                <h3>Critical Data Points</h3>
+                                <label><input type="checkbox" name="mkgData" value="Campaigns"> Campaign performance and spend</label>
+                                <label><input type="checkbox" name="mkgData" value="Leads"> Lead tracking and scoring</label>
+                                <label><input type="checkbox" name="mkgData" value="Audience"> Audience segments and profiles</label>
+                                <label><input type="checkbox" name="mkgData" value="Content"> Content calendar and performance</label>
+                                <label><input type="checkbox" name="mkgData" value="Attribution"> Attribution and conversion paths</label>
+                                <label><input type="checkbox" name="mkgData" value="Analytics"> Website and social analytics</label>
+                            </div>
+                        </div>
+
+                        <div class="prompt-form prompt-form-healthcare hidden" id="promptFormHealthcare">
+                            <div class="form-section">
+                                <h3>Organization Type</h3>
+                                <label><input type="radio" name="hcType" value="Clinical Practice"> Clinical Practice</label>
+                                <label><input type="radio" name="hcType" value="Hospital System"> Hospital System</label>
+                                <label><input type="radio" name="hcType" value="Insurance Provider"> Insurance Provider</label>
+                                <label><input type="radio" name="hcType" value="Medical Device"> Medical Device / Pharma</label>
+                            </div>
+
+                            <div class="form-section">
+                                <h3>Primary User / Role</h3>
+                                <label><input type="checkbox" name="hcRole" value="Provider"> Provider / Clinician</label>
+                                <label><input type="checkbox" name="hcRole" value="Operations"> Operations Director</label>
+                                <label><input type="checkbox" name="hcRole" value="Billing"> Billing/Revenue Cycle</label>
+                                <label><input type="checkbox" name="hcRole" value="Compliance"> Compliance / Risk Officer</label>
+                                <label><input type="checkbox" name="hcRole" value="Patient Services"> Patient Services Coordinator</label>
+                                <label><input type="checkbox" name="hcRole" value="C-Suite"> C-Suite Executive</label>
+                            </div>
+
+                            <div class="form-section">
+                                <h3>Core Outcome</h3>
+                                <label><input type="checkbox" name="hcOutcome" value="Patient care"> Improve patient care quality and outcomes</label>
+                                <label><input type="checkbox" name="hcOutcome" value="Efficiency"> Reduce administrative burden and improve efficiency</label>
+                                <label><input type="checkbox" name="hcOutcome" value="Compliance"> Ensure HIPAA compliance and security</label>
+                                <label><input type="checkbox" name="hcOutcome" value="Revenue"> Improve revenue cycle and reimbursement</label>
+                                <label><input type="checkbox" name="hcOutcome" value="Scheduling"> Optimize scheduling and reduce wait times</label>
+                                <label><input type="checkbox" name="hcOutcome" value="Patient satisfaction"> Improve patient satisfaction and experience</label>
+                            </div>
+
+                            <div class="form-section">
+                                <h3>Critical Data Points</h3>
+                                <label><input type="checkbox" name="hcData" value="Patient Records"> Patient records and medical history</label>
+                                <label><input type="checkbox" name="hcData" value="Appointments"> Appointment scheduling and management</label>
+                                <label><input type="checkbox" name="hcData" value="Billing"> Billing and insurance claim tracking</label>
+                                <label><input type="checkbox" name="hcData" value="Treatment Plans"> Treatment plans and clinical notes</label>
+                                <label><input type="checkbox" name="hcData" value="Provider Schedules"> Provider schedules and availability</label>
+                                <label><input type="checkbox" name="hcData" value="Outcomes"> Patient outcomes and quality metrics</label>
+                            </div>
+                        </div>
+
+                        <div class="prompt-output">
+                            <h3>Generated Prompt</h3>
+                            <div class="prompt-text" id="promptOutput">Select options above to generate a prompt...</div>
+                            <div class="prompt-actions">
+                                <button class="prompt-btn" onclick="copyPrompt(this)">Copy Prompt</button>
+                                <button class="prompt-btn primary" onclick="clearPromptForm()">Reset</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="themes-container hidden">
+            <div class="themes-content">
+                <h1>Design Principles</h1>
+                <p style="font-size: 18px; color: #6B6B6B; margin-bottom: 40px;">10 core design principles for building intuitive, high-performance operations systems.</p>
+
+                <div class="themes-grid">
+                    <div class="principle-card">
+                        <div class="principle-number">1</div>
+                        <div class="principle-header">
+                            <h3>Navigation, Layout & IA</h3>
+                            <p class="principle-goal">Reduce friction and make it easy to move between views, modules, and records.</p>
+                        </div>
+                        <ul class="principle-list">
+                            <li>Unified interface with side panel navigation</li>
+                            <li>Simplified landing pages with clear entry points</li>
+                            <li>Card-based navigation across projects and items</li>
+                            <li>Consistent back/exit actions</li>
+                            <li>Phase, status, and category-based filtering</li>
+                        </ul>
+                    </div>
+
+                    <div class="principle-card">
+                        <div class="principle-number">2</div>
+                        <div class="principle-header">
+                            <h3>Card Views & Interaction</h3>
+                            <p class="principle-goal">Make cards the primary interaction surface for fast access to detail.</p>
+                        </div>
+                        <ul class="principle-list">
+                            <li>Projects, work orders, RFIs as clickable cards</li>
+                            <li>Card detail views optimized for compact layouts</li>
+                            <li>Drag-and-drop support for files and items</li>
+                            <li>File uploads and status updates on cards</li>
+                            <li>Quick actions and time entry buttons</li>
+                        </ul>
+                    </div>
+
+                    <div class="principle-card">
+                        <div class="principle-number">3</div>
+                        <div class="principle-header">
+                            <h3>Dashboards & Analytics</h3>
+                            <p class="principle-goal">Move from raw data to actionable, insight-driven analytics.</p>
+                        </div>
+                        <ul class="principle-list">
+                            <li>Chart and graph focused dashboards</li>
+                            <li>Number-first, high-contrast layouts</li>
+                            <li>Analytics by project, person, crew, and region</li>
+                            <li>Interactive charts with click-through data</li>
+                            <li>Forecast vs actual analysis</li>
+                        </ul>
+                    </div>
+
+                    <div class="principle-card">
+                        <div class="principle-number">4</div>
+                        <div class="principle-header">
+                            <h3>Reporting & Data Exploration</h3>
+                            <p class="principle-goal">Enable deeper analysis without overwhelming the user.</p>
+                        </div>
+                        <ul class="principle-list">
+                            <li>Enhanced reports with KPIs and breakdowns</li>
+                            <li>Interactive reports, not static summaries</li>
+                            <li>Drill-down by project, person, or time</li>
+                            <li>Month-to-month navigation</li>
+                            <li>Data aligned with source boards</li>
+                        </ul>
+                    </div>
+
+                    <div class="principle-card">
+                        <div class="principle-number">5</div>
+                        <div class="principle-header">
+                            <h3>Financials & Capacity</h3>
+                            <p class="principle-goal">Improve visibility and accuracy of labor, cost, and utilization data.</p>
+                        </div>
+                        <ul class="principle-list">
+                            <li>Budgeted vs estimated vs actual tracking</li>
+                            <li>Editable labor rates reflected everywhere</li>
+                            <li>Time entry buttons on items and cards</li>
+                            <li>Approval views grouped by person/project</li>
+                            <li>Capacity charts and utilization tracking</li>
+                        </ul>
+                    </div>
+
+                    <div class="principle-card">
+                        <div class="principle-number">6</div>
+                        <div class="principle-header">
+                            <h3>Work Orders & RFIs</h3>
+                            <p class="principle-goal">Create clean, fast workflows for operational documentation.</p>
+                        </div>
+                        <ul class="principle-list">
+                            <li>Project documentation hub for RFIs/submittals</li>
+                            <li>RFI lifecycle tracking and status</li>
+                            <li>Fully clickable RFI log with detail visibility</li>
+                            <li>Work orders accessible from cards</li>
+                            <li>Calendar view for live tracking</li>
+                        </ul>
+                    </div>
+
+                    <div class="principle-card">
+                        <div class="principle-number">7</div>
+                        <div class="principle-header">
+                            <h3>Risk & Action Center</h3>
+                            <p class="principle-goal">Highlight what needs attention and what to do next.</p>
+                        </div>
+                        <ul class="principle-list">
+                            <li>Risk metrics aligned with underlying data</li>
+                            <li>Filtering by category, status, and phase</li>
+                            <li>Simplified action center by stage</li>
+                            <li>Click-through to resolution paths</li>
+                            <li>Predictive risk indicators with next steps</li>
+                        </ul>
+                    </div>
+
+                    <div class="principle-card">
+                        <div class="principle-number">8</div>
+                        <div class="principle-header">
+                            <h3>User-Centric Views</h3>
+                            <p class="principle-goal">Help users focus on what matters to them.</p>
+                        </div>
+                        <ul class="principle-list">
+                            <li>Assigned tasks view by clicking username</li>
+                            <li>Team workload showing capacity/utilization</li>
+                            <li>Approval views grouped by individual</li>
+                            <li>Role-appropriate entry points</li>
+                            <li>Shop managers, PMs, executives, marketing</li>
+                        </ul>
+                    </div>
+
+                    <div class="principle-card">
+                        <div class="principle-number">9</div>
+                        <div class="principle-header">
+                            <h3>UI/UX Modernization</h3>
+                            <p class="principle-goal">Make the system feel modern, fast, and intuitive.</p>
+                        </div>
+                        <ul class="principle-list">
+                            <li>Higher contrast color palettes</li>
+                            <li>Simplified shapes and sharper UI elements</li>
+                            <li>Clear visual hierarchy</li>
+                            <li>Mobile-optimized layouts</li>
+                            <li>Smooth transitions and immediate feedback</li>
+                        </ul>
+                    </div>
+
+                    <div class="principle-card">
+                        <div class="principle-number">10</div>
+                        <div class="principle-header">
+                            <h3>Commission & Sales</h3>
+                            <p class="principle-goal">Provide transparency and control over sales performance.</p>
+                        </div>
+                        <ul class="principle-list">
+                            <li>Commission tracker by sales rep</li>
+                            <li>Editable commission breakdown per user</li>
+                            <li>Commission payout module</li>
+                            <li>Month-to-month payout navigation</li>
+                            <li>Commission data in analytics/reporting</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
     <script>
         const styles = {
@@ -5167,31 +5710,80 @@
             }
         };
 
+        // Prompt builder tab switching
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebarTabs = document.querySelectorAll('.sidebar-tab');
+            const forms = {
+                'general': document.querySelector('.prompt-form-general'),
+                'construction': document.querySelector('.prompt-form-construction'),
+                'logistics': document.querySelector('.prompt-form-logistics'),
+                'manufacturing': document.querySelector('.prompt-form-manufacturing'),
+                'realestate': document.querySelector('.prompt-form-realestate'),
+                'marketing': document.querySelector('.prompt-form-marketing'),
+                'healthcare': document.querySelector('.prompt-form-healthcare')
+            };
+
+            sidebarTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabName = this.getAttribute('data-tab');
+
+                    // Update active tab styling
+                    sidebarTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+
+                    // Hide all forms and show selected one
+                    Object.values(forms).forEach(form => form.classList.add('hidden'));
+                    if (forms[tabName]) {
+                        forms[tabName].classList.remove('hidden');
+                    }
+
+                    // Generate prompt for new tab
+                    generatePrompt();
+                });
+            });
+        });
+
         // Navigation functionality
         function switchPage(pageName) {
-            const frameworkPage = document.querySelector('.framework-page');
             const showcaseContainer = document.querySelector('.showcase-container');
+            const userguideContainer = document.querySelector('.userguide-container');
+            const promptbuilderContainer = document.querySelector('.promptbuilder-container');
+            const themesContainer = document.querySelector('.themes-container');
 
             document.querySelectorAll('.nav-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
             document.querySelector(`[data-page="${pageName}"]`).classList.add('active');
 
-            // Hide all pages
-            frameworkPage.classList.remove('active');
+            // Hide all containers
             showcaseContainer.classList.add('hidden');
+            userguideContainer.classList.add('hidden');
+            promptbuilderContainer.classList.add('hidden');
+            themesContainer.classList.add('hidden');
 
-            // Show selected page
-            if (pageName === 'framework') {
-                frameworkPage.classList.add('active');
-            } else if (pageName === 'showcase') {
+            // Show selected container
+            if (pageName === 'showcase') {
                 showcaseContainer.classList.remove('hidden');
+            } else if (pageName === 'userguide') {
+                userguideContainer.classList.remove('hidden');
+            } else if (pageName === 'promptbuilder') {
+                promptbuilderContainer.classList.remove('hidden');
+            } else if (pageName === 'themes') {
+                themesContainer.classList.remove('hidden');
             }
         }
 
         document.querySelectorAll('.nav-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 switchPage(e.target.dataset.page);
+            });
+        });
+
+        document.querySelectorAll('.card-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const content = header.nextElementSibling;
+                header.classList.toggle('expanded');
+                content.classList.toggle('expanded');
             });
         });
 
@@ -5251,14 +5843,268 @@
             });
         });
 
-        // Collapsible framework parts
-        document.querySelectorAll('.collapsible-header').forEach(header => {
-            header.addEventListener('click', () => {
-                const content = header.nextElementSibling;
+        // Copy framework buttons
+        // Prompt Builder
+        function generatePrompt() {
+            const forms = {
+                'general': { form: document.getElementById('promptForm'), hidden: document.querySelector('.prompt-form-general').classList.contains('hidden') },
+                'construction': { form: document.getElementById('promptFormConstruction'), hidden: document.querySelector('.prompt-form-construction').classList.contains('hidden') },
+                'logistics': { form: document.getElementById('promptFormLogistics'), hidden: document.querySelector('.prompt-form-logistics').classList.contains('hidden') },
+                'manufacturing': { form: document.getElementById('promptFormManufacturing'), hidden: document.querySelector('.prompt-form-manufacturing').classList.contains('hidden') },
+                'realestate': { form: document.getElementById('promptFormRealEstate'), hidden: document.querySelector('.prompt-form-realestate').classList.contains('hidden') },
+                'marketing': { form: document.getElementById('promptFormMarketing'), hidden: document.querySelector('.prompt-form-marketing').classList.contains('hidden') },
+                'healthcare': { form: document.getElementById('promptFormHealthcare'), hidden: document.querySelector('.prompt-form-healthcare').classList.contains('hidden') }
+            };
 
-                header.classList.toggle('expanded');
-                content.classList.toggle('expanded');
+            let prompt = '';
+
+            // Determine which tab is active
+            const activeTab = Array.from(document.querySelectorAll('.sidebar-tab')).find(tab => tab.classList.contains('active'))?.getAttribute('data-tab');
+
+            if (activeTab === 'general' && !forms.general.hidden) {
+                const form = forms.general.form;
+                const systemType = form.querySelector('input[name="systemType"]:checked')?.value || '';
+                const users = Array.from(form.querySelectorAll('input[name="users"]:checked')).map(el => el.value);
+                const outcomes = Array.from(form.querySelectorAll('input[name="outcome"]:checked')).map(el => el.value);
+                const workflows = Array.from(form.querySelectorAll('input[name="workflows"]:checked')).map(el => el.value);
+                const data = Array.from(form.querySelectorAll('input[name="data"]:checked')).map(el => el.value);
+                const style = form.querySelector('input[name="style"]:checked')?.value || '';
+
+                if (systemType) prompt += `I need to design a ${systemType} system.\n\n`;
+                if (users.length > 0) prompt += `Primary users include: ${users.join(', ')}.\n\n`;
+                if (outcomes.length > 0) prompt += `Key outcomes we're designing for:\n${outcomes.map(o => `• ${o}`).join('\n')}\n\n`;
+                if (workflows.length > 0) prompt += `Critical workflows to support:\n${workflows.map(w => `• ${w}`).join('\n')}\n\n`;
+                if (data.length > 0) prompt += `Must track and display: ${data.join(', ')}.\n\n`;
+                if (style) prompt += `Design in a ${style} style.\n\n`;
+
+                if (prompt !== '') prompt += 'Create a layout that is clear, scannable, and actionable for all users.';
+            } else if (activeTab === 'construction' && !forms.construction.hidden) {
+                const form = forms.construction.form;
+                const contractorType = form.querySelector('input[name="contractorType"]:checked')?.value || '';
+                const specialization = form.querySelector('input[name="specialization"]').value || '';
+                const outcomes = Array.from(form.querySelectorAll('input[name="outcome"]:checked')).map(el => el.value);
+                const operations = Array.from(form.querySelectorAll('input[name="operations"]:checked')).map(el => el.value);
+                const inputs = Array.from(form.querySelectorAll('input[name="inputs"]:checked')).map(el => el.value);
+
+                const operationsText = operations.length > 0 ? operations.join(', ') : 'project operations';
+                const inputsText = inputs.length > 0 ? inputs.join(', ') : 'project data';
+
+                prompt = `I work for a ${contractorType}${specialization ? ` and we specialize in ${specialization}` : ''}. The fundamental outcome we're designing for is ${outcomes.length > 0 ? outcomes.join(' and ') : 'improving project efficiency'}.\n\n`;
+                prompt += `The system must be designed with a focus of improving ${operationsText}. This role needs structured processes and clear outputs so that decision-making is proactive rather than reactive.\n\n`;
+                prompt += `The core inputs into the system will be ${inputsText}. These inputs must flow into a central source of truth where data can be standardized, validated, and acted upon in real time.\n\n`;
+                prompt += `The desired outputs are enabling leadership and field teams to maintain visibility, flag risks early, and align resources to priorities.\n\n`;
+                prompt += `To solve from the ground up, what "irreducible truths" must we accept?\n\n`;
+                prompt += `Every role should land on a view tailored to their priorities — PMs see tasks and risks, executives see portfolio metrics, and field teams see mobile task lists. Keep daily actions within 2–3 clicks, with guided flows for compliance tasks and flexible flows for iterative work. Prioritize information (risks → resources → costs), keep designs consistent, and let users customize their view. Always design around real habits, connect to existing systems, give clear feedback, and build modular so the app can scale. All items should be clickable, and there should be a navigation bar that allows users to navigate different views.`;
+            } else if (activeTab === 'logistics' && !forms.logistics.hidden) {
+                const form = forms.logistics.form;
+                const logisticsType = form.querySelector('input[name="logisticsType"]:checked')?.value || '';
+                const outcomes = Array.from(form.querySelectorAll('input[name="logisticsOutcome"]:checked')).map(el => el.value);
+                const data = Array.from(form.querySelectorAll('input[name="logisticsData"]:checked')).map(el => el.value);
+
+                prompt = `I work for a ${logisticsType}${logisticsType ? ' and we specialize in shipments, routing, and delivery coordination' : ''}.\n\n`;
+                prompt += `The fundamental outcome we're designing for is:\n\n`;
+                prompt += `On-time delivery with full visibility\n`;
+                prompt += `Reduced delays and exceptions\n`;
+                prompt += `Better coordination across dispatch, warehouse, and drivers\n\n`;
+                prompt += `The system must be designed with a focus on improving shipment flow and exception management. This role needs structured processes so issues are flagged early and resolved before impacting delivery.\n\n`;
+                prompt += `The core object is:\nShipment / Load / Order\n\n`;
+                prompt += `The core inputs into the system will be:\n\n`;
+                prompt += `Orders and shipment details\n`;
+                prompt += `Dispatch schedules and routes\n`;
+                prompt += `Driver availability and status\n`;
+                prompt += `Warehouse inventory and staging updates\n`;
+                prompt += `Delivery confirmations and delays\n`;
+                prompt += `External constraints (weather, traffic, vendor delays)\n\n`;
+                prompt += `These inputs must flow into a real-time control layer where data is standardized and actionable.\n\n`;
+                prompt += `The desired outputs are:\n\n`;
+                prompt += `Live shipment tracking dashboards\n`;
+                prompt += `Exception alerts (late, at risk, failed delivery)\n`;
+                prompt += `Route and capacity visibility\n`;
+                prompt += `Driver and vendor performance tracking\n`;
+                prompt += `Decision-ready insights for dispatch and ops\n\n`;
+                prompt += `To solve from the ground up, what "irreducible truths" must we accept about delays, dependencies, and variability?\n\n`;
+                prompt += `Every role should land on a tailored view:\n\n`;
+                prompt += `Dispatch → active loads + risks\n`;
+                prompt += `Warehouse → inbound/outbound flow\n`;
+                prompt += `Drivers → simple mobile tasks\n`;
+                prompt += `Executives → network performance\n\n`;
+                prompt += `Keep workflows fast, visible, and exception-driven.`;
+            } else if (activeTab === 'manufacturing' && !forms.manufacturing.hidden) {
+                const form = forms.manufacturing.form;
+                const mfgType = form.querySelector('input[name="mfgType"]:checked')?.value || '';
+                const outcomes = Array.from(form.querySelectorAll('input[name="mfgOutcome"]:checked')).map(el => el.value);
+
+                prompt = `I work for a ${mfgType}${mfgType ? ' and we specialize in production planning and execution' : ''}.\n\n`;
+                prompt += `The fundamental outcome we're designing for is:\n\n`;
+                prompt += `Predictable production output\n`;
+                prompt += `Reduced bottlenecks and downtime\n`;
+                prompt += `High quality with minimal rework\n\n`;
+                prompt += `The system must be designed with a focus on improving production flow and resource coordination.\n\n`;
+                prompt += `The core object is:\nWork Order / Production Batch / Product\n\n`;
+                prompt += `The core inputs into the system will be:\n\n`;
+                prompt += `Production schedules and sequences\n`;
+                prompt += `Material availability and inventory\n`;
+                prompt += `Labor and machine capacity\n`;
+                prompt += `QA/QC checkpoints and results\n`;
+                prompt += `Maintenance status\n`;
+                prompt += `Supplier lead times\n\n`;
+                prompt += `These inputs must flow into a centralized system that reflects real production state, not planned assumptions.\n\n`;
+                prompt += `The desired outputs are:\n\n`;
+                prompt += `Production status dashboards (planned vs actual)\n`;
+                prompt += `Bottleneck and delay alerts\n`;
+                prompt += `Resource utilization tracking\n`;
+                prompt += `Quality and defect reporting\n`;
+                prompt += `Throughput and efficiency metrics\n\n`;
+                prompt += `To solve from the ground up, what constraints actually govern production flow?\n\n`;
+                prompt += `Every role should land on a tailored view:\n\n`;
+                prompt += `Production manager → line status + constraints\n`;
+                prompt += `Floor teams → next tasks and priorities\n`;
+                prompt += `QA → inspection checkpoints\n`;
+                prompt += `Executives → output, efficiency, risk\n\n`;
+                prompt += `Design around flow, not static schedules.`;
+            } else if (activeTab === 'realestate' && !forms.realestate.hidden) {
+                const form = forms.realestate.form;
+                const reType = form.querySelector('input[name="reType"]:checked')?.value || '';
+
+                prompt = `I work for a ${reType}${reType ? ' and we specialize in project development and management' : ''}.\n\n`;
+                prompt += `The fundamental outcome we're designing for is:\n\n`;
+                prompt += `Predictable project timelines and costs\n`;
+                prompt += `Clear visibility across deals and developments\n`;
+                prompt += `Reduced risk from delays and approvals\n\n`;
+                prompt += `The system must be designed with a focus on improving deal-to-delivery lifecycle coordination.\n\n`;
+                prompt += `The core object is:\nProperty / Development Project / Deal\n\n`;
+                prompt += `The core inputs into the system will be:\n\n`;
+                prompt += `Site acquisition and deal data\n`;
+                prompt += `Financial models and budgets\n`;
+                prompt += `Design and permitting progress\n`;
+                prompt += `Contractor and construction updates\n`;
+                prompt += `Leasing/sales progress\n`;
+                prompt += `External approvals and constraints\n\n`;
+                prompt += `These inputs must connect across phases into a single lifecycle view.\n\n`;
+                prompt += `The desired outputs are:\n\n`;
+                prompt += `Portfolio dashboards (timeline, budget, risk)\n`;
+                prompt += `Milestone tracking (permits, start, completion)\n`;
+                prompt += `Financial performance vs projections\n`;
+                prompt += `Risk alerts (delays, cost overruns)\n`;
+                prompt += `Investor and stakeholder reporting\n\n`;
+                prompt += `To solve from the ground up, where do deals actually stall?\n\n`;
+                prompt += `Every role should land on a tailored view:\n\n`;
+                prompt += `Development team → deal progression\n`;
+                prompt += `Construction → execution status\n`;
+                prompt += `Finance → cost and returns\n`;
+                prompt += `Executives → portfolio health\n\n`;
+                prompt += `Think lifecycle, not siloed phases.`;
+            } else if (activeTab === 'marketing' && !forms.marketing.hidden) {
+                const form = forms.marketing.form;
+                const mkgType = form.querySelector('input[name="mkgType"]:checked')?.value || '';
+
+                prompt = `I work for a ${mkgType}${mkgType ? ' and we specialize in campaign development and execution' : ''}.\n\n`;
+                prompt += `The fundamental outcome we're designing for is:\n\n`;
+                prompt += `On-time campaign execution\n`;
+                prompt += `Clear visibility across content and channels\n`;
+                prompt += `Faster approvals and iteration cycles\n\n`;
+                prompt += `The system must be designed with a focus on improving campaign production and execution flow.\n\n`;
+                prompt += `The core object is:\nCampaign / Content Asset / Deliverable\n\n`;
+                prompt += `The core inputs into the system will be:\n\n`;
+                prompt += `Campaign briefs and strategy\n`;
+                prompt += `Content creation tasks\n`;
+                prompt += `Design and copy assets\n`;
+                prompt += `Approval feedback and revisions\n`;
+                prompt += `Channel schedules and publishing timelines\n`;
+                prompt += `Performance data\n\n`;
+                prompt += `These inputs must flow into a system that tracks creation → approval → launch → performance.\n\n`;
+                prompt += `The desired outputs are:\n\n`;
+                prompt += `Campaign status dashboards\n`;
+                prompt += `Approval tracking and bottleneck alerts\n`;
+                prompt += `Content calendars\n`;
+                prompt += `Performance reporting\n`;
+                prompt += `Workload and team capacity visibility\n\n`;
+                prompt += `To solve from the ground up, where does content actually get stuck?\n\n`;
+                prompt += `Every role should land on a tailored view:\n\n`;
+                prompt += `Creators → tasks and deadlines\n`;
+                prompt += `Managers → approvals and progress\n`;
+                prompt += `Executives → campaign performance\n\n`;
+                prompt += `Design for speed and iteration, not rigid process.`;
+            } else if (activeTab === 'healthcare' && !forms.healthcare.hidden) {
+                const form = forms.healthcare.form;
+                const hcType = form.querySelector('input[name="hcType"]:checked')?.value || '';
+
+                prompt = `I work for a ${hcType}${hcType ? ' and we specialize in patient care and operations' : ''}.\n\n`;
+                prompt += `The fundamental outcome we're designing for is:\n\n`;
+                prompt += `Efficient patient flow\n`;
+                prompt += `Reduced delays in care delivery\n`;
+                prompt += `High quality and compliant operations\n\n`;
+                prompt += `The system must be designed with a focus on improving patient journey coordination and care delivery.\n\n`;
+                prompt += `The core object is:\nPatient / Case / Treatment Plan\n\n`;
+                prompt += `The core inputs into the system will be:\n\n`;
+                prompt += `Patient intake and records\n`;
+                prompt += `Scheduling and appointment data\n`;
+                prompt += `Care plans and treatment steps\n`;
+                prompt += `Staff availability and assignments\n`;
+                prompt += `Lab results and diagnostics\n`;
+                prompt += `Compliance and documentation requirements\n\n`;
+                prompt += `These inputs must connect into a real-time view of patient status and care progression.\n\n`;
+                prompt += `The desired outputs are:\n\n`;
+                prompt += `Patient flow dashboards\n`;
+                prompt += `Delay and risk alerts (missed steps, wait times)\n`;
+                prompt += `Staff workload visibility\n`;
+                prompt += `Compliance tracking and documentation logs\n`;
+                prompt += `Outcome and performance metrics\n\n`;
+                prompt += `To solve from the ground up, where does care break down or get delayed?\n\n`;
+                prompt += `Every role should land on a tailored view:\n\n`;
+                prompt += `Providers → patient status and next steps\n`;
+                prompt += `Admin → scheduling and flow\n`;
+                prompt += `Leadership → capacity and performance\n\n`;
+                prompt += `Design for clarity, speed, and safety.`;
+            }
+
+            if (prompt === '') {
+                document.getElementById('promptOutput').textContent = 'Select options above to generate a prompt...';
+            } else {
+                document.getElementById('promptOutput').textContent = prompt;
+            }
+        }
+
+        function copyPrompt(btn) {
+            const promptText = document.getElementById('promptOutput').textContent;
+            if (promptText === 'Select options above to generate a prompt...') {
+                alert('Please select some options first');
+                return;
+            }
+            navigator.clipboard.writeText(promptText).then(() => {
+                const originalText = btn.textContent;
+                btn.textContent = 'Copied!';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                }, 2000);
+            }).catch(() => {
+                alert('Failed to copy prompt');
             });
+        }
+
+        function clearPromptForm() {
+            const generalForm = document.querySelector('.prompt-form-general');
+            const constructionForm = document.querySelector('.prompt-form-construction');
+
+            if (!generalForm.classList.contains('hidden')) {
+                document.getElementById('promptForm').reset();
+            } else {
+                document.getElementById('promptFormConstruction').reset();
+            }
+
+            document.getElementById('promptOutput').textContent = 'Select options above to generate a prompt...';
+        }
+
+        // Add event listeners to form inputs
+        const formIds = ['promptForm', 'promptFormConstruction', 'promptFormLogistics', 'promptFormManufacturing', 'promptFormRealEstate', 'promptFormMarketing', 'promptFormHealthcare'];
+
+        formIds.forEach(formId => {
+            const form = document.getElementById(formId);
+            if (form) {
+                form.querySelectorAll('input').forEach(input => {
+                    input.addEventListener('change', generatePrompt);
+                });
+            }
         });
 
     </script>
