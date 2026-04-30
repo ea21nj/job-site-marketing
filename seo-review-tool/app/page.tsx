@@ -120,6 +120,62 @@ export default function Home() {
             {pageState === 'error' && (
               <p className="text-red-500 text-sm mt-4">{errorMessage}</p>
             )}
+
+            {/* Services section */}
+            <div className="mt-16 pt-16 border-t border-gray-200">
+              <h2 className="text-2xl font-bold text-gray-900 mb-8">What We Analyze</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="text-left bg-white rounded-lg p-6 border border-gray-100">
+                  <div className="flex items-start gap-3 mb-3">
+                    <span className="text-2xl">📄</span>
+                    <div>
+                      <h3 className="font-semibold text-gray-900">On-Page Basics</h3>
+                      <p className="text-sm text-gray-600 mt-1">Title tags, meta descriptions, and H1 headings optimized for search visibility</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="text-left bg-white rounded-lg p-6 border border-gray-100">
+                  <div className="flex items-start gap-3 mb-3">
+                    <span className="text-2xl">🏗️</span>
+                    <div>
+                      <h3 className="font-semibold text-gray-900">Content Structure</h3>
+                      <p className="text-sm text-gray-600 mt-1">Heading hierarchy, subheadings, and internal linking strategy</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="text-left bg-white rounded-lg p-6 border border-gray-100">
+                  <div className="flex items-start gap-3 mb-3">
+                    <span className="text-2xl">⚙️</span>
+                    <div>
+                      <h3 className="font-semibold text-gray-900">Technical SEO</h3>
+                      <p className="text-sm text-gray-600 mt-1">Viewport settings, canonical tags, and Open Graph meta tags</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="text-left bg-white rounded-lg p-6 border border-gray-100">
+                  <div className="flex items-start gap-3 mb-3">
+                    <span className="text-2xl">🖼️</span>
+                    <div>
+                      <h3 className="font-semibold text-gray-900">Image Accessibility</h3>
+                      <p className="text-sm text-gray-600 mt-1">Alt text coverage for better accessibility and image search rankings</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="text-left bg-white rounded-lg p-6 border border-gray-100 md:col-span-2">
+                  <div className="flex items-start gap-3 mb-3">
+                    <span className="text-2xl">✨</span>
+                    <div>
+                      <h3 className="font-semibold text-gray-900">AI-Powered Content Tips</h3>
+                      <p className="text-sm text-gray-600 mt-1">Smart recommendations for improving content quality, keyword relevance, and messaging clarity</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         )}
 
