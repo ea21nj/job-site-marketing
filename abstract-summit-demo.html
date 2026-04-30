@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Abstract Summit Demo — PDF & Markup Tool</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #F8F6F1;
+      color: #111111;
+    }
+
+    /* HEADER */
+    header {
+      background-color: #111111;
+      color: #F8F6F1;
+      padding: 20px 32px;
+      border-bottom: 2px solid #FFCC00;
+    }
+
+    header h1 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    /* MAIN CONTAINER */
+    .container {
+      display: flex;
+      height: calc(100% - 70px);
+    }
+
+    /* PANELS */
+    .panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      border-right: 2px solid #111111;
+      overflow: hidden;
+    }
+
+    .panel:last-child {
+      border-right: none;
+    }
+
+    /* LEFT PANEL */
+    .left-panel {
+      position: relative;
+    }
+
+    /* RIGHT PANEL */
+    .right-panel {
+      background-color: #F8F6F1;
+      overflow-y: auto;
+    }
+
+    /* TOOLBAR */
+    .toolbar {
+      background-color: #F8F6F1;
+      border-bottom: 2px solid #111111;
+      padding: 12px 16px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 8px 12px;
+      border: 2px solid #111111;
+      background-color: #F8F6F1;
+      color: #111111;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn:hover {
+      background-color: #111111;
+      color: #FFCC00;
+    }
+
+    .btn.active {
+      background-color: #FFCC00;
+      color: #111111;
+      border-color: #FFCC00;
+    }
+
+    .color-input {
+      width: 40px;
+      height: 40px;
+      border: 2px solid #111111;
+      cursor: pointer;
+    }
+
+    /* CANVAS */
+    svg {
+      display: block;
+      width: 100%;
+      height: calc(100% - 50px);
+      background-color: #FFFFFF;
+    }
+
+    /* MARKUPS LIST */
+    .markups-section {
+      padding: 16px;
+      border-bottom: 2px solid #111111;
+    }
+
+    .markups-section h2 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 14px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .markups-list {
+      border: 2px solid #111111;
+      overflow-y: auto;
+      max-height: 300px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+
+    th, td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #DDDDDD;
+    }
+
+    th {
+      background-color: #111111;
+      color: #FFCC00;
+      font-weight: 700;
+      font-size: 10px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    tr:hover {
+      background-color: #F0EEEB;
+    }
+
+    tr.active {
+      background-color: #FFCC00;
+      color: #111111;
+    }
+
+    tr.resolved {
+      opacity: 0.5;
+      text-decoration: line-through;
+    }
+
+    /* DETAILS PANEL */
+    .details-section {
+      padding: 16px;
+      border-top: 2px solid #111111;
+      background-color: #F8F6F1;
+    }
+
+    .details-section h3 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .detail-row {
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .detail-row label {
+      font-size: 11px;
+      font-weight: 600;
+      min-width: 70px;
+    }
+
+    .detail-row select {
+      flex: 1;
+      padding: 6px;
+      border: 2px solid #111111;
+      background-color: #FFFFFF;
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+    }
+
+    .detail-row button {
+      padding: 6px 12px;
+      background-color: #FF6B6B;
+      color: white;
+      border: none;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .detail-row button:hover {
+      background-color: #CC0000;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
+
+      .panel {
+        border-right: none;
+        border-bottom: 2px solid #111111;
+      }
+
+      .left-panel {
+        flex: 2;
+      }
+
+      .right-panel {
+        flex: 1;
+      }
+
+      .markups-list {
+        max-height: 200px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Abstract Summit Demo</h1>
+  </header>
+
+  <div class="container">
+    <div class="panel left-panel">
+      <div class="toolbar">
+        <button class="btn" data-tool="text">Text</button>
+        <button class="btn" data-tool="line">Line</button>
+        <button class="btn" data-tool="circle">Circle</button>
+        <button class="btn" data-tool="rectangle">Rectangle</button>
+        <button class="btn" data-tool="cloud">Cloud</button>
+        <label style="display: flex; align-items: center; gap: 6px; font-size: 11px;">
+          Color:
+          <input type="color" class="color-input" id="colorPicker" value="#FF4500">
+        </label>
+        <button class="btn" id="clearBtn">Clear All</button>
+      </div>
+      <svg id="canvas" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid meet"></svg>
+    </div>
+
+    <div class="panel right-panel">
+      <div class="markups-section">
+        <h2>Markups List</h2>
+        <div class="markups-list">
+          <table id="markupsTable">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Type</th>
+                <th>Text</th>
+                <th>Color</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="markupsTableBody">
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="details-section">
+        <h3>Markup Details</h3>
+        <div id="detailsPanel" style="display: none;">
+          <div class="detail-row">
+            <label>Status:</label>
+            <select id="statusSelect">
+              <option value="open">Open</option>
+              <option value="in-review">In Review</option>
+              <option value="resolved">Resolved</option>
+            </select>
+          </div>
+          <div class="detail-row">
+            <button id="deleteBtn">Delete</button>
+          </div>
+        </div>
+        <div id="nothingSelected" style="color: #999; font-size: 12px;">
+          Click a markup in the list to view details
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Global State
+    let markups = [];
+    let nextMarkupId = 1;
+    let selectedMarkupId = null;
+    let activeTool = 'text';
+    let currentColor = '#FF4500';
+
+    const canvas = document.getElementById('canvas');
+
+    // Data Model
+    function createMarkup(type, data) {
+      const markup = {
+        id: nextMarkupId++,
+        type: type,
+        x: data.x,
+        y: data.y,
+        x2: data.x2 || null,
+        y2: data.y2 || null,
+        width: data.width || null,
+        height: data.height || null,
+        text: data.text || '',
+        color: data.color || currentColor,
+        author: 'Demo User',
+        createdAt: new Date().toISOString(),
+        status: 'open'
+      };
+      return markup;
+    }
+
+    // Load markups from LocalStorage
+    function loadMarkups() {
+      const saved = localStorage.getItem('abstractSummitMarkups');
+      if (saved) {
+        markups = JSON.parse(saved);
+        nextMarkupId = Math.max(...markups.map(m => m.id), 0) + 1;
+      }
+    }
+
+    // Save markups to LocalStorage
+    function saveMarkups() {
+      localStorage.setItem('abstractSummitMarkups', JSON.stringify(markups));
+    }
+
+    // Add markup to state and render
+    function addMarkup(markup) {
+      markups.push(markup);
+      saveMarkups();
+      renderCanvas();
+      renderMarkupsList();
+    }
+
+    // Delete markup by ID
+    function deleteMarkup(id) {
+      markups = markups.filter(m => m.id !== id);
+      saveMarkups();
+      selectedMarkupId = null;
+      renderCanvas();
+      renderMarkupsList();
+      updateDetailsPanel();
+    }
+
+    // Update markup status
+    function updateMarkupStatus(id, status) {
+      const markup = markups.find(m => m.id === id);
+      if (markup) {
+        markup.status = status;
+        saveMarkups();
+        renderMarkupsList();
+      }
+    }
+
+    // Render all markups on canvas
+    function renderCanvas() {
+      // Remove all markup elements from canvas (keep floor plan)
+      const markupGroups = document.querySelectorAll('.markup-group');
+      markupGroups.forEach(g => g.remove());
+
+      // Redraw markups
+      markups.forEach(markup => {
+        const group = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        group.setAttribute('class', 'markup-group');
+        group.setAttribute('data-markup-id', markup.id);
+        group.style.cursor = 'pointer';
+
+        // Click to select
+        group.addEventListener('click', (e) => {
+          e.stopPropagation();
+          selectedMarkupId = markup.id;
+          updateDetailsPanel();
+          renderMarkupsList();
+          renderCanvas();
+        });
+
+        if (markup.type === 'text') {
+          const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+          text.setAttribute('x', markup.x);
+          text.setAttribute('y', markup.y);
+          text.setAttribute('font-size', '14');
+          text.setAttribute('font-weight', '700');
+          text.setAttribute('fill', markup.color);
+          text.setAttribute('font-family', 'Inter, sans-serif');
+          text.textContent = markup.text;
+          group.appendChild(text);
+        } else if (markup.type === 'line') {
+          const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+          line.setAttribute('x1', markup.x);
+          line.setAttribute('y1', markup.y);
+          line.setAttribute('x2', markup.x2);
+          line.setAttribute('y2', markup.y2);
+          line.setAttribute('stroke', markup.color);
+          line.setAttribute('stroke-width', '3');
+          group.appendChild(line);
+        } else if (markup.type === 'circle') {
+          const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+          circle.setAttribute('cx', markup.x + markup.width / 2);
+          circle.setAttribute('cy', markup.y + markup.height / 2);
+          circle.setAttribute('r', Math.min(markup.width, markup.height) / 2);
+          circle.setAttribute('stroke', markup.color);
+          circle.setAttribute('stroke-width', '2');
+          circle.setAttribute('fill', 'none');
+          group.appendChild(circle);
+        } else if (markup.type === 'rectangle') {
+          const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+          rect.setAttribute('x', markup.x);
+          rect.setAttribute('y', markup.y);
+          rect.setAttribute('width', markup.width);
+          rect.setAttribute('height', markup.height);
+          rect.setAttribute('stroke', markup.color);
+          rect.setAttribute('stroke-width', '2');
+          rect.setAttribute('fill', 'none');
+          group.appendChild(rect);
+        } else if (markup.type === 'cloud') {
+          const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+          const x = markup.x;
+          const y = markup.y;
+          const d = `M ${x} ${y + 10} Q ${x - 10} ${y} ${x + 20} ${y - 10} Q ${x + 40} ${y - 15} ${x + 50} ${y} Q ${x + 60} ${y + 10} ${x + 50} ${y + 20} Q ${x + 40} ${y + 25} ${x + 20} ${y + 20} Q ${x} ${y + 25} ${x} ${y + 10}`;
+          path.setAttribute('d', d);
+          path.setAttribute('stroke', markup.color);
+          path.setAttribute('stroke-width', '2');
+          path.setAttribute('fill', 'none');
+          group.appendChild(path);
+        }
+
+        // Highlight if selected
+        if (selectedMarkupId === markup.id) {
+          group.setAttribute('filter', 'drop-shadow(0 0 4px #FFCC00)');
+        }
+
+        canvas.appendChild(group);
+      });
+    }
+
+    // Render Markups List table
+    function renderMarkupsList() {
+      const tbody = document.getElementById('markupsTableBody');
+      tbody.innerHTML = '';
+
+      markups.forEach((markup, idx) => {
+        const row = document.createElement('tr');
+        row.setAttribute('data-markup-id', markup.id);
+        row.className = selectedMarkupId === markup.id ? 'active' : '';
+        if (markup.status === 'resolved') {
+          row.classList.add('resolved');
+        }
+
+        const colorSwatch = `<span style="display: inline-block; width: 12px; height: 12px; background-color: ${markup.color}; border: 1px solid #111; margin-right: 4px;"></span>`;
+
+        row.innerHTML = `
+          <td>${idx + 1}</td>
+          <td>${markup.type.charAt(0).toUpperCase() + markup.type.slice(1)}</td>
+          <td>${markup.text || '—'}</td>
+          <td>${colorSwatch}</td>
+          <td>${markup.status}</td>
+        `;
+
+        row.addEventListener('click', () => {
+          selectedMarkupId = markup.id;
+          updateDetailsPanel();
+          renderMarkupsList();
+          renderCanvas();
+        });
+
+        tbody.appendChild(row);
+      });
+    }
+
+    // Update Details Panel
+    function updateDetailsPanel() {
+      const detailsPanel = document.getElementById('detailsPanel');
+      const nothingSelected = document.getElementById('nothingSelected');
+
+      if (selectedMarkupId === null) {
+        detailsPanel.style.display = 'none';
+        nothingSelected.style.display = 'block';
+        return;
+      }
+
+      const markup = markups.find(m => m.id === selectedMarkupId);
+      if (!markup) return;
+
+      detailsPanel.style.display = 'block';
+      nothingSelected.style.display = 'none';
+
+      document.getElementById('statusSelect').value = markup.status;
+      document.getElementById('statusSelect').onchange = () => {
+        updateMarkupStatus(selectedMarkupId, document.getElementById('statusSelect').value);
+      };
+
+      document.getElementById('deleteBtn').onclick = () => {
+        if (confirm('Delete this markup?')) {
+          deleteMarkup(selectedMarkupId);
+        }
+      };
+    }
+
+    // Draw Floor Plan
+    function drawFloorPlan() {
+      // Background
+      const bg = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+      bg.setAttribute('x', '0');
+      bg.setAttribute('y', '0');
+      bg.setAttribute('width', '800');
+      bg.setAttribute('height', '600');
+      bg.setAttribute('fill', '#FFFFFF');
+      canvas.appendChild(bg);
+
+      // Helper: Draw rectangle (wall)
+      const drawWall = (x, y, w, h, fill = '#E8E8E8', stroke = '#111111') => {
+        const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+        rect.setAttribute('x', x);
+        rect.setAttribute('y', y);
+        rect.setAttribute('width', w);
+        rect.setAttribute('height', h);
+        rect.setAttribute('fill', fill);
+        rect.setAttribute('stroke', stroke);
+        rect.setAttribute('stroke-width', '2');
+        canvas.appendChild(rect);
+      };
+
+      // Helper: Draw text label
+      const drawLabel = (x, y, text, size = '14') => {
+        const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        label.setAttribute('x', x);
+        label.setAttribute('y', y);
+        label.setAttribute('font-size', size);
+        label.setAttribute('font-family', 'Inter, sans-serif');
+        label.setAttribute('font-weight', '600');
+        label.setAttribute('fill', '#666666');
+        label.textContent = text;
+        canvas.appendChild(label);
+      };
+
+      // Outer walls (perimeter)
+      drawWall(50, 50, 700, 500);
+
+      // Interior walls dividing rooms
+      drawWall(50, 50, 700, 20);   // Top wall
+      drawWall(50, 300, 700, 20);  // Horizontal divider
+      drawWall(350, 50, 20, 250);  // Vertical divider left
+      drawWall(500, 300, 20, 250); // Vertical divider right
+
+      // Door openings (just lines to show doorways)
+      const doorLine = (x1, y1, x2, y2) => {
+        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        line.setAttribute('x1', x1);
+        line.setAttribute('y1', y1);
+        line.setAttribute('x2', x2);
+        line.setAttribute('y2', y2);
+        line.setAttribute('stroke', '#999999');
+        line.setAttribute('stroke-width', '1');
+        line.setAttribute('stroke-dasharray', '4,4');
+        canvas.appendChild(line);
+      };
+
+      doorLine(180, 300, 180, 320);
+      doorLine(430, 300, 430, 320);
+      doorLine(600, 470, 620, 470);
+
+      // Room labels
+      drawLabel(120, 150, 'BEDROOM', '16');
+      drawLabel(380, 150, 'BATH', '16');
+      drawLabel(100, 380, 'KITCHEN', '16');
+      drawLabel(280, 480, 'LIVING ROOM', '16');
+
+      // Fixtures (simple circles for furniture)
+      const fixture = (cx, cy, r) => {
+        const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        circle.setAttribute('cx', cx);
+        circle.setAttribute('cy', cy);
+        circle.setAttribute('r', r);
+        circle.setAttribute('fill', 'none');
+        circle.setAttribute('stroke', '#CCCCCC');
+        circle.setAttribute('stroke-width', '1');
+        canvas.appendChild(circle);
+      };
+
+      // Bed
+      fixture(150, 150, 20);
+      // Toilet
+      fixture(400, 120, 12);
+      // Sink (kitchen)
+      fixture(120, 340, 15);
+    }
+
+    // Handle canvas clicks for drawing
+    canvas.addEventListener('click', (e) => {
+      if (activeTool === 'text') {
+        const text = prompt('Enter text:');
+        if (text) {
+          const rect = canvas.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          const markup = createMarkup('text', { x, y, text });
+          addMarkup(markup);
+        }
+      }
+    });
+
+    // Handle mouse drag for draw tools
+    let isDrawing = false;
+    let startX, startY;
+
+    canvas.addEventListener('mousedown', (e) => {
+      if (activeTool === 'text') return;
+
+      isDrawing = true;
+      const rect = canvas.getBoundingClientRect();
+      startX = e.clientX - rect.left;
+      startY = e.clientY - rect.top;
+    });
+
+    canvas.addEventListener('mouseup', (e) => {
+      if (!isDrawing || activeTool === 'text') return;
+
+      const rect = canvas.getBoundingClientRect();
+      const endX = e.clientX - rect.left;
+      const endY = e.clientY - rect.top;
+
+      if (startX === endX && startY === endY) {
+        isDrawing = false;
+        return;
+      }
+
+      if (activeTool === 'line') {
+        const markup = createMarkup('line', { x: startX, y: startY, x2: endX, y2: endY });
+        addMarkup(markup);
+      } else if (activeTool === 'circle') {
+        const width = Math.abs(endX - startX);
+        const height = Math.abs(endY - startY);
+        const markup = createMarkup('circle', { x: Math.min(startX, endX), y: Math.min(startY, endY), width, height });
+        addMarkup(markup);
+      } else if (activeTool === 'rectangle') {
+        const width = Math.abs(endX - startX);
+        const height = Math.abs(endY - startY);
+        const markup = createMarkup('rectangle', { x: Math.min(startX, endX), y: Math.min(startY, endY), width, height });
+        addMarkup(markup);
+      } else if (activeTool === 'cloud') {
+        const width = Math.abs(endX - startX);
+        const height = Math.abs(endY - startY);
+        const markup = createMarkup('cloud', { x: Math.min(startX, endX), y: Math.min(startY, endY), width, height });
+        addMarkup(markup);
+      }
+
+      isDrawing = false;
+    });
+
+    // Toolbar button handlers
+    document.querySelectorAll('.btn[data-tool]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.btn[data-tool]').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeTool = btn.getAttribute('data-tool');
+      });
+    });
+
+    // Color picker
+    document.getElementById('colorPicker').addEventListener('change', (e) => {
+      currentColor = e.target.value;
+    });
+
+    // Clear all
+    document.getElementById('clearBtn').addEventListener('click', () => {
+      if (confirm('Clear all markups?')) {
+        markups = [];
+        saveMarkups();
+        selectedMarkupId = null;
+        renderCanvas();
+        renderMarkupsList();
+        updateDetailsPanel();
+      }
+    });
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      loadMarkups();
+      drawFloorPlan();
+      renderCanvas();
+      renderMarkupsList();
+      updateDetailsPanel();
+    });
+  </script>
+
+</body>
+</html>
