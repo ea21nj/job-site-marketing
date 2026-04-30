@@ -190,32 +190,62 @@ export default function Home() {
         {/* Results state */}
         {pageState === 'results' && result && (
           <div>
-            <p className="text-xs text-gray-400 mb-6 truncate">Results for: {result.url}</p>
-
-            {/* Score */}
-            <div className="bg-white rounded-xl border border-gray-200 p-6 mb-4 flex justify-center">
-              <ScoreCircle score={result.score} />
+            {/* Header */}
+            <div className="mb-8">
+              <p className="text-xs text-gray-400 mb-2 truncate">Analyzed: {result.url}</p>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">SEO Analysis Results</h2>
+              <p className="text-gray-600 text-sm">
+                We've completed a comprehensive SEO audit of your page across 4 key areas. Below you'll find your overall score, category breakdowns, actionable recommendations, and AI-powered insights to improve your search visibility.
+              </p>
             </div>
 
-            {/* Category cards */}
-            <div className="grid grid-cols-2 gap-3 mb-4">
-              {result.categories.map(cat => (
-                <CategoryCard key={cat.name} category={cat} />
-              ))}
+            {/* Score */}
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl border border-blue-200 p-8 mb-6 flex justify-center">
+              <div className="text-center">
+                <ScoreCircle score={result.score} />
+                <p className="text-gray-600 text-sm mt-4 max-w-xs">
+                  {result.score >= 80
+                    ? 'Excellent SEO foundation! Your page is well-optimized for search engines.'
+                    : result.score >= 60
+                    ? 'Good progress! Focus on the recommendations below to improve further.'
+                    : 'Room for improvement. Address the critical items to boost your rankings.'}
+                </p>
+              </div>
+            </div>
+
+            {/* Category breakdown */}
+            <div className="mb-6">
+              <h3 className="font-semibold text-gray-900 mb-3">Analysis Breakdown</h3>
+              <p className="text-sm text-gray-600 mb-4">
+                We evaluate your page across four essential SEO dimensions. Each category is weighted based on its impact on search rankings.
+              </p>
+              <div className="grid grid-cols-2 gap-3">
+                {result.categories.map(cat => (
+                  <CategoryCard key={cat.name} category={cat} />
+                ))}
+              </div>
             </div>
 
             {/* Recommendations */}
-            <div className="bg-white rounded-xl border border-gray-200 p-6 mb-4">
-              <h2 className="font-semibold text-gray-900 mb-4">Recommendations</h2>
-              {result.recommendations.map((rec, i) => (
-                <RecommendationItem key={i} rec={rec} />
-              ))}
+            <div className="bg-white rounded-xl border border-gray-200 p-6 mb-6">
+              <h3 className="font-semibold text-gray-900 mb-2">Action Items</h3>
+              <p className="text-sm text-gray-600 mb-4">
+                Prioritized recommendations to improve your SEO. Items are sorted by severity — fix critical failures first, then warnings, then optimize passing items.
+              </p>
+              <div className="space-y-1">
+                {result.recommendations.map((rec, i) => (
+                  <RecommendationItem key={i} rec={rec} />
+                ))}
+              </div>
             </div>
 
             {/* AI Tips */}
             {result.aiTips.length > 0 && (
               <div className="bg-white rounded-xl border border-gray-200 p-6 mb-6">
-                <h2 className="font-semibold text-gray-900 mb-4">AI Content Tips</h2>
+                <h3 className="font-semibold text-gray-900 mb-2">Content Optimization Tips</h3>
+                <p className="text-sm text-gray-600 mb-4">
+                  AI-powered insights focused on content quality, messaging clarity, and audience engagement.
+                </p>
                 <div className="space-y-3">
                   {result.aiTips.map((tip, i) => (
                     <div key={i} className="flex gap-3">
@@ -229,12 +259,29 @@ export default function Home() {
               </div>
             )}
 
+            {/* About our services */}
+            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-100 p-6 mb-6">
+              <h3 className="font-semibold text-gray-900 mb-3">About Our SEO Review Service</h3>
+              <p className="text-sm text-gray-700 mb-3">
+                <strong>SEO Reviewer</strong> provides instant, comprehensive website analysis across four critical dimensions:
+              </p>
+              <ul className="text-sm text-gray-700 space-y-2 mb-3">
+                <li>✓ <strong>On-Page Basics:</strong> Title tags, meta descriptions, and heading structure</li>
+                <li>✓ <strong>Content Structure:</strong> Subheadings and internal linking strategy</li>
+                <li>✓ <strong>Technical SEO:</strong> Mobile optimization, canonical tags, and social sharing</li>
+                <li>✓ <strong>Image Accessibility:</strong> Alt text coverage for accessibility and image search</li>
+              </ul>
+              <p className="text-sm text-gray-700">
+                Our AI-powered recommendations help you optimize content quality and improve search engine visibility — instantly, free, no signup required.
+              </p>
+            </div>
+
             <div className="text-center">
               <button
                 onClick={handleReset}
-                className="text-blue-600 text-sm font-medium hover:underline"
+                className="bg-blue-600 text-white px-6 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
               >
-                Analyze another URL
+                Analyze Another URL
               </button>
             </div>
           </div>
