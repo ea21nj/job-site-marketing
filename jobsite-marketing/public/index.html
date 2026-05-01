@@ -1,0 +1,3892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobSite - Marketing Automation for Construction</title>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #FFFFFF;
+            color: #111111;
+            font-weight: 400;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* Navigation */
+        header {
+            border-bottom: 2px solid #111111;
+            background: #FFFFFF;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 20;
+        }
+
+        nav {
+            max-width: 100%;
+            padding: 1rem 1.5rem;
+        }
+
+        .nav-container {
+            max-width: 100%;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            font-size: 1.125rem;
+        }
+
+        .logo-icon {
+            width: 2rem;
+            height: 2rem;
+            background: #FFB800;
+            border: 2px solid #111111;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #111111;
+            font-weight: 800;
+            font-size: 0.75rem;
+        }
+
+        .nav-menu-button {
+            display: none;
+            background: none;
+            border: 2px solid #111111;
+            width: 2.5rem;
+            height: 2.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-menu-button svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu-button {
+                display: flex;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            [data-state="active"] .nav-links {
+                display: flex;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                flex-direction: column;
+                background: #FFFFFF;
+                border-bottom: 2px solid #111111;
+                border-top: 2px solid #111111;
+                padding: 1.5rem;
+                gap: 1rem;
+                z-index: 30;
+            }
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .nav-links a {
+            border-bottom: 2px solid transparent;
+            padding-bottom: 0.25rem;
+            transition: border-color 0.2s;
+        }
+
+        .nav-links a:hover {
+            border-bottom-color: #FFB800;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        /* Hero Section with Demo */
+        .hero-with-demo {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 3rem;
+            align-items: center;
+            padding: 4rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            min-height: auto;
+        }
+
+        @media (max-width: 1024px) {
+            .hero-with-demo {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+                padding: 3rem 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-with-demo {
+                padding: 2.5rem 1rem;
+                gap: 1.25rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .hero-with-demo {
+                padding: 2rem 1rem;
+                gap: 0.75rem;
+            }
+        }
+
+        /* Hero Section */
+        .hero {
+            padding-top: 0;
+            padding: 0;
+            max-width: 100%;
+            margin: 0;
+        }
+
+        .demo-side {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-top: 1rem;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #FFB800;
+            border: 2px solid #111111;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            border-radius: 9999px;
+        }
+
+        h1 {
+            font-size: 2.75rem;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.75rem;
+                margin-bottom: 0.75rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            h1 {
+                font-size: 1.5rem;
+                margin-bottom: 0.5rem;
+            }
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: #555555;
+            margin-bottom: 1.25rem;
+            line-height: 1.5;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .subtitle {
+                font-size: 0.9rem;
+                margin-bottom: 1rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .subtitle {
+                font-size: 0.85rem;
+                margin-bottom: 0.75rem;
+            }
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+
+        .button {
+            padding: 0.875rem 2rem;
+            border: 2px solid #111111;
+            font-weight: 600;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-radius: 4px;
+            font-family: 'Inter', sans-serif;
+            white-space: nowrap;
+        }
+
+        @media (max-width: 640px) {
+            .button-group {
+                flex-direction: column;
+                gap: 0.75rem;
+                margin-bottom: 3rem;
+            }
+
+            .button {
+                width: 100%;
+                text-align: center;
+                padding: 1rem 1.5rem;
+                font-size: 0.8rem;
+            }
+        }
+
+        .button-primary {
+            background: #FFB800;
+            color: #111111;
+        }
+
+        .button-primary:hover {
+            background: #E6A700;
+        }
+
+        .button-secondary {
+            background: #FFFFFF;
+            color: #111111;
+        }
+
+        .button-secondary:hover {
+            background: #F2F1ED;
+        }
+
+        /* How It Works */
+        .how-it-works {
+            padding: 5rem 1.5rem;
+            background: #F2F1ED;
+        }
+
+        .how-it-works h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            max-width: 56rem;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .how-it-works .subtitle {
+            max-width: 56rem;
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 3rem;
+        }
+
+        .steps-grid {
+            max-width: 100%;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0;
+            border: 2px solid #111111;
+        }
+
+        @media (max-width: 1024px) {
+            .steps-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .step-card {
+            padding: 2rem;
+            background: #FFFFFF;
+            border-right: 2px solid #111111;
+        }
+
+        .step-card:last-child {
+            border-right: none;
+        }
+
+        @media (max-width: 1024px) {
+            .step-card {
+                border-right: none;
+                border-bottom: 2px solid #111111;
+            }
+
+            .step-card:last-child {
+                border-bottom: none;
+            }
+        }
+
+        .step-number {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 3rem;
+            font-weight: 800;
+            color: #FFB800;
+            margin-bottom: 1rem;
+        }
+
+        .step-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .step-card p {
+            color: #555555;
+            line-height: 1.6;
+        }
+
+        /* Features */
+        .features {
+            padding: 5rem 1.5rem;
+        }
+
+        .features h2 {
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            max-width: 56rem;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .features-grid {
+            max-width: 100%;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0;
+            border: 2px solid #111111;
+        }
+
+        @media (max-width: 1024px) {
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .feature-item {
+            padding: 1.5rem;
+            border-right: 2px solid #111111;
+            border-bottom: 2px solid #111111;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .feature-item:nth-child(3n) {
+            border-right: none;
+        }
+
+        .feature-item:nth-last-child(-n+3) {
+            border-bottom: none;
+        }
+
+        .feature-icon {
+            width: 2rem;
+            height: 2rem;
+            background: #FFB800;
+            border: 2px solid #111111;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-weight: 800;
+        }
+
+        .feature-content h3 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-content p {
+            font-size: 0.875rem;
+            color: #555555;
+            line-height: 1.5;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            padding: 5rem 1.5rem;
+            background: #F2F1ED;
+        }
+
+        .testimonials h2 {
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            text-align: center;
+            max-width: 56rem;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .testimonials-grid {
+            max-width: 56rem;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0;
+            border: 2px solid #111111;
+        }
+
+        @media (max-width: 768px) {
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .testimonial-card {
+            padding: 2rem;
+            background: #FFFFFF;
+            border-right: 2px solid #111111;
+            border-bottom: 2px solid #111111;
+        }
+
+        .testimonial-card:nth-child(2n) {
+            border-right: none;
+        }
+
+        .testimonial-card:nth-last-child(-n+2) {
+            border-bottom: none;
+        }
+
+        @media (max-width: 768px) {
+            .testimonial-card {
+                border-right: none;
+                border-bottom: 2px solid #111111;
+            }
+
+            .testimonial-card:last-child {
+                border-bottom: none;
+            }
+        }
+
+        .testimonial-quote {
+            font-size: 1rem;
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .testimonial-author {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .testimonial-role {
+            font-size: 0.875rem;
+            color: #555555;
+        }
+
+        /* CTA Section */
+        .final-cta {
+            padding: 5rem 1.5rem;
+        }
+
+        .final-cta-content {
+            max-width: 56rem;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .final-cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .final-cta .subtitle {
+            margin-bottom: 2rem;
+            color: #555555;
+        }
+
+        /* Bottom CTA Section */
+        .bottom-cta-section {
+            background: linear-gradient(135deg, #FFB800 0%, #FFC933 100%);
+            padding: 4rem 1.5rem;
+            border-top: 2px solid #111111;
+        }
+
+        .bottom-cta-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .bottom-cta-content h2 {
+            color: #111111;
+            line-height: 1.2;
+        }
+
+        .bottom-cta-content p {
+            line-height: 1.6;
+        }
+
+        .bottom-cta-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .cta-form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+        }
+
+        .bottom-cta-form input {
+            padding: 0.875rem 1rem;
+            border: 2px solid #111111;
+            border-radius: 4px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            background: #FFFFFF;
+            color: #111111;
+            transition: all 0.2s;
+        }
+
+        .bottom-cta-form input:focus {
+            outline: none;
+            background: #FFFEF5;
+            border-color: #111111;
+            box-shadow: 0 0 0 3px rgba(17, 17, 17, 0.1);
+        }
+
+        .bottom-cta-form input::placeholder {
+            color: #999999;
+        }
+
+        .cta-submit-btn {
+            padding: 1rem 1.5rem;
+            background: #111111;
+            color: #FFFFFF;
+            border: 2px solid #111111;
+            border-radius: 4px;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: -0.01em;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 0.5rem;
+        }
+
+        .cta-submit-btn:hover {
+            background: #333333;
+            border-color: #333333;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(17, 17, 17, 0.2);
+        }
+
+        .cta-submit-btn:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            .bottom-cta-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .cta-form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .bottom-cta-section {
+                padding: 3rem 1.5rem;
+            }
+
+            .bottom-cta-content h2 {
+                font-size: 1.75rem;
+            }
+        }
+
+        /* Final Audit CTA */
+        .final-audit-cta {
+            display: block;
+            width: 100%;
+            background: #111111;
+            color: #FFFFFF;
+            padding: 3.5rem 1.5rem;
+            border-top: 2px solid #FFB800;
+            margin-top: 2rem;
+            box-sizing: border-box;
+        }
+
+        .final-audit-container {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+            width: 100%;
+        }
+
+        .final-audit-cta h2 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            color: #FFFFFF;
+            letter-spacing: -0.02em;
+        }
+
+        .final-audit-cta p {
+            font-size: 1rem;
+            color: #CCCCCC;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .audit-cta-button {
+            padding: 1rem 2rem;
+            background: #FFB800;
+            color: #111111;
+            border: 2px solid #FFB800;
+            border-radius: 4px;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: -0.01em;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .audit-cta-button:hover {
+            background: #FFC933;
+            border-color: #FFC933;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 184, 0, 0.3);
+        }
+
+        .audit-cta-button:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            .final-audit-cta h2 {
+                font-size: 1.5rem;
+            }
+
+            .final-audit-cta {
+                padding: 2.5rem 1.5rem;
+            }
+        }
+
+        /* Footer */
+        footer {
+            border-top: 2px solid #111111;
+            padding: 3rem 1.5rem;
+            background: #FFFFFF;
+        }
+
+        .footer-container {
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            margin-bottom: 3rem;
+            border-bottom: 2px solid #E2E1DC;
+            padding-bottom: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+        }
+
+        .footer-section h4 {
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .footer-section a {
+            font-size: 0.875rem;
+            color: #555555;
+            transition: color 0.2s;
+        }
+
+        .footer-section a:hover {
+            color: #FFB800;
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.875rem;
+            color: #555555;
+        }
+
+        @media (max-width: 768px) {
+            .footer-bottom {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        /* What This Looks Like Section */
+        .what-this-looks-like {
+            padding: 0;
+            background: transparent;
+        }
+
+        .demo-side .what-this-looks-like {
+            padding: 0;
+        }
+
+        .what-container {
+            max-width: 40rem;
+            margin: 0 auto;
+        }
+
+        .what-header {
+            font-size: 1.75rem;
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .what-header {
+                font-size: 1.5rem;
+                margin-bottom: 1rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .what-header {
+                font-size: 1.25rem;
+                margin-bottom: 0.75rem;
+            }
+        }
+
+        .what-header-icon {
+            font-size: 2.5rem;
+        }
+
+        @media (max-width: 640px) {
+            .what-header-icon {
+                font-size: 2rem;
+            }
+        }
+
+        .phone-frame {
+            background: #1a1a1a;
+            border: 10px solid #111111;
+            border-radius: 44px;
+            padding: 14px;
+            max-width: 360px;
+            margin: 0 auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        @media (max-width: 1024px) {
+            .phone-frame {
+                max-width: 320px;
+                border: 8px solid #111111;
+                padding: 12px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .phone-frame {
+                max-width: 280px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .phone-frame {
+                max-width: 240px;
+                border: 6px solid #111111;
+                padding: 10px;
+            }
+        }
+
+        .phone-screen {
+            background: #FFFFFF;
+            border-radius: 36px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 520px;
+            border: none;
+            max-height: calc(100vh - 200px);
+            min-height: 420px;
+        }
+
+        @media (max-width: 768px) {
+            .phone-screen {
+                height: 460px;
+                min-height: 380px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .phone-screen {
+                height: 400px;
+                min-height: 340px;
+            }
+        }
+
+        .phone-status-bar {
+            background: #FFFFFF;
+            padding: 6px 16px 2px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.6rem;
+            font-weight: 700;
+            color: #111111;
+            letter-spacing: 0.03em;
+            border-bottom: 1px solid #E8E8E8;
+            flex-shrink: 0;
+        }
+
+        .phone-status-time {
+            font-weight: 800;
+            font-size: 0.65rem;
+        }
+
+        .phone-status-icons {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.55rem;
+        }
+
+        .phone-header {
+            background: #FFFFFF;
+            border-bottom: 2px solid #111111;
+            padding: 0.625rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .phone-header-title {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 800;
+            font-size: 1rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: #111111;
+            display: flex;
+            flex-direction: column;
+            gap: 0.125rem;
+        }
+
+        .phone-header-status {
+            font-size: 0.6rem;
+            color: #22C55E;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+
+        .phone-header-status::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #22C55E;
+        }
+
+        .phone-header-avatar {
+            width: 28px;
+            height: 28px;
+            background: #FFB800;
+            border: 2px solid #111111;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.6rem;
+            font-weight: 800;
+            color: #111111;
+            flex-shrink: 0;
+        }
+
+        .phone-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.875rem;
+            background: #FFFFFF;
+        }
+
+        .phone-messages::-webkit-scrollbar {
+            width: 3px;
+        }
+        .phone-messages::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .phone-messages::-webkit-scrollbar-thumb {
+            background: #E2E1DC;
+            border-radius: 2px;
+        }
+
+        .message {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            padding: 0.5rem 0.75rem;
+            align-items: center;
+        }
+
+        .typing-dot {
+            width: 7px;
+            height: 7px;
+            background: #999999;
+            border-radius: 50%;
+            animation: typingBounce 1.2s ease-in-out infinite;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typingBounce {
+            0%, 60%, 100% {
+                transform: translateY(0);
+                opacity: 0.4;
+            }
+            30% {
+                transform: translateY(-6px);
+                opacity: 1;
+            }
+        }
+
+        .message {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0;
+            animation: slideIn 0.3s ease-out;
+            align-items: flex-end;
+        }
+
+        .message.user {
+            justify-content: flex-end;
+        }
+
+        .message.bot {
+            justify-content: flex-start;
+        }
+
+        .message-bubble {
+            max-width: 95%;
+            padding: 1rem 1.25rem;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            word-wrap: break-word;
+            box-shadow: none;
+        }
+
+        .message.user .message-bubble {
+            background: #FFB800;
+            color: #111111;
+            border: 2px solid #111111;
+            border-radius: 12px 12px 4px 12px;
+            font-weight: 600;
+        }
+
+        .message.bot .message-bubble {
+            background: #F2F1ED;
+            color: #111111;
+            border: 2px solid #111111;
+            border-radius: 12px 12px 12px 4px;
+            padding: 1.25rem 1.5rem;
+            font-size: 1rem;
+        }
+
+        .bot-avatar {
+            width: 24px;
+            height: 24px;
+            background: #FFB800;
+            border: 2px solid #111111;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.5rem;
+            font-weight: 800;
+            color: #111111;
+            flex-shrink: 0;
+        }
+
+        .message-time {
+            font-size: 0.55rem;
+            color: #999999;
+            padding: 0 0.25rem;
+            margin-top: -0.5rem;
+            margin-bottom: 0.25rem;
+            text-align: right;
+            width: 100%;
+        }
+
+        .message-time.bot-time {
+            text-align: left;
+            padding-left: 2rem;
+        }
+
+        .message p {
+            margin: 0;
+        }
+
+        .message p + p {
+            margin-top: 0.5rem;
+        }
+
+        .message-image {
+            max-width: 200px;
+            border-radius: 0;
+            border: 2px solid #111111;
+            display: block;
+            box-shadow: none;
+        }
+
+        .message.user .message-image {
+            border: 2px solid #111111;
+        }
+
+        .phone-footer {
+            padding: 0.75rem 1rem;
+            border-top: 2px solid #111111;
+            background: #FAFAFA;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-shrink: 0;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .approve-checkbox {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 32px;
+            height: 32px;
+            border: 2px solid #111111;
+            background: #FFFFFF;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border-radius: 4px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.25rem;
+            box-shadow: 0 0 0 0 rgba(255, 184, 0, 0);
+        }
+
+        .approve-checkbox:hover {
+            background: #FFF3CD;
+            transform: scale(1.1);
+            border-color: #FFB800;
+        }
+
+        .approve-checkbox:active {
+            transform: scale(0.95);
+        }
+
+        .approve-checkbox:checked {
+            background: #FFB800;
+            border-color: #111111;
+            animation: approveCheck 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .approve-checkbox:checked::after {
+            content: '✓';
+            color: #111111;
+        }
+
+        @keyframes approveCheck {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .approve-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            cursor: pointer;
+            color: #111111;
+            transition: all 0.25s;
+            user-select: none;
+        }
+
+        .approve-checkbox:hover + .approve-label {
+            color: #FFB800;
+            font-weight: 800;
+        }
+
+        .phone-footer-hint {
+            font-size: 0.6rem;
+            color: #FFB800;
+            margin-left: auto;
+            font-style: italic;
+            font-weight: 600;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 0.7;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+
+        .caption-edit-btn {
+            font-size: 0.6rem;
+            padding: 3px 8px;
+            background: transparent;
+            border: 1px solid #999;
+            color: #999;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            margin-top: 4px;
+            transition: all 0.2s;
+            display: block;
+            margin-left: auto;
+            margin-right: 0;
+        }
+
+        .caption-edit-btn:hover {
+            border-color: #FFB800;
+            color: #FFB800;
+        }
+
+        .caption-editable {
+            outline: none;
+            border: 2px solid #FFB800;
+            padding: 4px;
+            border-radius: 4px;
+            min-height: 2em;
+        }
+
+        .platform-icons {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .platform-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+            font-weight: 800;
+            color: #FFFFFF;
+            flex-shrink: 0;
+            border: 1px solid rgba(0,0,0,0.15);
+            font-size: 0.5rem;
+        }
+
+        .platform-icon.instagram {
+            background: linear-gradient(135deg, #E1306C, #833AB4);
+        }
+
+        .platform-icon.linkedin {
+            background: #0077B5;
+        }
+
+        .platform-icon.facebook {
+            background: #1877F2;
+        }
+
+        .phone-input-area {
+            padding: 0.75rem;
+            border-top: 2px solid #111111;
+            background: #FFFFFF;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .phone-button-row {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+
+        .phone-action-btn {
+            flex: 1;
+            padding: 0.75rem;
+            background: #F2F1ED;
+            border: 2px solid #111111;
+            border-radius: 0;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+            transition: all 0.2s;
+            max-width: 80px;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .phone-action-btn:hover {
+            background: #E2E1DC;
+        }
+
+        .phone-action-icon {
+            font-size: 1.5rem;
+        }
+
+        .phone-action-label {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+        }
+
+        .phone-action-btn-compact {
+            padding: 0;
+            background: #F2F1ED;
+            border: 2px solid #111111;
+            border-radius: 0;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+        }
+
+        .phone-action-btn-compact:hover {
+            background: #E2E1DC;
+        }
+
+        .phone-action-btn-compact:active {
+            background: #D0D0D0;
+        }
+
+        .phone-input-row {
+            display: flex;
+            gap: 0.375rem;
+            align-items: center;
+        }
+
+        .phone-input {
+            flex: 1;
+            padding: 0.5rem 0.75rem;
+            border: 2px solid #111111;
+            border-radius: 0;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.7rem;
+            background: #FFFFFF;
+            transition: all 0.2s;
+            min-width: 0;
+        }
+
+        .phone-input:focus {
+            outline: none;
+            background: #F2F1ED;
+            border-color: #111111;
+            box-shadow: none;
+        }
+
+        .phone-input::placeholder {
+            color: #999999;
+        }
+
+        .phone-input-btn {
+            padding: 0.5rem 0.625rem;
+            background: #FFB800;
+            border: 2px solid #111111;
+            border-radius: 0;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.65rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s;
+            flex-shrink: 0;
+            white-space: nowrap;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .phone-input-btn:hover {
+            background: #E6A700;
+        }
+
+        .phone-input-btn:active {
+            background: #FFB800;
+        }
+
+        .message.generating .message-bubble::after {
+            content: '✓ Generated';
+            display: block;
+            margin-top: 0.5rem;
+            font-size: 0.75rem;
+            color: #FFB800;
+            font-weight: 600;
+        }
+
+        /* Hidden Sections */
+        .hidden-sections {
+            display: none;
+        }
+
+        .hidden-sections.visible {
+            display: block;
+        }
+
+        /* Home How It Works */
+        .home-how-it-works {
+            padding: 5rem 1.5rem;
+            background: #F2F1ED;
+        }
+
+        .home-how-container {
+            max-width: 56rem;
+            margin: 0 auto;
+        }
+
+        .home-how-header {
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .home-how-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .home-how-subheader {
+            font-size: 1.125rem;
+            color: #555555;
+            margin-bottom: 2rem;
+        }
+
+        .home-how-intro {
+            font-size: 1.125rem;
+            color: #555555;
+            line-height: 1.6;
+            margin-bottom: 3rem;
+        }
+
+        .home-steps-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            position: relative;
+        }
+
+        @media (max-width: 768px) {
+            .home-steps-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .home-steps-grid::before {
+                display: none;
+            }
+        }
+
+        .home-steps-grid::before {
+            content: '';
+            position: absolute;
+            top: 50px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #111111;
+            z-index: 0;
+        }
+
+        .home-step {
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .home-step-number {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #111111;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #111111;
+            background: #FFB800;
+            margin-bottom: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .home-step h3 {
+            margin: 0 0 0.75rem 0;
+            font-size: 1.125rem;
+        }
+
+        .home-step p {
+            color: #555555;
+            margin: 0;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        /* Content Sections */
+        .content-section {
+            padding: 5rem 1.5rem;
+        }
+
+        .problem-section {
+            background: #FFFFFF;
+        }
+
+        .solution-section {
+            background: #F2F1ED;
+        }
+
+        .value-section {
+            background: #FFFFFF;
+        }
+
+        .section-headline {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            margin: 0 0 3rem 0;
+            color: #111111;
+        }
+
+        .content-item {
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .item-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .content-item h4 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.125rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin: 0 0 0.5rem 0;
+            color: #111111;
+        }
+
+        .content-item p {
+            color: #555555;
+            margin: 0;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        /* Problem Cards */
+        .problem-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .problem-cards-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .problem-card {
+            border: 2px solid #111111;
+            padding: 2rem;
+            background: #FFFFFF;
+            border-radius: 4px;
+            text-align: left;
+        }
+
+        .problem-card h4 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.125rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin: 0 0 0.75rem 0;
+            color: #111111;
+        }
+
+        .problem-card p {
+            color: #555555;
+            margin: 0;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        /* Pricing Section */
+        .pricing-section {
+            padding: 5rem 1.5rem;
+            background: #FFFFFF;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 1024px) {
+            .pricing-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        .pricing-card {
+            border: 2px solid #111111;
+            padding: 2.5rem;
+            background: #FFFFFF;
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .pricing-card:hover {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transform: translateY(-4px);
+        }
+
+        .pricing-card-featured {
+            border: 2px solid #FFB800;
+            background: #FFFBF0;
+            transform: scale(1.02);
+        }
+
+        .pricing-card-featured:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 10px 40px rgba(255, 184, 0, 0.2);
+        }
+
+        .pricing-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #FFB800;
+            border: 2px solid #111111;
+            color: #111111;
+            padding: 0.4rem 1rem;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-radius: 4px;
+        }
+
+        .pricing-tier {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: #111111;
+            margin-bottom: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .pricing-amount {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 2.75rem;
+            font-weight: 800;
+            color: #111111;
+            margin-bottom: 0.5rem;
+            line-height: 1;
+        }
+
+        .pricing-period {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #555555;
+        }
+
+        .pricing-features {
+            list-style: none;
+            padding: 0;
+            margin: 2rem 0;
+            flex: 1;
+        }
+
+        .pricing-features li {
+            padding: 0.875rem 0;
+            border-bottom: 1px solid #E8E8E8;
+            color: #555555;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .pricing-features li:last-child {
+            border-bottom: none;
+        }
+
+        .pricing-features li::before {
+            content: '✓ ';
+            color: #FFB800;
+            font-weight: 700;
+            margin-right: 0.5rem;
+        }
+
+        .pricing-button {
+            padding: 1rem;
+            background: #FFFFFF;
+            border: 2px solid #111111;
+            color: #111111;
+            font-weight: 700;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            cursor: pointer;
+            border-radius: 4px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+            margin-top: auto;
+        }
+
+        .pricing-button:hover {
+            background: #111111;
+            color: #FFFFFF;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .pricing-button-featured {
+            background: #FFB800;
+            border: 2px solid #111111;
+            color: #111111;
+        }
+
+        .pricing-button-featured:hover {
+            background: #E6A700;
+            color: #111111;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Who We Serve Section */
+        .who-we-serve {
+            padding: 5rem 1.5rem;
+            background: #FFFFFF;
+        }
+
+        .who-we-serve-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .who-we-serve h2 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .who-we-serve-subtitle {
+            font-size: 1.125rem;
+            color: #555555;
+            text-align: center;
+            margin-bottom: 3rem;
+            font-weight: 500;
+        }
+
+        .serve-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .serve-card {
+            background: #F2F1ED;
+            border: 2px solid #111111;
+            padding: 2rem;
+            border-radius: 8px;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            cursor: pointer;
+        }
+
+        .serve-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            background: #FFFFFF;
+        }
+
+        .serve-card h3 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+            color: #111111;
+        }
+
+        .serve-card p {
+            font-size: 1rem;
+            color: #555555;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .who-we-serve {
+                padding: 3rem 1.5rem;
+            }
+
+            .who-we-serve h2 {
+                font-size: 2rem;
+            }
+
+            .serve-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .who-we-serve {
+                padding: 2rem 1rem;
+            }
+
+            .who-we-serve h2 {
+                font-size: 1.75rem;
+            }
+
+            .serve-grid {
+                grid-template-columns: 1fr;
+                gap: 1.25rem;
+            }
+
+            .serve-card {
+                padding: 1.5rem;
+            }
+
+            .serve-card h3 {
+                font-size: 1.25rem;
+            }
+        }
+
+        /* Serve Modal */
+        .serve-modal {
+            display: none;
+            position: fixed;
+            z-index: 999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease-out;
+            padding: 1rem;
+            overflow-y: auto;
+        }
+
+        .serve-modal-content {
+            background: #FFFFFF;
+            border: 2px solid #111111;
+            max-width: 600px;
+            width: 100%;
+            padding: 3rem;
+            position: relative;
+            animation: slideIn 0.3s ease-out;
+            border-radius: 8px;
+        }
+
+        .serve-modal-close {
+            position: absolute;
+            right: 1.5rem;
+            top: 1.5rem;
+            background: none;
+            border: none;
+            font-size: 2rem;
+            font-weight: 300;
+            cursor: pointer;
+            color: #111111;
+            transition: color 0.2s;
+            padding: 0;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .serve-modal-close:hover {
+            color: #FFB800;
+        }
+
+        .serve-modal-title {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            color: #111111;
+        }
+
+        .serve-modal-subtitle {
+            font-size: 1.125rem;
+            color: #555555;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .serve-modal-section {
+            margin-bottom: 2rem;
+        }
+
+        .serve-modal-section h4 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: #111111;
+            margin-bottom: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+
+        .serve-modal-section p {
+            font-size: 0.95rem;
+            color: #555555;
+            line-height: 1.7;
+            margin: 0.5rem 0;
+        }
+
+        .serve-modal-section ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .serve-modal-section li {
+            font-size: 0.95rem;
+            color: #555555;
+            line-height: 1.7;
+            padding-left: 1.5rem;
+            position: relative;
+            margin-bottom: 0.5rem;
+        }
+
+        .serve-modal-section li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #FFB800;
+            font-weight: 800;
+        }
+
+        @media (max-width: 640px) {
+            .serve-modal-content {
+                padding: 2rem 1.5rem;
+                max-width: 100%;
+            }
+
+            .serve-modal-title {
+                font-size: 1.5rem;
+            }
+
+            .serve-modal-close {
+                right: 1rem;
+                top: 1rem;
+            }
+        }
+
+        /* Utility */
+        .container {
+            max-width: 56rem;
+            margin: 0 auto;
+        }
+
+        /* Scroll Down Button */
+        .scroll-down-btn {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background: #FFB800;
+            border: 2px solid #111111;
+            border-radius: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .scroll-down-btn:hover {
+            background: #E6A700;
+            transform: translateY(-4px);
+        }
+
+        .scroll-down-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Scrolling Marquee */
+        .scrolling-marquee {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #111111;
+            border-top: 2px solid #111111;
+            padding: 1rem 0;
+            overflow: hidden;
+            z-index: 5;
+        }
+
+        .marquee-content {
+            display: flex;
+            gap: 4rem;
+            white-space: nowrap;
+            animation: scroll-left 30s linear infinite;
+        }
+
+        @keyframes scroll-left {
+            0% {
+                transform: translateX(100vw);
+            }
+            100% {
+                transform: translateX(-100vw);
+            }
+        }
+
+        .marquee-item {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.125rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: #FFB800;
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-shrink: 0;
+        }
+
+        .marquee-item::before {
+            content: '✓';
+            color: #FFB800;
+            font-weight: 800;
+        }
+
+        /* Signup Modal */
+        .signup-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .signup-modal-content {
+            background-color: #FFFFFF;
+            padding: 2.5rem;
+            border: 2px solid #111111;
+            border-radius: 8px;
+            max-width: 420px;
+            width: 90%;
+            position: relative;
+            animation: slideInUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .signup-modal-close {
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+            background: none;
+            border: none;
+            font-size: 2rem;
+            font-weight: 300;
+            cursor: pointer;
+            color: #555555;
+            transition: color 0.2s;
+            padding: 0;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .signup-modal-close:hover {
+            color: #111111;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #111111;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #111111;
+            border-radius: 4px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #FFB800;
+            background: #FFFBF5;
+            box-shadow: 0 0 0 3px rgba(255, 184, 0, 0.1);
+        }
+
+        .form-submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background: #FFB800;
+            border: 2px solid #111111;
+            border-radius: 4px;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: #111111;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .form-submit-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 12px rgba(255, 184, 0, 0.3);
+        }
+
+        .form-submit-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Demo Modal */
+        .demo-modal {
+            display: none;
+            position: fixed;
+            z-index: 999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease-out;
+            padding: 1rem;
+        }
+
+        .demo-modal .phone-frame {
+            max-width: 480px !important;
+        }
+
+        .demo-modal .phone-screen {
+            height: 640px !important;
+        }
+
+        @media (max-width: 768px) {
+            .demo-modal .phone-frame {
+                max-width: 380px !important;
+            }
+
+            .demo-modal .phone-screen {
+                height: 580px !important;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .demo-modal .phone-frame {
+                max-width: 320px !important;
+            }
+
+            .demo-modal .phone-screen {
+                height: 520px !important;
+            }
+        }
+
+        .demo-modal-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+            position: relative;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .demo-modal-close {
+            position: absolute;
+            right: 0;
+            top: -40px;
+            background: none;
+            border: none;
+            font-size: 3rem;
+            font-weight: 300;
+            cursor: pointer;
+            color: #FFFFFF;
+            transition: color 0.2s;
+            padding: 0;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .demo-modal-close:hover {
+            color: #FFB800;
+        }
+
+        .demo-instructions {
+            text-align: center;
+            color: #FFFFFF;
+        }
+
+        .demo-instructions h3 {
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+            color: #FFFFFF;
+        }
+
+        .demo-instructions p {
+            font-size: 1rem;
+            color: #E0E0E0;
+        }
+
+        .demo-phone-container {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+
+        @media (max-width: 640px) {
+            .demo-modal-close {
+                top: -35px;
+                font-size: 2rem;
+            }
+
+            .demo-instructions h3 {
+                font-size: 1.25rem;
+            }
+
+            .demo-instructions p {
+                font-size: 0.9rem;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Header/Navigation -->
+    <header>
+        <nav>
+            <div class="nav-container">
+                <a href="#" class="logo" onclick="scrollToTop(); return false;">
+                    <div class="logo-icon">JS</div>
+                    <span>JobSite</span>
+                </a>
+
+                <button class="nav-menu-button" onclick="document.querySelector('nav').parentElement.setAttribute('data-state', document.querySelector('nav').parentElement.getAttribute('data-state') === 'false' ? 'true' : 'false')">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+
+                <div class="nav-links">
+                    <a href="#how-it-works">How It Works</a>
+                    <a href="#who-we-serve">Who We Serve</a>
+                    <a href="#pricing">Pricing</a>
+                    <div class="cta-buttons">
+                        <button class="button button-primary" onclick="openSignupModal()">Get Started</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section with Demo -->
+    <section class="hero-with-demo">
+        <div class="hero">
+            <div class="badge">AI-Powered Marketing</div>
+
+            <h1>Turn Your Projects Into Content — Automatically</h1>
+
+            <p class="subtitle">Send a photo or quick update from the job site.<br>We turn it into a finished post and schedule it for you.</p>
+
+            <div class="button-group">
+                <button class="button button-primary" onclick="openSignupModal()">Get Started</button>
+                <button class="button button-secondary" onclick="openDemoModal()">See How It Works</button>
+            </div>
+
+            <h2 style="font-family: 'Barlow Condensed', sans-serif; font-size: 1.5rem; font-weight: 800; color: #111111; margin-top: 2rem; margin-bottom: 0; line-height: 1.5; text-transform: uppercase; letter-spacing: -0.02em;">You know you should be posting. You just don't.</h2>
+
+        </div>
+
+        <div class="demo-side">
+            <div class="what-this-looks-like" id="what-this-looks-like">
+                <div class="what-container">
+                    <h2 class="what-header">
+                        What This Looks Like
+                    </h2>
+
+                    <div class="phone-frame">
+                        <div class="phone-screen">
+                            <div class="phone-status-bar">
+                                <span class="phone-status-time">9:41</span>
+                                <div class="phone-status-icons"><span>▮▮▮</span><span>WiFi</span><span>100%</span></div>
+                            </div>
+                            <div class="phone-header">
+                                <div class="phone-header-avatar">JS</div>
+                                <div class="phone-header-title">
+                                    JobSite
+                                    <span class="phone-header-status">● Active now</span>
+                                </div>
+                                <div style="width: 28px;"></div>
+                            </div>
+                            <div class="phone-messages" id="phone-messages-demo">
+                                <div style="padding: 1rem; text-align: center; color: #999; font-size: 0.875rem;">
+                                    Upload a photo to get started
+                                </div>
+                            </div>
+                            <div class="phone-input-area">
+                                <div class="phone-input-row">
+                                    <input type="file" id="phone-camera-input" style="display: none;" accept="image/*" capture="environment">
+                                    <input type="text" class="phone-input" id="phone-input-demo" placeholder="Describe your job..." maxlength="100">
+                                    <button class="phone-action-btn-compact" id="phone-camera-btn">📷</button>
+                                    <button class="phone-input-btn" id="phone-submit-btn">Send</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Home How It Works -->
+    <section class="home-how-it-works" id="how-it-works">
+        <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; padding: 5rem 1.5rem;">
+            <!-- Problem Section -->
+            <div>
+                <h2 style="font-family: 'Barlow Condensed', sans-serif; font-size: 2.5rem; font-weight: 800; text-transform: uppercase; margin-bottom: 2rem; color: #111111;">You know you should be posting. You just don't.</h2>
+
+                <div style="space-y: 1.5rem;">
+                    <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
+                        <div style="font-size: 1.5rem; flex-shrink: 0;">✗</div>
+                        <div>
+                            <p style="color: #555555; line-height: 1.6; margin: 0;">You're busy running jobs, not writing captions</p>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
+                        <div style="font-size: 1.5rem; flex-shrink: 0;">✗</div>
+                        <div>
+                            <p style="color: #555555; line-height: 1.6; margin: 0;">Your best work never gets seen</p>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
+                        <div style="font-size: 1.5rem; flex-shrink: 0;">✗</div>
+                        <div>
+                            <p style="color: #555555; line-height: 1.6; margin: 0;">Social media falls off the second things get busy</p>
+                        </div>
+                    </div>
+                </div>
+
+                <p style="color: #555555; line-height: 1.6; margin-top: 2rem; font-weight: 500;">So nothing gets posted. And when it does, it's rushed or inconsistent.</p>
+            </div>
+
+            <!-- Steps Section -->
+            <div>
+                <div style="margin-bottom: 3rem;">
+                    <h3 style="font-family: 'Barlow Condensed', sans-serif; font-size: 1.75rem; font-weight: 800; text-transform: uppercase; color: #111111; margin-bottom: 0.5rem;">How It Works</h3>
+                    <p style="font-size: 1.125rem; color: #555555;">Three simple steps</p>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr; gap: 2rem;">
+                    <div style="display: flex; gap: 1.5rem;">
+                        <div style="font-family: 'Barlow Condensed', sans-serif; font-size: 2.5rem; font-weight: 800; color: #111111; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; border: 2px solid #111111; background: #FFB800; flex-shrink: 0;">1</div>
+                        <div>
+                            <h4 style="font-family: 'Barlow Condensed', sans-serif; font-size: 1.125rem; font-weight: 800; text-transform: uppercase; margin: 0 0 0.5rem 0; color: #111111;">Send what happened</h4>
+                            <p style="color: #555555; margin: 0; line-height: 1.6; font-size: 0.95rem;">Upload a photo or drop a quick update from the job site</p>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 1.5rem;">
+                        <div style="font-family: 'Barlow Condensed', sans-serif; font-size: 2.5rem; font-weight: 800; color: #111111; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; border: 2px solid #111111; background: #FFB800; flex-shrink: 0;">2</div>
+                        <div>
+                            <h4 style="font-family: 'Barlow Condensed', sans-serif; font-size: 1.125rem; font-weight: 800; text-transform: uppercase; margin: 0 0 0.5rem 0; color: #111111;">We write the post</h4>
+                            <p style="color: #555555; margin: 0; line-height: 1.6; font-size: 0.95rem;">Clean, professional caption based on the actual work</p>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 1.5rem;">
+                        <div style="font-family: 'Barlow Condensed', sans-serif; font-size: 2.5rem; font-weight: 800; color: #111111; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; border: 2px solid #111111; background: #FFB800; flex-shrink: 0;">3</div>
+                        <div>
+                            <h4 style="font-family: 'Barlow Condensed', sans-serif; font-size: 1.125rem; font-weight: 800; text-transform: uppercase; margin: 0 0 0.5rem 0; color: #111111;">You approve</h4>
+                            <p style="color: #555555; margin: 0; line-height: 1.6; font-size: 0.95rem;">One tap. We schedule and publish it</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing-section" id="pricing">
+        <div class="home-how-container">
+            <div class="home-how-header">
+                <h2>Pricing</h2>
+            </div>
+
+            <h3 class="section-headline">Simple monthly pricing</h3>
+
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-tier">Starter</div>
+                    <div class="pricing-amount">$75<span class="pricing-period">/mo</span></div>
+                    <ul class="pricing-features">
+                        <li>Content creation</li>
+                        <li>Approval via text/email</li>
+                        <li>Scheduled posting</li>
+                    </ul>
+                    <button class="pricing-button" onclick="openSignupModal()">Get Started</button>
+                </div>
+
+                <div class="pricing-card pricing-card-featured">
+                    <div class="pricing-badge">Most Popular</div>
+                    <div class="pricing-tier">Growth</div>
+                    <div class="pricing-amount">$150<span class="pricing-period">/mo</span></div>
+                    <ul class="pricing-features">
+                        <li>Multi-platform posting</li>
+                        <li>Faster turnaround</li>
+                        <li>Custom tone and prompts</li>
+                    </ul>
+                    <button class="pricing-button pricing-button-featured" onclick="openSignupModal()">Get Started</button>
+                </div>
+
+                <div class="pricing-card">
+                    <div class="pricing-tier">Pro</div>
+                    <div class="pricing-amount">Custom</div>
+                    <ul class="pricing-features">
+                        <li>Fully embedded into your workflow</li>
+                        <li>Advanced automation</li>
+                        <li>Priority support</li>
+                    </ul>
+                    <button class="pricing-button">Contact Sales</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Who We Serve Section -->
+    <section class="who-we-serve" id="who-we-serve">
+        <div class="who-we-serve-container">
+            <h2>Who We Serve</h2>
+            <p class="who-we-serve-subtitle">Built for construction businesses at every stage</p>
+
+            <div class="serve-grid">
+                <div class="serve-card" onclick="openServeModal('gc')">
+                    <h3>General Contractors</h3>
+                    <p>Show progress and win more bids</p>
+                </div>
+
+                <div class="serve-card" onclick="openServeModal('builder')">
+                    <h3>Home Builders</h3>
+                    <p>Turn builds into marketing that attracts buyers</p>
+                </div>
+
+                <div class="serve-card" onclick="openServeModal('remodeler')">
+                    <h3>Remodelers</h3>
+                    <p>Show before/after transformations that drive leads</p>
+                </div>
+
+                <div class="serve-card" onclick="openServeModal('sub')">
+                    <h3>Subcontractors</h3>
+                    <p>Prove quality and stay top of mind with GCs</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scrolling Marquee Footer -->
+    <div class="scrolling-marquee">
+        <div class="marquee-content">
+            <span class="marquee-item">No more "what should we post today?"</span>
+            <span class="marquee-item">No more sitting down to write captions</span>
+            <span class="marquee-item">No more inconsistent posting</span>
+            <span class="marquee-item">No more trying to remember to take photos</span>
+            <span class="marquee-item">No more half-written drafts that never get posted</span>
+            <span class="marquee-item">No more gaps where nothing goes out for weeks</span>
+            <span class="marquee-item">No more stopping your day to "do content"</span>
+            <span class="marquee-item">No more chasing updates from the field</span>
+            <span class="marquee-item">No more digging through your camera roll</span>
+            <span class="marquee-item">No more overthinking what to say</span>
+            <span class="marquee-item">No more posting once and disappearing for weeks</span>
+            <span class="marquee-item">No more relying on someone else to keep it going</span>
+            <span class="marquee-item">No more asking the crew for photos at the end of the day</span>
+            <span class="marquee-item">No more trying to recap jobs after the fact</span>
+            <span class="marquee-item">No more missed milestones that never get shared</span>
+            <span class="marquee-item">No more rushed posts between meetings</span>
+            <span class="marquee-item">No more projects finishing with nothing documented</span>
+            <span class="marquee-item">No more thinking</span>
+            <span class="marquee-item">No more writing</span>
+            <span class="marquee-item">No more chasing content</span>
+            <span class="marquee-item">No more inconsistency</span>
+            <span class="marquee-item">No more drop-offs</span>
+            <span class="marquee-item">No more "what should we post today?"</span>
+            <span class="marquee-item">No more sitting down to write captions</span>
+            <span class="marquee-item">No more inconsistent posting</span>
+            <span class="marquee-item">No more trying to remember to take photos</span>
+            <span class="marquee-item">No more half-written drafts that never get posted</span>
+            <span class="marquee-item">No more gaps where nothing goes out for weeks</span>
+        </div>
+    </div>
+
+    <!-- Company Info Modal -->
+    <div id="company-info-modal" class="signup-modal">
+        <div class="signup-modal-content">
+            <button class="signup-modal-close" onclick="closeCompanyModal()">×</button>
+            <h2 style="font-family: 'Barlow Condensed', sans-serif; font-size: 2rem; font-weight: 800; text-transform: uppercase; margin-bottom: 0.5rem; color: #111111;">Get Started</h2>
+
+            <form id="company-info-form">
+                <div class="form-group">
+                    <label for="company-info-name">Name *</label>
+                    <input type="text" id="company-info-name" name="name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="company-info-company">Company Name *</label>
+                    <input type="text" id="company-info-company" name="company_name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="company-info-trade">Trade/Industry *</label>
+                    <select id="company-info-trade" name="trade" required style="width: 100%; padding: 0.75rem; border: 2px solid #111111; border-radius: 4px; font-family: 'Inter', sans-serif; font-size: 1rem;">
+                        <option value="">Select a trade</option>
+                        <option value="General Contracting">General Contracting</option>
+                        <option value="Home Building">Home Building</option>
+                        <option value="Remodeling">Remodeling</option>
+                        <option value="Landscaping">Landscaping</option>
+                        <option value="HVAC">HVAC</option>
+                        <option value="Plumbing">Plumbing</option>
+                        <option value="Electrical">Electrical</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="company-info-email">Email *</label>
+                    <input type="email" id="company-info-email" name="email" required>
+                </div>
+
+                <button type="submit" class="form-submit-btn">Start Free Trial</button>
+                <p style="text-align: center; font-size: 0.75rem; color: #999; margin-top: 1rem;">No credit card required. 14-day free trial. Cancel anytime.</p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Email Contact Footer -->
+    <footer style="background: #111111; color: #FFFFFF; padding: 4rem 2rem; text-align: center;">
+        <div style="max-width: 600px; margin: 0 auto;">
+            <h3 style="font-family: 'Barlow Condensed', sans-serif; font-size: 1.5rem; font-weight: 800; text-transform: uppercase; letter-spacing: -0.02em; margin-bottom: 1rem;">Get in Touch</h3>
+            <p style="font-size: 1rem; margin-bottom: 2rem; color: #CCCCCC;">Have questions? We'd love to hear from you.</p>
+            <a href="mailto:hello@constructionflows.com" style="display: inline-block; font-size: 1.25rem; font-weight: 600; color: #FFB800; text-decoration: none; padding: 1rem 2rem; border: 2px solid #FFB800; border-radius: 4px; transition: all 0.3s;">
+                hello@constructionflows.com
+            </a>
+            <p style="font-size: 0.875rem; color: #888888; margin-top: 2rem;">© 2026 JobSite. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <div class="hidden-sections" id="extra-sections">
+        <!-- Features -->
+        <section class="features" id="features">
+            <h2>Built for Busy Contractors</h2>
+
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="feature-icon">✓</div>
+                    <div class="feature-content">
+                        <h3>Smart Scheduling</h3>
+                        <p>Posts go live when your audience is most active. No guessing, just results.</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">✓</div>
+                    <div class="feature-content">
+                        <h3>Multi-Channel Distribution</h3>
+                        <p>One photo, endless platforms. We handle Instagram, Facebook, LinkedIn, and more.</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">✓</div>
+                    <div class="feature-content">
+                        <h3>Brand Consistency</h3>
+                        <p>Every post matches your brand guidelines. Logos, colors, and voice—all automated.</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">✓</div>
+                    <div class="feature-content">
+                        <h3>Performance Analytics</h3>
+                        <p>See which photos drive engagement. Real data to inform your marketing strategy.</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">✓</div>
+                    <div class="feature-content">
+                        <h3>AI-Powered Captions</h3>
+                        <p>Relevant, professional copy generated in seconds. No more staring at a blank screen.</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">✓</div>
+                    <div class="feature-content">
+                        <h3>Team Collaboration</h3>
+                        <p>Invite team members to upload and approve posts. Full control, zero chaos.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials -->
+        <section class="testimonials">
+            <h2>Loved by Construction Pros</h2>
+
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <p class="testimonial-quote">"I used to spend 2 hours a week on Instagram captions. Now it takes 2 minutes. JobSite is a game-changer."</p>
+                    <div class="testimonial-author">Mike Rodriguez</div>
+                    <div class="testimonial-role">General Contractor, Rodriguez Construction</div>
+                </div>
+                <div class="testimonial-card">
+                    <p class="testimonial-quote">"Our engagement doubled in the first month. The posts look professional, and our clients love seeing the progress."</p>
+                    <div class="testimonial-author">Sarah Chen</div>
+                    <div class="testimonial-role">Project Manager, Chen Landscaping</div>
+                </div>
+                <div class="testimonial-card">
+                    <p class="testimonial-quote">"Best investment we made for our business. Marketing on autopilot. Highly recommend."</p>
+                    <div class="testimonial-author">David Patterson</div>
+                    <div class="testimonial-role">Owner, Patterson Builders</div>
+                </div>
+                <div class="testimonial-card">
+                    <p class="testimonial-quote">"Finally, a tool that understands construction. Not generic. Not clunky. Just works."</p>
+                    <div class="testimonial-author">James Torres</div>
+                    <div class="testimonial-role">Superintendent, Torres Heavy Equipment</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Final CTA -->
+        <section class="final-cta" id="pricing">
+            <div class="final-cta-content">
+                <h2>Ready to Transform Your Marketing?</h2>
+                <p class="subtitle">Join 500+ contractors who are saving time and growing their business with JobSite.</p>
+
+                <div class="button-group">
+                    <button class="button button-primary" onclick="openSignupModal()">Start Free Trial</button>
+                    <button class="button button-secondary" onclick="openDemoModal()">Schedule Demo</button>
+                </div>
+
+                <p style="font-size: 0.875rem; color: #555555; margin-top: 1rem;">No credit card required. 14-day free trial. Cancel anytime.</p>
+            </div>
+        </section>
+
+        <!-- Bottom CTA Section -->
+        <section class="bottom-cta-section">
+            <div class="bottom-cta-container">
+                <div class="bottom-cta-content">
+                    <h2 style="font-family: 'Barlow Condensed', sans-serif; font-size: 2rem; font-weight: 800; text-transform: uppercase; margin-bottom: 1rem; color: #111111;">Get Your Free Audit</h2>
+                    <p style="font-size: 1.1rem; color: #555555; margin-bottom: 2rem; max-width: 500px;">See how much time you could save with JobSite. We'll review your current process and show you the impact.</p>
+                </div>
+                <form class="bottom-cta-form" id="bottom-cta-form">
+                    <div class="cta-form-row">
+                        <input type="text" id="cta-name" name="name" placeholder="Your Name" required style="flex: 1;">
+                        <input type="email" id="cta-email" name="email" placeholder="Email Address" required style="flex: 1;">
+                    </div>
+                    <div class="cta-form-row">
+                        <input type="tel" id="cta-phone" name="phone" placeholder="Phone Number" required style="flex: 1;">
+                        <input type="text" id="cta-company" name="company" placeholder="Company Name" required style="flex: 1;">
+                    </div>
+                    <button type="submit" class="cta-submit-btn">Get Your Free Audit</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Final Audit CTA -->
+        <section class="final-audit-cta">
+            <div class="final-audit-container">
+                <h2>Take a Free Construction Audit</h2>
+                <p>Answer 10 quick questions and see where you're losing time and money in your current workflow.</p>
+                <button class="audit-cta-button" onclick="openAuditModal()">Start Free Audit</button>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Modal functions - defined first so they're accessible to all buttons
+        // Serve modal data
+        const serveData = {
+            gc: {
+                title: 'General Contractors',
+                subtitle: 'Show progress and win more bids',
+                context: 'Most GCs aren\'t losing bids because of price. They\'re losing because their work isn\'t visible.\n\nProjects move fast, and nothing gets documented consistently. So when it\'s time to bid, there\'s no proof of execution.\n\nThis solves that.\n\nEvery milestone, update, and phase gets captured and turned into clean, professional posts — without slowing the job down.',
+                benefits: [
+                    'A running portfolio of active work',
+                    'Proof of progress for owners and partners',
+                    'Content that supports future bids'
+                ]
+            },
+            builder: {
+                title: 'Home Builders',
+                subtitle: 'Turn builds into marketing that attracts buyers',
+                context: 'Buyers don\'t just want a finished home. They want to see how it\'s built.\n\nBut most builders only post at the end, if at all. That misses the story.\n\nThis captures the full build process — from foundation to finish — and turns it into consistent content.\n\nSo instead of one final post, you have a full timeline of the project.',
+                benefits: [
+                    'Ongoing visibility during the build',
+                    'Content that builds trust with buyers',
+                    'A stronger brand across every project'
+                ]
+            },
+            remodeler: {
+                title: 'Remodelers',
+                subtitle: 'Show before/after transformations that drive leads',
+                context: 'Remodeling is visual. The transformation is the product.\n\nBut most before/after content never gets organized or shared properly.\n\nPhotos sit on phones. Projects go undocumented.\n\nThis turns every transformation into a clear, structured post — showing the full impact of the work.',
+                benefits: [
+                    'Consistent before/after content',
+                    'Clear proof of quality and craftsmanship',
+                    'Posts that actually generate inbound interest'
+                ]
+            },
+            sub: {
+                title: 'Subcontractors',
+                subtitle: 'Prove quality and stay top of mind with GCs',
+                context: 'Subs don\'t usually market themselves. Work comes from relationships.\n\nBut when those relationships shift, there\'s no visible track record to fall back on.\n\nThis makes your work visible — without adding effort.\n\nInstallations, upgrades, and completed scopes get documented and turned into simple, professional updates.',
+                benefits: [
+                    'Proof of clean, consistent work',
+                    'Visibility with GCs and partners',
+                    'A steady presence without having to "market"'
+                ]
+            }
+        };
+
+        function openServeModal(type) {
+            const modal = document.getElementById('serve-modal');
+            const data = serveData[type];
+            const body = document.getElementById('serve-modal-body');
+
+            if (modal && data) {
+                body.innerHTML = `
+                    <div class="serve-modal-title">${data.title}</div>
+                    <div class="serve-modal-subtitle">${data.subtitle}</div>
+
+                    <div class="serve-modal-section">
+                        <h4>Expanded Context</h4>
+                        ${data.context.split('\n\n').map(p => `<p>${p}</p>`).join('')}
+                    </div>
+
+                    <div class="serve-modal-section">
+                        <h4>What This Gives You</h4>
+                        <ul>
+                            ${data.benefits.map(b => `<li>${b}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeServeModal() {
+            const modal = document.getElementById('serve-modal');
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Close serve modal when clicking outside
+        document.getElementById('serve-modal')?.addEventListener('click', function(event) {
+            if (event.target === this) {
+                closeServeModal();
+            }
+        });
+
+        function openAuditModal() {
+            const modal = document.getElementById('audit-modal');
+            if (modal) {
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeAuditModal() {
+            const modal = document.getElementById('audit-modal');
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Close audit modal when clicking outside
+        document.getElementById('audit-modal')?.addEventListener('click', function(event) {
+            if (event.target === this) {
+                closeAuditModal();
+            }
+        });
+
+        function openContactModal() {
+            const modal = document.getElementById('contact-modal');
+            if (modal) {
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeContactModal() {
+            const modal = document.getElementById('contact-modal');
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Close contact modal when clicking outside
+        document.getElementById('contact-modal')?.addEventListener('click', function(event) {
+            if (event.target === this) {
+                closeContactModal();
+            }
+        });
+
+        function openSignupModal() {
+            const modal = document.getElementById('signup-modal');
+            if (modal) {
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeSignupModal() {
+            const modal = document.getElementById('signup-modal');
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        function closeCompanyModal() {
+            const modal = document.getElementById('company-info-modal');
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        function openDemoModal() {
+            const modal = document.getElementById('demo-modal');
+            if (modal) {
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeDemoModal() {
+            const modal = document.getElementById('demo-modal');
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Demo modal camera button - setup with setTimeout to ensure DOM is ready
+        let phoneCameraInputModal, phoneCameraButtonModal, phoneMessagesDemoModal;
+
+        setTimeout(() => {
+            phoneCameraInputModal = document.getElementById('phone-camera-input-modal');
+            phoneCameraButtonModal = document.getElementById('phone-camera-btn-modal');
+            phoneMessagesDemoModal = document.getElementById('phone-messages-demo-modal');
+
+            if (phoneCameraButtonModal && phoneCameraInputModal) {
+                phoneCameraButtonModal.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    phoneCameraInputModal.click();
+                });
+            }
+
+            if (phoneCameraInputModal) {
+                phoneCameraInputModal.addEventListener('change', (e) => {
+                    const file = e.target.files[0];
+                    if (!file) return;
+
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        const post = generateContextualPost();
+                        displayPostModal(event.target.result, 'Photo from job site', post);
+                    };
+                    reader.readAsDataURL(file);
+                    phoneCameraInputModal.value = '';
+                });
+            }
+        }, 100);
+
+        function displayPostModal(imageSrc, userMessage, postContent) {
+            // Clear messages
+            phoneMessagesDemoModal.innerHTML = '';
+
+            // Show user image message
+            const userMsg = document.createElement('div');
+            userMsg.className = 'message user';
+            userMsg.innerHTML = `
+                <div class="message-bubble">
+                    <img src="${imageSrc}" alt="Job photo" class="message-image" onerror="this.src='hvac-job.png'">
+                </div>
+            `;
+            phoneMessagesDemoModal.appendChild(userMsg);
+
+            // Show user caption
+            if (userMessage) {
+                const captionMsg = document.createElement('div');
+                captionMsg.className = 'message user';
+                captionMsg.innerHTML = `
+                    <div class="message-bubble">
+                        <p style="font-size: 0.875rem; margin: 0;">${userMessage}</p>
+                    </div>
+                    <span class="message-time">now</span>
+                `;
+                phoneMessagesDemoModal.appendChild(captionMsg);
+            }
+
+            phoneMessagesDemoModal.scrollTop = phoneMessagesDemoModal.scrollHeight;
+
+            // Show typing dots
+            setTimeout(() => {
+                const typingMsg = document.createElement('div');
+                typingMsg.className = 'message bot';
+                typingMsg.id = 'live-typing-modal';
+                typingMsg.innerHTML = `
+                    <div class="typing-indicator">
+                        <span class="typing-dot"></span>
+                        <span class="typing-dot"></span>
+                        <span class="typing-dot"></span>
+                    </div>
+                `;
+                phoneMessagesDemoModal.appendChild(typingMsg);
+                phoneMessagesDemoModal.scrollTop = phoneMessagesDemoModal.scrollHeight;
+
+                // After 2000ms: remove dots, show bot response
+                setTimeout(() => {
+                    const typingEl = document.getElementById('live-typing-modal');
+                    if (typingEl) typingEl.remove();
+
+                    // Add bot response
+                    const botMsg = document.createElement('div');
+                    botMsg.className = 'message bot';
+                    botMsg.innerHTML = `
+                        <div class="phone-header-avatar" style="width: 24px; height: 24px; font-size: 0.625rem; margin-right: 0.5rem; flex-shrink: 0;">JS</div>
+                        <div style="flex: 1;">
+                            <div class="message-bubble" style="padding: 1.5rem 1.75rem;">
+                                <p style="font-size: 1rem; margin: 0; line-height: 1.6;" class="caption-content">${postContent}</p>
+                            </div>
+                            <span class="message-time">now</span>
+                        </div>
+                    `;
+                    phoneMessagesDemoModal.appendChild(botMsg);
+
+                    // Add edit button
+                    const editBtn = document.createElement('button');
+                    editBtn.className = 'caption-edit-btn';
+                    editBtn.textContent = 'Edit Caption';
+                    editBtn.addEventListener('click', () => {
+                        const captionEl = botMsg.querySelector('.caption-content');
+                        captionEl.contentEditable = true;
+                        captionEl.classList.add('caption-editable');
+                        captionEl.focus();
+                    });
+                    botMsg.appendChild(editBtn);
+
+                    phoneMessagesDemoModal.scrollTop = phoneMessagesDemoModal.scrollHeight;
+
+                    // Remove existing footer
+                    const existingFooter = document.querySelector('.phone-footer');
+                    if (existingFooter) existingFooter.remove();
+
+                    // Add approve footer
+                    const phoneScreen = phoneMessagesDemoModal.parentElement;
+                    const footer = document.createElement('div');
+                    footer.className = 'phone-footer';
+                    footer.innerHTML = `
+                        <input type="checkbox" id="approve-btn-modal" class="approve-checkbox">
+                        <label for="approve-btn-modal" class="approve-label">Approve & Schedule</label>
+                        <span class="phone-footer-hint">tap to schedule</span>
+                    `;
+                    phoneScreen.appendChild(footer);
+
+                    // Handle approve checkbox
+                    const approveCheckbox = document.getElementById('approve-btn-modal');
+                    approveCheckbox.addEventListener('change', function() {
+                        if (this.checked) {
+                            // Open company info modal
+                            const companyModal = document.getElementById('company-info-modal');
+                            if (companyModal) {
+                                companyModal.style.display = 'flex';
+                                document.body.style.overflow = 'hidden';
+
+                                // Store reference to show scheduled after form submit
+                                window.demoFooter = footer;
+                                window.demoPhoneMessages = phoneMessagesDemoModal;
+                            }
+                        }
+                    });
+
+                    phoneMessagesDemoModal.scrollTop = phoneMessagesDemoModal.scrollHeight;
+                }, 2000);
+            }, 300);
+        }
+
+        // Close demo modal when clicking outside
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('demo-modal');
+            if (modal && event.target === modal) {
+                closeDemoModal();
+            }
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.querySelector('header').setAttribute('data-state', 'false');
+            });
+        });
+
+        // Handle "See How It Works" button
+        const seeHowItWorksBtn = document.querySelector('a[href="#what-this-looks-like"]');
+        const extraSections = document.getElementById('extra-sections');
+
+        if (seeHowItWorksBtn) {
+            seeHowItWorksBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                extraSections.classList.add('visible');
+
+                // Scroll to the section
+                setTimeout(() => {
+                    const section = document.getElementById('what-this-looks-like');
+                    if (section) {
+                        section.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                }, 100);
+            });
+        }
+
+        // Handle phone demo interaction
+        const phoneInput = document.getElementById('phone-input-demo');
+        const phoneSubmitBtn = document.getElementById('phone-submit-btn');
+        const phoneMessagesDemo = document.getElementById('phone-messages-demo');
+        const phoneCameraInput = document.getElementById('phone-camera-input');
+        const phoneCameraBtn = document.getElementById('phone-camera-btn');
+
+        // Initialize with sample conversations on page load
+        function initializeSampleConversations() {
+            // Clear placeholder message
+            phoneMessagesDemo.innerHTML = '';
+
+            const sampleConversations = [
+                {
+                    userCaption: "Day 3 — Foundation pour complete",
+                    unsplashId: "photo-1541123603104-852f7eca6d82",
+                    botResponse: "Foundation set ✓ Ready for next phase. Beautiful concrete pour—level, strong, and on schedule. Your foundation is built to last.",
+                    approved: false
+                },
+                {
+                    userCaption: "Steel going up — ahead of schedule",
+                    unsplashId: "photo-1581578731548-c64695cc6952",
+                    botResponse: "Steel framing complete! Structural integrity meets architectural vision. The skeleton of your project is taking shape perfectly.",
+                    approved: false
+                },
+                {
+                    userCaption: "Roof deck complete ✓",
+                    unsplashId: "photo-1504917595217-340d3e77e21a",
+                    botResponse: "Watertight and weather-ready. Roof deck is finished. Another major milestone complete—your project is moving ahead.",
+                    approved: true
+                }
+            ];
+
+            let delay = 300;
+            sampleConversations.forEach((conv, index) => {
+                // User message with photo
+                setTimeout(() => {
+                    const userMsg = document.createElement('div');
+                    userMsg.className = 'message user';
+                    const photoUrl = `https://images.unsplash.com/${conv.unsplashId}?w=400&h=400&fit=crop`;
+                    userMsg.innerHTML = `
+                        <div class="message-bubble">
+                            <img src="${photoUrl}" alt="Job photo" class="message-image" onerror="this.src='hvac-job.png'" style="display: block;">
+                        </div>
+                    `;
+                    phoneMessagesDemo.appendChild(userMsg);
+                    phoneMessagesDemo.scrollTop = phoneMessagesDemo.scrollHeight;
+
+                    // User caption
+                    setTimeout(() => {
+                        const captionMsg = document.createElement('div');
+                        captionMsg.className = 'message user';
+                        captionMsg.innerHTML = `
+                            <div class="message-bubble">
+                                <p style="font-size: 0.875rem; margin: 0;">${conv.userCaption}</p>
+                            </div>
+                            <span class="message-time">now</span>
+                        `;
+                        phoneMessagesDemo.appendChild(captionMsg);
+                        phoneMessagesDemo.scrollTop = phoneMessagesDemo.scrollHeight;
+                    }, 300);
+                }, delay);
+
+                delay += 600;
+
+                // Typing dots
+                setTimeout(() => {
+                    const typingMsg = document.createElement('div');
+                    typingMsg.className = 'message bot';
+                    typingMsg.id = `typing-${index}`;
+                    typingMsg.innerHTML = `
+                        <div class="typing-indicator">
+                            <span class="typing-dot"></span>
+                            <span class="typing-dot"></span>
+                            <span class="typing-dot"></span>
+                        </div>
+                    `;
+                    phoneMessagesDemo.appendChild(typingMsg);
+                    phoneMessagesDemo.scrollTop = phoneMessagesDemo.scrollHeight;
+                }, delay);
+
+                delay += 900;
+
+                // Bot response
+                setTimeout(() => {
+                    const typingEl = document.getElementById(`typing-${index}`);
+                    if (typingEl) typingEl.remove();
+
+                    const botMsg = document.createElement('div');
+                    botMsg.className = 'message bot';
+                    botMsg.innerHTML = `
+                        <div class="phone-header-avatar" style="width: 24px; height: 24px; font-size: 0.625rem; margin-right: 0.5rem; flex-shrink: 0;">JS</div>
+                        <div style="flex: 1;">
+                            <div class="message-bubble">
+                                <p style="font-size: 0.875rem; margin: 0;">${conv.botResponse}</p>
+                            </div>
+                            <span class="message-time">now</span>
+                        </div>
+                    `;
+                    if (conv.approved) {
+                        botMsg.classList.add('approved');
+                    }
+                    phoneMessagesDemo.appendChild(botMsg);
+                    phoneMessagesDemo.scrollTop = phoneMessagesDemo.scrollHeight;
+
+                    // Show approved state for third conversation
+                    if (conv.approved) {
+                        setTimeout(() => {
+                            const approvedMsg = document.createElement('div');
+                            approvedMsg.className = 'message bot approved';
+                            approvedMsg.innerHTML = `
+                                <div class="message-bubble" style="background: #D4EDDA; border-color: #28A745;">
+                                    <p style="font-size: 0.875rem; margin: 0; color: #155724; font-weight: 600;">✓ Scheduled to</p>
+                                    <div class="platform-icons" style="margin-top: 0.5rem;">
+                                        <div class="platform-icon instagram">📷</div>
+                                        <div class="platform-icon linkedin">in</div>
+                                        <div class="platform-icon facebook">f</div>
+                                    </div>
+                                </div>
+                            `;
+                            phoneMessagesDemo.appendChild(approvedMsg);
+                            phoneMessagesDemo.scrollTop = phoneMessagesDemo.scrollHeight;
+                        }, 500);
+                    }
+                }, delay);
+
+                delay += 500;
+            });
+        }
+
+        // Context-aware post generator based on image analysis
+        const postTemplates = {
+            framing: {
+                posts: [
+                    "Framing going up! Structural work is the foundation of every project. Our team moves with precision and efficiency to keep timelines tight.",
+                    "Week 2 framing progress. The skeleton is taking shape. Every stud, every beam—placed with care and attention to code requirements.",
+                    "Walls are up! This is where the real structure comes together. Our framers are working through weather and timeline to deliver quality work.",
+                    "Structural phase in full swing. Wood and steel taking form. Another day closer to weathertight."
+                ]
+            },
+            mechanical: {
+                posts: [
+                    "Rough mechanical rough-in complete. HVAC, plumbing, and electrical running clean through the walls. System integration at its best.",
+                    "Running systems today. When you get the mechanical right, everything else falls into place. Clean rough-in means smooth completion.",
+                    "Ductwork and piping flowing through the framing. This is the hidden infrastructure that makes homes comfortable and efficient.",
+                    "Systems phase underway. Keeping schedules tight and quality tight. That's the JobSite difference."
+                ]
+            },
+            finishing: {
+                posts: [
+                    "Finishing touches taking shape. Drywall and interior systems coming together beautifully. The home is coming alive.",
+                    "Interior phase rolling. Cabinets, flooring, and finishes installed with precision. Quality at every detail.",
+                    "Punch list getting shorter. Final inspections passing. This project is nearly complete and looks sharp."
+                ]
+            },
+            excavation: {
+                posts: [
+                    "Site prep complete. Foundation work ready to begin. Groundwork done right means everything that follows flows smoothly.",
+                    "Excavation in progress. Heavy equipment moving earth. This is where every build begins—with solid ground work.",
+                    "Site preparation finished. Clear, level, and ready for the next phase. Strong foundations start here."
+                ]
+            },
+            default: {
+                posts: [
+                    "Progress on site. Building quality takes time, attention, and skilled hands. Every day brings us closer to completion.",
+                    "Day on the job. Weather doesn't stop us. Schedules don't slow us down. Just solid work, day in and day out.",
+                    "Another milestone complete. From concept to reality—this is how quality construction happens.",
+                    "Work in progress. Quality never sleeps. Our teams are committed to delivering excellence on every project."
+                ]
+            }
+        };
+
+        function generateContextualPost(description = '') {
+            // Randomly select from all post types to ensure variety
+            const postTypes = Object.keys(postTemplates);
+            const randomType = postTypes[Math.floor(Math.random() * postTypes.length)];
+            const templates = postTemplates[randomType];
+            const randomPost = templates.posts[Math.floor(Math.random() * templates.posts.length)];
+            return randomPost;
+        }
+
+        // Handle photo button - open file picker
+        if (phoneCameraBtn) {
+            phoneCameraBtn.addEventListener('click', () => {
+                phoneCameraInput.click();
+            });
+        }
+
+
+        function displayPost(imageSrc, userMessage, postContent) {
+            // Clear initial message
+            phoneMessagesDemo.innerHTML = '';
+
+            // Show user image message
+            const userMsg = document.createElement('div');
+            userMsg.className = 'message user';
+            userMsg.innerHTML = `
+                <div class="message-bubble">
+                    <img src="${imageSrc}" alt="Job photo" class="message-image" onerror="this.src='hvac-job.png'">
+                </div>
+            `;
+            phoneMessagesDemo.appendChild(userMsg);
+
+            // Show user caption
+            if (userMessage) {
+                const captionMsg = document.createElement('div');
+                captionMsg.className = 'message user';
+                captionMsg.innerHTML = `
+                    <div class="message-bubble">
+                        <p style="font-size: 0.875rem; margin: 0;">${userMessage}</p>
+                    </div>
+                    <span class="message-time">now</span>
+                `;
+                phoneMessagesDemo.appendChild(captionMsg);
+            }
+
+            phoneMessagesDemo.scrollTop = phoneMessagesDemo.scrollHeight;
+
+            // Show typing dots
+            setTimeout(() => {
+                const typingMsg = document.createElement('div');
+                typingMsg.className = 'message bot';
+                typingMsg.id = 'live-typing';
+                typingMsg.innerHTML = `
+                    <div class="typing-indicator">
+                        <span class="typing-dot"></span>
+                        <span class="typing-dot"></span>
+                        <span class="typing-dot"></span>
+                    </div>
+                `;
+                phoneMessagesDemo.appendChild(typingMsg);
+                phoneMessagesDemo.scrollTop = phoneMessagesDemo.scrollHeight;
+
+                // After 2000ms: remove dots, show bot response
+                setTimeout(() => {
+                    const typingEl = document.getElementById('live-typing');
+                    if (typingEl) typingEl.remove();
+
+                    // Add bot response
+                    const botMsg = document.createElement('div');
+                    botMsg.className = 'message bot';
+                    botMsg.innerHTML = `
+                        <div class="phone-header-avatar" style="width: 24px; height: 24px; font-size: 0.625rem; margin-right: 0.5rem; flex-shrink: 0;">JS</div>
+                        <div style="flex: 1;">
+                            <div class="message-bubble" style="padding: 1.5rem 1.75rem;">
+                                <p style="font-size: 1rem; margin: 0; line-height: 1.6;" class="caption-content">${postContent}</p>
+                            </div>
+                            <span class="message-time">now</span>
+                        </div>
+                    `;
+                    phoneMessagesDemo.appendChild(botMsg);
+
+                    // Add edit button
+                    const editBtn = document.createElement('button');
+                    editBtn.className = 'caption-edit-btn';
+                    editBtn.textContent = 'Edit Caption';
+                    editBtn.addEventListener('click', () => {
+                        const captionEl = botMsg.querySelector('.caption-content');
+                        captionEl.contentEditable = true;
+                        captionEl.classList.add('caption-editable');
+                        captionEl.focus();
+                    });
+                    botMsg.appendChild(editBtn);
+
+                    phoneMessagesDemo.scrollTop = phoneMessagesDemo.scrollHeight;
+
+                    // Remove existing footer
+                    const existingFooter = document.querySelector('.phone-footer');
+                    if (existingFooter) existingFooter.remove();
+
+                    // Add approve footer
+                    const footer = document.createElement('div');
+                    footer.className = 'phone-footer';
+                    footer.innerHTML = `
+                        <input type="checkbox" id="approve-btn-demo" class="approve-checkbox">
+                        <label for="approve-btn-demo" class="approve-label">Approve & Schedule</label>
+                        <span class="phone-footer-hint">tap to schedule</span>
+                    `;
+                    phoneMessagesDemo.parentElement.appendChild(footer);
+
+                    // Handle approve checkbox
+                    const approveCheckbox = document.getElementById('approve-btn-demo');
+                    approveCheckbox.addEventListener('change', function() {
+                        if (this.checked) {
+                            // Show green scheduled bubble
+                            const scheduledMsg = document.createElement('div');
+                            scheduledMsg.className = 'message bot approved';
+                            scheduledMsg.innerHTML = `
+                                <div class="message-bubble" style="background: #D4EDDA; border-color: #28A745;">
+                                    <p style="font-size: 0.875rem; margin: 0; color: #155724; font-weight: 600;">✓ Scheduled to</p>
+                                    <div class="platform-icons" style="margin-top: 0.5rem;">
+                                        <div class="platform-icon instagram">📷</div>
+                                        <div class="platform-icon linkedin">in</div>
+                                        <div class="platform-icon facebook">f</div>
+                                    </div>
+                                </div>
+                            `;
+                            phoneMessagesDemo.appendChild(scheduledMsg);
+
+                            // Update footer to show scheduled state
+                            footer.innerHTML = `
+                                <div style="text-align: center; color: #28A745; font-weight: 600; font-size: 0.875rem;">
+                                    ✓ Scheduled
+                                </div>
+                            `;
+
+                            phoneMessagesDemo.scrollTop = phoneMessagesDemo.scrollHeight;
+                        }
+                    });
+                }, 2000);
+            }, 300);
+        }
+
+        if (phoneCameraInput) {
+            phoneCameraInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    const post = generateContextualPost();
+                    displayPost(event.target.result, 'Photo from job site', post);
+                };
+                reader.readAsDataURL(file);
+                phoneCameraInput.value = '';
+            });
+        }
+
+        function handlePhoneSubmit() {
+            const message = phoneInput.value.trim();
+            if (!message) return;
+
+            phoneInput.value = '';
+            const post = generateContextualPost(message);
+            displayPost('hvac-job.png', message, post);
+        }
+
+        if (phoneSubmitBtn) {
+            phoneSubmitBtn.addEventListener('click', handlePhoneSubmit);
+            phoneInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') handlePhoneSubmit();
+            });
+        }
+
+        // Initialize sample conversations when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeSampleConversations();
+
+            // Hide all sections except hero on page load
+            const hideSections = document.querySelectorAll('.home-how-it-works, .who-we-serve, .pricing-section, .features, .testimonials, .final-cta, .bottom-cta-section, .final-audit-cta');
+            hideSections.forEach(section => {
+                section.style.display = 'none';
+            });
+
+            // Show hero
+            const hero = document.querySelector('.hero-with-demo');
+            if (hero) {
+                hero.style.display = 'grid';
+            }
+        });
+
+        // Function to scroll to top and show hero
+        function scrollToTop() {
+            const hideSections = document.querySelectorAll('.home-how-it-works, .who-we-serve, .pricing-section, .features, .testimonials, .final-cta, .bottom-cta-section, .final-audit-cta');
+            hideSections.forEach(section => {
+                section.style.display = 'none';
+            });
+
+            const hero = document.querySelector('.hero-with-demo');
+            if (hero) {
+                hero.style.display = 'grid';
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Navigation tab functionality
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href.startsWith('#')) {
+                    e.preventDefault();
+                    const targetId = href.substring(1);
+
+                    // Hide all sections except hero
+                    const allSections = document.querySelectorAll('.hero-with-demo, .home-how-it-works, .who-we-serve, .pricing-section, .features, .testimonials, .final-cta, .bottom-cta-section, .final-audit-cta');
+                    allSections.forEach(section => {
+                        section.style.display = 'none';
+                    });
+
+                    // Show selected section
+                    const targetSection = document.getElementById(targetId);
+                    if (targetSection) {
+                        targetSection.style.display = 'block';
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                }
+            });
+        });
+
+        // Scroll down button functionality
+        const scrollDownBtn = document.getElementById('scroll-down-btn');
+        if (scrollDownBtn) {
+            scrollDownBtn.addEventListener('click', () => {
+                const howItWorksSection = document.getElementById('how-it-works');
+                if (howItWorksSection) {
+                    howItWorksSection.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        }
+
+        // Close modal when clicking outside
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('signup-modal');
+            if (modal && event.target === modal) {
+                closeSignupModal();
+            }
+            const companyModal = document.getElementById('company-info-modal');
+            if (companyModal && event.target === companyModal) {
+                closeCompanyModal();
+            }
+        });
+
+        document.getElementById('signup-form')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('form-name').value;
+            const companyName = document.getElementById('form-company').value;
+            const trade = document.getElementById('form-trade').value;
+            const email = document.getElementById('form-email').value;
+
+            console.log('Signup submitted:', { name, companyName, trade, email });
+
+            // Redirect to app
+            window.location.href = 'https://jobsite-ai-powered-marketing-600525777661.us-west2.run.app/';
+        });
+
+        document.getElementById('company-info-form')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('company-info-name').value;
+            const companyName = document.getElementById('company-info-company').value;
+            const trade = document.getElementById('company-info-trade').value;
+            const email = document.getElementById('company-info-email').value;
+
+            console.log('Company info submitted:', { name, companyName, trade, email });
+
+            // Show green scheduled bubble in the demo modal
+            if (window.demoPhoneMessages && window.demoFooter) {
+                const scheduledMsg = document.createElement('div');
+                scheduledMsg.className = 'message bot approved';
+                scheduledMsg.innerHTML = `
+                    <div class="message-bubble" style="background: #D4EDDA; border-color: #28A745;">
+                        <p style="font-size: 0.875rem; margin: 0; color: #155724; font-weight: 600;">✓ Scheduled to</p>
+                        <div class="platform-icons" style="margin-top: 0.5rem;">
+                            <div class="platform-icon instagram">📷</div>
+                            <div class="platform-icon linkedin">in</div>
+                            <div class="platform-icon facebook">f</div>
+                        </div>
+                    </div>
+                `;
+                window.demoPhoneMessages.appendChild(scheduledMsg);
+
+                // Update footer to show scheduled state
+                window.demoFooter.innerHTML = `
+                    <div style="text-align: center; color: #28A745; font-weight: 600; font-size: 0.875rem;">
+                        ✓ Scheduled
+                    </div>
+                `;
+            }
+
+            // Redirect to app
+            window.location.href = 'https://jobsite-ai-powered-marketing-600525777661.us-west2.run.app/';
+        });
+
+        document.getElementById('contact-form')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('contact-name').value;
+            const phone = document.getElementById('contact-phone').value;
+            const email = document.getElementById('contact-email').value;
+            const company = document.getElementById('contact-company').value;
+            const message = document.getElementById('contact-message').value;
+
+            console.log('Contact form submitted:', { name, phone, email, company, message });
+
+            // Redirect to app with email and contact info
+            const appUrl = new URL('https://jobsite-ai-powered-marketing-600525777661.us-west2.run.app/');
+            appUrl.searchParams.append('email', email);
+            appUrl.searchParams.append('name', name);
+            appUrl.searchParams.append('company', company);
+            appUrl.searchParams.append('phone', phone);
+            appUrl.searchParams.append('message', message);
+            window.location.href = appUrl.toString();
+            this.reset();
+        });
+
+        document.getElementById('bottom-cta-form')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('cta-name').value;
+            const email = document.getElementById('cta-email').value;
+            const phone = document.getElementById('cta-phone').value;
+            const company = document.getElementById('cta-company').value;
+
+            console.log('Bottom CTA form submitted:', { name, email, phone, company });
+
+            // Redirect to app with email parameter
+            const appUrl = new URL('https://jobsite-ai-powered-marketing-600525777661.us-west2.run.app/');
+            appUrl.searchParams.append('email', email);
+            appUrl.searchParams.append('name', name);
+            appUrl.searchParams.append('company', company);
+            appUrl.searchParams.append('phone', phone);
+            window.location.href = appUrl.toString();
+        });
+
+        document.getElementById('audit-form')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('audit-name').value;
+            const email = document.getElementById('audit-email').value;
+            const company = document.getElementById('audit-company').value;
+            const type = document.getElementById('audit-type').value;
+            const time = document.getElementById('audit-time').value;
+
+            console.log('Audit form submitted:', { name, email, company, type, time });
+
+            // Redirect to app with email and form data
+            const appUrl = new URL('https://jobsite-ai-powered-marketing-600525777661.us-west2.run.app/');
+            appUrl.searchParams.append('email', email);
+            appUrl.searchParams.append('name', name);
+            appUrl.searchParams.append('company', company);
+            appUrl.searchParams.append('auditType', type);
+            appUrl.searchParams.append('preferredTime', time);
+            window.location.href = appUrl.toString();
+            this.reset();
+        });
+    </script>
+
+    <!-- Audit Modal -->
+    <div id="audit-modal" class="signup-modal">
+        <div class="signup-modal-content">
+            <button class="signup-modal-close" onclick="closeAuditModal()">×</button>
+            <h2 style="font-family: 'Barlow Condensed', sans-serif; font-size: 2rem; font-weight: 800; text-transform: uppercase; margin-bottom: 0.5rem; color: #111111;">Free Construction Audit</h2>
+            <p style="color: #555555; margin-bottom: 2rem;">Answer 10 quick questions and discover your marketing blind spots</p>
+
+            <form id="audit-form">
+                <div class="form-group">
+                    <label for="audit-name">Name *</label>
+                    <input type="text" id="audit-name" name="name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="audit-email">Email *</label>
+                    <input type="email" id="audit-email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="audit-company">Company Name *</label>
+                    <input type="text" id="audit-company" name="company" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="audit-type">What's your primary role? *</label>
+                    <select id="audit-type" name="type" required style="width: 100%; padding: 0.75rem 1rem; border: 2px solid #111111; border-radius: 4px; font-family: 'Inter', sans-serif; font-size: 0.95rem;">
+                        <option value="">Select one...</option>
+                        <option value="gc">General Contractor</option>
+                        <option value="builder">Home Builder</option>
+                        <option value="remodeler">Remodeler</option>
+                        <option value="sub">Subcontractor</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="audit-time">How much time do you spend on social media weekly? *</label>
+                    <select id="audit-time" name="time" required style="width: 100%; padding: 0.75rem 1rem; border: 2px solid #111111; border-radius: 4px; font-family: 'Inter', sans-serif; font-size: 0.95rem;">
+                        <option value="">Select one...</option>
+                        <option value="0-2">0-2 hours</option>
+                        <option value="2-5">2-5 hours</option>
+                        <option value="5-10">5-10 hours</option>
+                        <option value="10+">10+ hours</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="form-submit-btn">Get My Audit Results</button>
+                <p style="text-align: center; font-size: 0.75rem; color: #999; margin-top: 1rem;">Takes about 2 minutes. Results sent instantly.</p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Contact Modal -->
+    <div id="contact-modal" class="signup-modal">
+        <div class="signup-modal-content">
+            <button class="signup-modal-close" onclick="closeContactModal()">×</button>
+            <h2 style="font-family: 'Barlow Condensed', sans-serif; font-size: 2rem; font-weight: 800; text-transform: uppercase; margin-bottom: 0.5rem; color: #111111;">Contact Sales</h2>
+            <p style="color: #555555; margin-bottom: 2rem;">Let's talk about a custom plan for your business</p>
+
+            <form id="contact-form">
+                <div class="form-group">
+                    <label for="contact-name">Name *</label>
+                    <input type="text" id="contact-name" name="name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="contact-phone">Phone Number *</label>
+                    <input type="tel" id="contact-phone" name="phone" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="contact-email">Email *</label>
+                    <input type="email" id="contact-email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="contact-company">Company Name</label>
+                    <input type="text" id="contact-company" name="company">
+                </div>
+
+                <div class="form-group">
+                    <label for="contact-message">Message</label>
+                    <textarea id="contact-message" name="message" style="width: 100%; padding: 0.75rem 1rem; border: 2px solid #111111; border-radius: 4px; font-family: 'Inter', sans-serif; font-size: 0.95rem; resize: vertical; min-height: 100px; transition: all 0.2s; box-sizing: border-box;" placeholder="Tell us about your project..."></textarea>
+                </div>
+
+                <button type="submit" class="form-submit-btn">Send</button>
+                <p style="text-align: center; font-size: 0.75rem; color: #999; margin-top: 1rem;">We'll get back to you within 24 hours.</p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div id="signup-modal" class="signup-modal">
+        <div class="signup-modal-content">
+            <button class="signup-modal-close" onclick="closeSignupModal()">×</button>
+            <h2 style="font-family: 'Barlow Condensed', sans-serif; font-size: 2rem; font-weight: 800; text-transform: uppercase; margin-bottom: 0.5rem; color: #111111;">Get Started</h2>
+
+            <form id="signup-form">
+                <div class="form-group">
+                    <label for="form-name">Name *</label>
+                    <input type="text" id="form-name" name="name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="form-company">Company Name *</label>
+                    <input type="text" id="form-company" name="company_name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="form-trade">Trade/Industry *</label>
+                    <select id="form-trade" name="trade" required style="width: 100%; padding: 0.75rem; border: 2px solid #111111; border-radius: 4px; font-family: 'Inter', sans-serif; font-size: 1rem;">
+                        <option value="">Select a trade</option>
+                        <option value="General Contracting">General Contracting</option>
+                        <option value="Home Building">Home Building</option>
+                        <option value="Remodeling">Remodeling</option>
+                        <option value="Landscaping">Landscaping</option>
+                        <option value="HVAC">HVAC</option>
+                        <option value="Plumbing">Plumbing</option>
+                        <option value="Electrical">Electrical</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="form-email">Email *</label>
+                    <input type="email" id="form-email" name="email" required>
+                </div>
+
+                <button type="submit" class="form-submit-btn">Start Free Trial</button>
+                <p style="text-align: center; font-size: 0.75rem; color: #999; margin-top: 1rem;">No credit card required. 14-day free trial. Cancel anytime.</p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Serve Modal -->
+    <div id="serve-modal" class="serve-modal">
+        <div class="serve-modal-content" onclick="event.stopPropagation()">
+            <button class="serve-modal-close" onclick="closeServeModal()">×</button>
+            <div id="serve-modal-body"></div>
+        </div>
+    </div>
+
+    <!-- Demo Modal -->
+    <div id="demo-modal" class="demo-modal">
+        <button class="demo-modal-close" onclick="closeDemoModal()">×</button>
+        <div class="demo-modal-content">
+            <div class="demo-instructions">
+                <h3>See How It Works</h3>
+                <p>Click the camera icon to upload a photo and watch the magic happen</p>
+            </div>
+            <div class="demo-phone-container">
+                <div class="phone-frame">
+                    <div class="phone-screen">
+                        <div class="phone-status-bar">
+                            <span class="phone-status-time">9:41</span>
+                            <div class="phone-status-icons"><span>▮▮▮</span><span>WiFi</span><span>100%</span></div>
+                        </div>
+                        <div class="phone-header">
+                            <div class="phone-header-avatar">JS</div>
+                            <div class="phone-header-title">
+                                JobSite
+                                <span class="phone-header-status">● Active now</span>
+                            </div>
+                            <div style="width: 28px;"></div>
+                        </div>
+                        <div class="phone-messages" id="phone-messages-demo-modal">
+                            <div style="padding: 1rem; text-align: center; color: #999; font-size: 0.875rem;">
+                                Upload a photo to get started
+                            </div>
+                        </div>
+                        <div class="phone-input-area">
+                            <div class="phone-input-row">
+                                <input type="file" id="phone-camera-input-modal" style="display: none;" accept="image/*" capture="environment">
+                                <input type="text" class="phone-input" id="phone-input-demo-modal" placeholder="Describe your job..." maxlength="100">
+                                <button class="phone-action-btn-compact" id="phone-camera-btn-modal">📷</button>
+                                <button class="phone-input-btn" id="phone-submit-btn-modal">Send</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
