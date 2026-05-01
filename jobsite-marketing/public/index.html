@@ -3634,9 +3634,42 @@
                 if (!file) return;
 
                 const reader = new FileReader();
-                reader.onload = (event) => {
-                    const post = generateContextualPost();
-                    displayPost(event.target.result, 'Photo from job site', post);
+                reader.onload = async (event) => {
+                    const imageData = event.target.result;
+                    const userDescription = phoneInput.value.trim() || 'Photo from job site';
+
+                    // Show initial message
+                    displayPost(imageData, userDescription, 'Analyzing photo...');
+
+                    // Call Claude Vision API to generate custom caption
+                    try {
+                        const response = await fetch('/api/analyze-photo', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                imageData: imageData,
+                                description: userDescription
+                            })
+                        });
+
+                        const data = await response.json();
+                        if (data.caption) {
+                            // Update the displayed caption with Claude's response
+                            const captionContent = document.querySelector('.caption-content');
+                            if (captionContent) {
+                                captionContent.textContent = data.caption;
+                            }
+                        }
+                    } catch (error) {
+                        console.error('Error generating caption:', error);
+                        // Fallback to generic caption if API fails
+                        const captionContent = document.querySelector('.caption-content');
+                        if (captionContent) {
+                            captionContent.textContent = generateContextualPost(userDescription);
+                        }
+                    }
+
+                    phoneInput.value = '';
                 };
                 reader.readAsDataURL(file);
                 phoneCameraInput.value = '';
