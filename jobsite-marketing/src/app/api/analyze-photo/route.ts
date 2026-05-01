@@ -7,8 +7,18 @@ export async function POST(request: NextRequest) {
   try {
     const { imageData, description } = await request.json();
 
-    // Remove data URI prefix if present
-    const base64Image = imageData.replace(/^data:image\/[a-z]+;base64,/, '');
+    // Extract image format and base64 data
+    const imageMatch = imageData.match(/^data:image\/([a-z]+);base64,(.+)$/);
+    if (!imageMatch) {
+      return NextResponse.json(
+        { error: 'Invalid image format' },
+        { status: 400 }
+      );
+    }
+
+    const imageFormat = imageMatch[1];
+    const base64Image = imageMatch[2];
+    const mediaType = `image/${imageFormat === 'jpg' ? 'jpeg' : imageFormat}`;
 
     const message = await client.messages.create({
       model: 'claude-3-5-sonnet-20241022',
@@ -21,23 +31,33 @@ export async function POST(request: NextRequest) {
               type: 'image',
               source: {
                 type: 'base64',
-                media_type: 'image/jpeg',
+                media_type: mediaType as 'image/jpeg' | 'image/png' | 'image/gif' | 'image/webp',
                 data: base64Image,
               },
             },
             {
               type: 'text',
-              text: `You are an expert construction marketing copywriter. Based on this construction/job site photo and the user's description, write a professional, engaging social media post caption for a construction company. The caption should:
+              text: `You are an expert construction marketing copywriter. Analyze this SPECIFIC construction/job site photo carefully and write a custom social media caption.
 
-1. Be 2-3 sentences max
-2. Highlight progress, quality, and timeline
-3. Sound professional but accessible
-4. Include an emoji if appropriate
-5. Be formatted for social media (Instagram/Facebook/LinkedIn)
+IMPORTANT: Your response must be completely custom based on what you SEE in the image. Do NOT use generic templates.
+
+Look for and mention:
+- The specific type of work visible (framing, excavation, roofing, finishing, mechanical, etc.)
+- Materials visible (steel, concrete, wood, etc.)
+- Progress stage of the project
+- Quality indicators (neatness, organization, workmanship)
+- Weather conditions if visible
+- Any notable equipment or techniques
 
 User's description: "${description}"
 
-Write only the caption, nothing else.`,
+Write a 2-3 sentence professional, engaging caption that:
+- References SPECIFIC details from the photo
+- Sounds like a real construction company posting
+- Includes 1 emoji if appropriate
+- Is formatted for social media (Instagram/Facebook/LinkedIn)
+
+Write ONLY the caption, nothing else.`,
             },
           ],
         },
