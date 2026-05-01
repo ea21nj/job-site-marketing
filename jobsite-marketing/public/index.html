@@ -3638,31 +3638,37 @@
                     const imageData = event.target.result;
                     const userDescription = phoneInput.value.trim() || 'Photo from job site';
 
-                    // Show initial message
+                    // Show initial message with image
                     displayPost(imageData, userDescription, 'Analyzing photo...');
 
-                    // Call Claude Vision API to generate custom caption
-                    try {
-                        const response = await fetch('/api/analyze-photo', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                                imageData: imageData,
-                                description: userDescription
-                            })
-                        });
+                    // Call Claude Vision API with 5-second timeout
+                    const timeoutPromise = new Promise((_, reject) =>
+                        setTimeout(() => reject(new Error('API timeout')), 5000)
+                    );
 
-                        const data = await response.json();
+                    const fetchPromise = fetch('/api/analyze-photo', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            imageData: imageData,
+                            description: userDescription
+                        })
+                    }).then(res => res.json());
+
+                    try {
+                        const data = await Promise.race([fetchPromise, timeoutPromise]);
                         if (data.caption) {
                             // Update the displayed caption with Claude's response
                             const captionContent = document.querySelector('.caption-content');
                             if (captionContent) {
                                 captionContent.textContent = data.caption;
                             }
+                        } else {
+                            throw new Error('No caption received');
                         }
                     } catch (error) {
                         console.error('Error generating caption:', error);
-                        // Fallback to generic caption if API fails
+                        // Fallback to generic caption if API fails or times out
                         const captionContent = document.querySelector('.caption-content');
                         if (captionContent) {
                             captionContent.textContent = generateContextualPost(userDescription);
