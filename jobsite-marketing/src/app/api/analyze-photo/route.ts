@@ -75,9 +75,11 @@ Write ONLY the caption, nothing else.`,
 
     return NextResponse.json({ caption });
   } catch (error) {
-    console.error('Error analyzing photo:', error);
+    console.error('❌ Error analyzing photo:', error);
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    console.error('Error details:', errorMessage);
     return NextResponse.json(
-      { error: 'Failed to analyze photo' },
+      { error: `Failed to analyze photo: ${errorMessage}` },
       { status: 500 }
     );
   }

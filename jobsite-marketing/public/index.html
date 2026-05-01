@@ -3654,25 +3654,32 @@
                             imageData: imageData,
                             description: userDescription
                         })
-                    }).then(res => {
+                    }).then(async res => {
                         console.log('📥 API response status:', res.status);
-                        return res.json();
+                        const data = await res.json();
+                        console.log('📥 API response data:', data);
+                        if (!res.ok) {
+                            throw new Error(data.error || 'API error: ' + res.status);
+                        }
+                        return data;
                     });
 
                     try {
                         const data = await Promise.race([fetchPromise, timeoutPromise]);
-                        console.log('✅ Received caption:', data.caption);
+                        console.log('✅ Received data:', data);
                         if (data.caption) {
+                            console.log('✅ Caption text:', data.caption);
                             // Update the displayed caption with Claude's response
                             const captionContent = document.querySelector('.caption-content');
                             if (captionContent) {
                                 captionContent.textContent = data.caption;
                             }
                         } else {
-                            throw new Error('No caption received');
+                            throw new Error('No caption in response: ' + JSON.stringify(data));
                         }
                     } catch (error) {
                         console.error('❌ Error generating caption:', error);
+                        console.error('❌ Full error:', error.message);
                         // Fallback to generic caption if API fails or times out
                         console.log('Using fallback generic caption');
                         const captionContent = document.querySelector('.caption-content');
