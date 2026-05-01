@@ -7,9 +7,13 @@ export async function POST(request: NextRequest) {
   try {
     const { imageData, description } = await request.json();
 
+    console.log('📸 API received request with description:', description);
+    console.log('Image data length:', imageData.length);
+
     // Extract image format and base64 data
     const imageMatch = imageData.match(/^data:image\/([a-z]+);base64,(.+)$/);
     if (!imageMatch) {
+      console.error('❌ Failed to parse image format');
       return NextResponse.json(
         { error: 'Invalid image format' },
         { status: 400 }
@@ -19,7 +23,9 @@ export async function POST(request: NextRequest) {
     const imageFormat = imageMatch[1];
     const base64Image = imageMatch[2];
     const mediaType = `image/${imageFormat === 'jpg' ? 'jpeg' : imageFormat}`;
+    console.log('✅ Detected image format:', mediaType);
 
+    console.log('🔄 Calling Claude Vision API...');
     const message = await client.messages.create({
       model: 'claude-3-5-sonnet-20241022',
       max_tokens: 1024,
@@ -65,6 +71,7 @@ Write ONLY the caption, nothing else.`,
     });
 
     const caption = message.content[0].type === 'text' ? message.content[0].text : '';
+    console.log('✅ Claude response:', caption);
 
     return NextResponse.json({ caption });
   } catch (error) {

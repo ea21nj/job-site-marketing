@@ -3646,6 +3646,7 @@
                         setTimeout(() => reject(new Error('API timeout')), 5000)
                     );
 
+                    console.log('📤 Sending image to /api/analyze-photo');
                     const fetchPromise = fetch('/api/analyze-photo', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -3653,10 +3654,14 @@
                             imageData: imageData,
                             description: userDescription
                         })
-                    }).then(res => res.json());
+                    }).then(res => {
+                        console.log('📥 API response status:', res.status);
+                        return res.json();
+                    });
 
                     try {
                         const data = await Promise.race([fetchPromise, timeoutPromise]);
+                        console.log('✅ Received caption:', data.caption);
                         if (data.caption) {
                             // Update the displayed caption with Claude's response
                             const captionContent = document.querySelector('.caption-content');
@@ -3667,8 +3672,9 @@
                             throw new Error('No caption received');
                         }
                     } catch (error) {
-                        console.error('Error generating caption:', error);
+                        console.error('❌ Error generating caption:', error);
                         // Fallback to generic caption if API fails or times out
+                        console.log('Using fallback generic caption');
                         const captionContent = document.querySelector('.caption-content');
                         if (captionContent) {
                             captionContent.textContent = generateContextualPost(userDescription);
