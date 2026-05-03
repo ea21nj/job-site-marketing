@@ -222,9 +222,10 @@
         /* Hero Section with Demo */
         .hero-with-demo {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr;
             gap: 1.5rem;
             align-items: center;
+            justify-items: center;
             padding: 1.5rem 2rem;
             max-width: 1600px;
             margin: 0 auto;
@@ -261,6 +262,7 @@
             padding: 0;
             max-width: 100%;
             margin: 0;
+            display: none;
         }
 
         .demo-side {
@@ -268,6 +270,7 @@
             justify-content: center;
             align-items: center;
             padding-top: 1rem;
+            grid-column: 1 / -1;
         }
 
         .badge {
