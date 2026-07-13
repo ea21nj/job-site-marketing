@@ -280,6 +280,7 @@
   <section class="view" id="view-plan">
     <div class="kicker">Plan ahead</div>
     <div class="section-t">Up next</div>
+    <div class="filter-row" id="planRangeRow"></div>
     <div class="card" id="upNext"></div>
   </section>
 
@@ -551,7 +552,13 @@ function renderToday(){
    PLAN VIEW  (up next — schedule the coming days)
    ============================================================ */
 function renderPlan(){
-  $("#upNext").innerHTML = Array.from({length:14},(_,i)=>{
+  const range = [7,14,30].includes(db.planRange) ? db.planRange : 7;
+  $("#planRangeRow").innerHTML = [7,14,30].map(n=>
+    `<button class="f-chip" data-n="${n}" aria-pressed="${n===range}">${n} days</button>`).join("");
+  $("#planRangeRow").querySelectorAll(".f-chip").forEach(b=>{
+    b.onclick = ()=>{ db.planRange = Number(b.dataset.n); save(); renderPlan(); };
+  });
+  $("#upNext").innerHTML = Array.from({length:range},(_,i)=>{
     const k = keyOf(addDays(new Date(), i+1));
     const plan = planActs(k);
     const chips = ACTS.filter(a=>plan[a.id]).map(a=>{
