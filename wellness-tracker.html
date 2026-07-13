@@ -230,6 +230,28 @@
   .m-row .meter i{display:block; height:100%; background:var(--accent); border-radius:99px}
   .m-row .v{font-weight:600; width:78px; text-align:right; color:var(--ink-2); font-size:12.5px}
 
+  /* ---------- settings ---------- */
+  .hdr-btns{display:flex; gap:8px}
+  .set-row{display:flex; align-items:center; gap:11px; padding:12px 16px; border-top:1px solid var(--line); font-size:14.5px}
+  .set-row:first-child{border-top:none}
+  .set-row > svg{width:18px; height:18px; color:var(--ink-2); flex:none}
+  .set-row .nm{font-weight:600; flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+  .sw{position:relative; width:42px; height:25px; border-radius:99px; background:var(--hm0); border:none; cursor:pointer; flex:none; padding:0; transition:background .2s}
+  .sw::after{content:""; position:absolute; top:3px; left:3px; width:19px; height:19px; border-radius:50%; background:var(--card);
+    box-shadow:0 1px 3px rgba(10,10,12,.25); transition:left .2s}
+  .sw[aria-checked="true"]{background:var(--accent)}
+  .sw[aria-checked="true"]::after{left:20px}
+  .x-btn{background:none; border:none; color:var(--ink-3); cursor:pointer; padding:5px; margin:-5px 0; border-radius:8px; flex:none}
+  .x-btn:active{color:var(--accent)}
+  .x-btn svg{width:15px; height:15px; display:block}
+  .add-row input{flex:1; min-width:0; background:transparent; border:none; border-bottom:1px dashed var(--line); color:var(--ink);
+    font:400 14px "Barlow",sans-serif; padding:4px 2px; outline:none}
+  .add-row input:focus{border-bottom-color:var(--accent)}
+  .add-row input::placeholder{color:var(--ink-3)}
+  .add-btn{background:var(--accent); color:var(--on-accent); border:none; border-radius:999px; padding:6px 16px; cursor:pointer;
+    font-family:"Barlow Condensed"; font-weight:700; font-size:13px; letter-spacing:.1em; text-transform:uppercase; flex:none; transition:transform .1s}
+  .add-btn:active{transform:scale(.95)}
+
   /* ---------- empty state ---------- */
   .empty{padding:34px 24px; text-align:center; color:var(--ink-3)}
   .empty svg{width:34px; height:34px; color:var(--ink-3); opacity:.7; margin-bottom:10px}
@@ -285,7 +307,10 @@
 <div class="app">
   <header>
     <div class="logo"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#i-flame"/></svg>Ember</div>
-    <button class="icon-btn" id="themeBtn" aria-label="Toggle dark mode"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-moon" id="themeIcon"/></svg></button>
+    <div class="hdr-btns">
+      <button class="icon-btn" id="settingsBtn" aria-label="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-sliders"/></svg></button>
+      <button class="icon-btn" id="themeBtn" aria-label="Toggle dark mode"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-moon" id="themeIcon"/></svg></button>
+    </div>
   </header>
 
   <!-- ============ TODAY ============ -->
@@ -295,8 +320,20 @@
     <div class="section-t">What did you do today?</div>
     <div class="act-grid" id="todayGrid"></div>
     <div id="todayLogWrap"></div>
-    <div class="section-t">Body weight</div>
-    <div class="card w-card" id="weightCard"></div>
+    <div id="weightHome">
+      <div class="section-t">Body weight</div>
+      <div class="card w-card" id="weightCard"></div>
+    </div>
+  </section>
+
+  <!-- ============ SETTINGS ============ -->
+  <section class="view" id="view-settings">
+    <div class="kicker">Settings</div>
+    <div class="section-t">Tracking</div>
+    <div class="card" id="setTrack"></div>
+    <div class="section-t">Custom activities</div>
+    <div class="card" id="setCustom"></div>
+    <div class="hint">Turning something off hides it from logging and planning — history you already logged stays.</div>
   </section>
 
   <!-- ============ PLAN ============ -->
@@ -335,8 +372,10 @@
       <div class="filter-row" id="filterRow"></div>
       <div id="weeklyChart"></div>
     </div>
-    <div class="section-t">Body weight</div>
-    <div class="card chart-card" id="weightTrend"></div>
+    <div id="weightTrendWrap">
+      <div class="section-t">Body weight</div>
+      <div class="card chart-card" id="weightTrend"></div>
+    </div>
     <div class="section-t">Monthly volume</div>
     <div class="card" id="monthList"></div>
     <div class="section-t">Streaks by activity</div>
@@ -389,6 +428,7 @@
     <g id="i-chart"><path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/></g>
     <g id="i-cal"><rect x="3.5" y="5" width="17" height="16" rx="2.5"/><path d="M3.5 10.5h17M8 2.5V6.5M16 2.5V6.5"/></g>
     <g id="i-scale"><rect x="3.5" y="3.5" width="17" height="17" rx="3.5"/><path d="M8.7 10a4.6 4.6 0 0 1 6.6 0M12 10.2V13"/></g>
+    <g id="i-sliders"><path d="M4 7.5h9M17.5 7.5H20M4 16.5h3M11.5 16.5H20"/><circle cx="15" cy="7.5" r="2.4"/><circle cx="9" cy="16.5" r="2.4"/></g>
     <g id="i-moon"><path d="M20 13A8.1 8.1 0 0 1 11 4a8.1 8.1 0 1 0 9 9z"/></g>
     <g id="i-sun"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2.5 12h2M19.5 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></g>
     <g id="i-pencil"><path d="M17 3.5 20.5 7 8.5 19l-4.5 1 1-4.5L17 3.5z"/></g>
@@ -415,7 +455,18 @@ const ACTS = [
   {id:"stretch",  name:"Stretch",  icon:"i-stretch"},
   {id:"other",    name:"Other",    icon:"i-other"},
 ];
-const ACT = Object.fromEntries(ACTS.map(a=>[a.id,a]));
+const BUILTIN = Object.fromEntries(ACTS.map(a=>[a.id,a]));
+/* activities available for logging/planning: enabled built-ins + customs */
+const activeActs = () => ACTS.filter(a=>!db.disabled.includes(a.id))
+  .concat(db.custom.map(c=>({id:c.id, name:c.name, icon:"i-other"})));
+/* resolve any id ever logged — built-in, custom, or archived custom */
+function actOf(id){
+  if(BUILTIN[id]) return BUILTIN[id];
+  const c = db.custom.find(c=>c.id===id);
+  if(c) return {id, name:c.name, icon:"i-other"};
+  return {id, name: db.archive[id] || "Activity", icon:"i-other"};
+}
+const trackWeight = () => db.trackWeight !== false;
 
 /* ---------- store ---------- */
 let db = load();
@@ -425,10 +476,13 @@ function load(){
     if(d && typeof d.days==="object"){
       if(typeof d.plans!=="object" || !d.plans) d.plans = {};
       if(typeof d.weight!=="object" || !d.weight) d.weight = {};
+      if(!Array.isArray(d.disabled)) d.disabled = [];
+      if(!Array.isArray(d.custom)) d.custom = [];
+      if(typeof d.archive!=="object" || !d.archive) d.archive = {};
       return d;
     }
   }catch(e){}
-  return {days:{}, plans:{}, weight:{}, theme:null};
+  return {days:{}, plans:{}, weight:{}, disabled:[], custom:[], archive:{}, theme:null};
 }
 function save(){ localStorage.setItem(KEY, JSON.stringify(db)); }
 
@@ -562,19 +616,19 @@ function renderToday(){
     <div class="weekdots" aria-label="This week">${dots}</div>`;
 
   /* quick-tap grid — dashed "planned" state for today's unlogged plans */
-  $("#todayGrid").innerHTML = ACTS.map(a=>{
+  $("#todayGrid").innerHTML = activeActs().map(a=>{
     const on = !!dayActs(tk)[a.id];
     const planned = !on && !!planActs(tk)[a.id];
     return `<button class="act-btn${planned?" planned":""}" data-act="${a.id}" aria-pressed="${on}">
-      ${icon(a.icon)}${a.name}${planned?'<small class="plan-tag">plan</small>':""}${icon("i-check","tick")}</button>`;
+      ${icon(a.icon)}${esc(a.name)}${planned?'<small class="plan-tag">plan</small>':""}${icon("i-check","tick")}</button>`;
   }).join("");
   $("#todayGrid").querySelectorAll(".act-btn").forEach(b=>{
     b.onclick = ()=> toggleAct(tk, b.dataset.act);
   });
 
-  /* detail rows for logged activities */
+  /* detail rows for logged activities (incl. ones since disabled) */
   const acts = dayActs(tk);
-  const ids = ACTS.filter(a=>acts[a.id]).map(a=>a.id);
+  const ids = Object.keys(acts);
   $("#todayLogWrap").innerHTML = ids.length ? `
     <div class="section-t">Details <span style="font-weight:500;letter-spacing:.02em;text-transform:none;color:var(--ink-3)">— optional</span></div>
     <div class="card log-list">${ids.map(id=>logRow(id, acts[id])).join("")}</div>`
@@ -586,6 +640,8 @@ function renderToday(){
   });
 
   /* body weight quick entry */
+  $("#weightHome").style.display = trackWeight() ? "" : "none";
+  if(!trackWeight()) return;
   const w = db.weight[tk] ?? null;
   const prev = prevWeighIn(tk);
   let wSub;
@@ -627,9 +683,9 @@ function renderPlan(){
   $("#upNext").innerHTML = Array.from({length:range},(_,i)=>{
     const k = keyOf(addDays(new Date(), i+1));
     const plan = planActs(k);
-    const chips = ACTS.filter(a=>plan[a.id]).map(a=>{
-      const e = plan[a.id];
-      return `<span class="a-chip plan">${icon(a.icon)}${a.name}${e.d?`<small>· ${e.d} min</small>`:""}</span>`;
+    const chips = Object.keys(plan).map(id=>{
+      const a = actOf(id), e = plan[id];
+      return `<span class="a-chip plan">${icon(a.icon)}${esc(a.name)}${e.d?`<small>· ${e.d} min</small>`:""}</span>`;
     }).join("");
     return `<button class="plan-row" data-k="${k}" aria-label="Plan ${fmtShort(k)}">
       <span class="pr-date">${fmtShort(k)}</span>
@@ -641,7 +697,7 @@ function renderPlan(){
 }
 
 function logRow(id, e){
-  const a = ACT[id];
+  const a = actOf(id);
   return `<div class="log-row" data-act="${id}">
     ${icon(a.icon)}<span class="nm">${a.name}</span>
     <input class="dur" type="number" inputmode="numeric" min="0" placeholder="—" value="${e.d??""}" aria-label="${a.name} minutes"><span class="un">min</span>
@@ -718,18 +774,18 @@ function renderHistory(){
   $("#feed").innerHTML = keys.map(k=>{
     const acts = dayActs(k);
     const mins = dayMinutes(k);
-    const chips = ACTS.filter(a=>acts[a.id]).map(a=>{
-      const e = acts[a.id];
-      return `<span class="a-chip">${icon(a.icon)}${a.name}${e.d?`<small>· ${e.d} min</small>`:""}</span>`;
+    const chips = Object.keys(acts).map(id=>{
+      const a = actOf(id), e = acts[id];
+      return `<span class="a-chip">${icon(a.icon)}${esc(a.name)}${e.d?`<small>· ${e.d} min</small>`:""}</span>`;
     }).join("");
-    const notes = ACTS.filter(a=>acts[a.id] && acts[a.id].n).map(a=>
-      `<div class="day-note"><b>${a.name}:</b> ${esc(acts[a.id].n)}</div>`).join("");
-    const missed = ACTS.filter(a=>planActs(k)[a.id] && !acts[a.id]).map(a=>a.name);
+    const notes = Object.keys(acts).filter(id=>acts[id].n).map(id=>
+      `<div class="day-note"><b>${esc(actOf(id).name)}:</b> ${esc(acts[id].n)}</div>`).join("");
+    const missed = Object.keys(planActs(k)).filter(id=>!acts[id]).map(id=>esc(actOf(id).name));
     const missedLine = missed.length ? `<div class="day-note miss">Planned: ${missed.join(", ")} — not logged</div>` : "";
     return `<div class="card day-card">
       <div class="day-head">
         <span class="day-date">${fmtShort(k)}</span>
-        <span class="day-meta">${Object.keys(acts).length} ${Object.keys(acts).length===1?"activity":"activities"}${mins?` · ${mins} min`:""}${db.weight[k]!=null?` · ${fmtW(db.weight[k])} ${wUnit()}`:""}</span>
+        <span class="day-meta">${Object.keys(acts).length} ${Object.keys(acts).length===1?"activity":"activities"}${mins?` · ${mins} min`:""}${trackWeight() && db.weight[k]!=null?` · ${fmtW(db.weight[k])} ${wUnit()}`:""}</span>
         <button class="day-edit" data-k="${k}" aria-label="Edit ${fmtShort(k)}">${icon("i-pencil")}</button>
       </div>
       <div class="chips">${chips}</div>${notes}${missedLine}
@@ -762,7 +818,7 @@ function renderTrends(){
   /* filter chips */
   $("#filterRow").innerHTML =
     `<button class="f-chip" data-f="" aria-pressed="${trendFilter===null}">All</button>` +
-    ACTS.map(a=>`<button class="f-chip" data-f="${a.id}" aria-pressed="${trendFilter===a.id}">${a.name}</button>`).join("");
+    activeActs().map(a=>`<button class="f-chip" data-f="${a.id}" aria-pressed="${trendFilter===a.id}">${esc(a.name)}</button>`).join("");
   $("#filterRow").querySelectorAll(".f-chip").forEach(b=>{
     b.onclick = ()=>{ trendFilter = b.dataset.f || null; renderTrends(); };
   });
@@ -770,6 +826,7 @@ function renderTrends(){
   $("#weeklyChart").innerHTML = barChartSVG(weeklyCounts(8, trendFilter));
 
   /* body weight trend (last 90 days of weigh-ins) */
+  $("#weightTrendWrap").style.display = trackWeight() ? "" : "none";
   const wKeys = Object.keys(db.weight).sort();
   if(!wKeys.length){
     $("#weightTrend").innerHTML = `<div class="empty" style="padding:18px 20px">${icon("i-scale")}<b>No weigh-ins yet</b>Log your weight on the Today tab.</div>`;
@@ -799,10 +856,10 @@ function renderTrends(){
     </div>`).join("");
 
   /* per-activity streaks */
-  $("#streakTable").innerHTML = ACTS.map(a=>{
+  $("#streakTable").innerHTML = activeActs().map(a=>{
     const c = currentStreak(a.id), b = Math.max(longestStreak(a.id), c), n30 = countInLastDays(30, a.id);
     return `<div class="s-row">
-      ${icon(a.icon)}<span class="nm">${a.name}</span>
+      ${icon(a.icon)}<span class="nm">${esc(a.name)}</span>
       <span class="v">${c}<small>now</small></span>
       <span class="v">${b}<small>best</small></span>
       <span class="v">${n30}<small>30 d</small></span>
@@ -883,10 +940,13 @@ function openEditor(k){
   $("#sheet").classList.add("open");
 }
 function renderSheet(){
-  $("#sheetGrid").innerHTML = ACTS.map(a=>{
+  /* active activities, plus any already on this day even if since disabled/removed */
+  const opts = activeActs();
+  Object.keys(draft).forEach(id=>{ if(!opts.some(a=>a.id===id)) opts.push(actOf(id)); });
+  $("#sheetGrid").innerHTML = opts.map(a=>{
     const on = !!draft[a.id];
     return `<button class="act-btn" data-act="${a.id}" aria-pressed="${on}">
-      ${icon(a.icon)}${a.name}${icon("i-check","tick")}</button>`;
+      ${icon(a.icon)}${esc(a.name)}${icon("i-check","tick")}</button>`;
   }).join("");
   $("#sheetGrid").querySelectorAll(".act-btn").forEach(b=>{
     b.onclick = ()=>{
@@ -902,7 +962,7 @@ function renderSheet(){
     if(!draft[id]) return;
     draft[id][field] = field==="d" ? (val===""?null:Math.max(0,parseInt(val,10)||0)) : val;
   });
-  $("#sheetWeightWrap").innerHTML = editorIsPlan ? "" : `
+  $("#sheetWeightWrap").innerHTML = (editorIsPlan || !trackWeight()) ? "" : `
     <div class="log-list" style="margin-top:14px"><div class="log-row">
       ${icon("i-scale")}<span class="nm">Weight</span>
       <input class="dur wd" type="number" inputmode="decimal" step="0.1" min="0" max="1500" placeholder="—" value="${draftW??""}" aria-label="Body weight"><span class="un">${wUnit()}</span>
@@ -934,20 +994,71 @@ $("#sheetClose").onclick = closeEditor;
 $("#sheetBg").onclick = closeEditor;
 
 /* ============================================================
+   SETTINGS  (choose what to track)
+   ============================================================ */
+function renderSettings(){
+  $("#setTrack").innerHTML = `
+    <div class="set-row">${icon("i-scale")}<span class="nm">Body weight</span>
+      <button class="sw" role="switch" aria-checked="${trackWeight()}" data-weight="1" aria-label="Track body weight"></button>
+    </div>` +
+    ACTS.map(a=>`
+    <div class="set-row">${icon(a.icon)}<span class="nm">${a.name}</span>
+      <button class="sw" role="switch" aria-checked="${!db.disabled.includes(a.id)}" data-act="${a.id}" aria-label="Track ${a.name}"></button>
+    </div>`).join("");
+  $("#setTrack").querySelectorAll(".sw").forEach(s=>{
+    s.onclick = ()=>{
+      if(s.dataset.weight) db.trackWeight = !trackWeight();
+      else {
+        const id = s.dataset.act;
+        db.disabled = db.disabled.includes(id) ? db.disabled.filter(x=>x!==id) : [...db.disabled, id];
+      }
+      save(); renderAll();
+    };
+  });
+
+  $("#setCustom").innerHTML = db.custom.map(c=>`
+    <div class="set-row">${icon("i-other")}<span class="nm">${esc(c.name)}</span>
+      <button class="x-btn" data-del="${c.id}" aria-label="Remove ${esc(c.name)}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 7l10 10M17 7L7 17"/></svg>
+      </button>
+    </div>`).join("") + `
+    <div class="set-row add-row">
+      <input id="newActName" type="text" maxlength="18" placeholder="e.g. Cold plunge, Yoga, Read…" aria-label="New activity name">
+      <button class="add-btn" id="addActBtn">Add</button>
+    </div>`;
+  $("#setCustom").querySelectorAll(".x-btn").forEach(b=> b.onclick = ()=> removeCustom(b.dataset.del));
+  const addIt = ()=>{
+    const name = $("#newActName").value.replace(/[<>&"']/g,"").trim().slice(0,18);
+    if(!name) return;
+    db.custom.push({id:"c"+Date.now().toString(36), name});
+    save(); renderAll();
+  };
+  $("#addActBtn").onclick = addIt;
+  $("#newActName").onkeydown = e=>{ if(e.key==="Enter") addIt(); };
+}
+function removeCustom(id){
+  const used = [...Object.values(db.days), ...Object.values(db.plans)].some(day=>day[id]);
+  const c = db.custom.find(x=>x.id===id);
+  if(used && c) db.archive[id] = c.name;      /* keep the name for history rendering */
+  db.custom = db.custom.filter(x=>x.id!==id);
+  save(); renderAll();
+}
+
+/* ============================================================
    NAV + THEME + BOOT
    ============================================================ */
-const renderers = {today:renderToday, plan:renderPlan, history:renderHistory, trends:renderTrends};
-function renderAll(){ renderToday(); renderPlan(); renderHistory(); renderTrends(); }
+const renderers = {today:renderToday, plan:renderPlan, history:renderHistory, trends:renderTrends, settings:renderSettings};
+function renderAll(){ renderToday(); renderPlan(); renderHistory(); renderTrends(); renderSettings(); }
 
-document.querySelectorAll(".nav-btn").forEach(b=>{
-  b.onclick = ()=>{
-    document.querySelectorAll(".nav-btn").forEach(x=>x.classList.toggle("on", x===b));
-    document.querySelectorAll(".view").forEach(v=>v.classList.remove("on"));
-    $("#view-"+b.dataset.view).classList.add("on");
-    renderers[b.dataset.view]();
-    window.scrollTo({top:0});
-  };
-});
+function showView(name){
+  document.querySelectorAll(".nav-btn").forEach(x=>x.classList.toggle("on", x.dataset.view===name));
+  document.querySelectorAll(".view").forEach(v=>v.classList.remove("on"));
+  $("#view-"+name).classList.add("on");
+  renderers[name]();
+  window.scrollTo({top:0});
+}
+document.querySelectorAll(".nav-btn").forEach(b=>{ b.onclick = ()=> showView(b.dataset.view); });
+$("#settingsBtn").onclick = ()=> showView($("#view-settings").classList.contains("on") ? "today" : "settings");
 
 function applyTheme(){
   const pref = db.theme || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
