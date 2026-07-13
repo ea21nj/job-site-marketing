@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#FC5200">
+<title>EMBER — Daily Wellness Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F7F7FA; --card:#FFFFFF; --ink:#242428; --ink-2:#63636C; --ink-3:#9B9BA5;
+    --line:#DFDFE8; --accent:#FC5200; --accent-press:#D94700; --accent-soft:#FFEFE6;
+    --on-accent:#FFFFFF;
+    --hm0:#ECECF2; --hm1:#FFDCCB; --hm2:#FFAD84; --hm3:#FD7E44; --hm4:#FC5200;
+    --shadow:0 1px 2px rgba(20,20,25,.05), 0 6px 20px rgba(20,20,25,.05);
+    --sheet-shadow:0 -8px 40px rgba(20,20,25,.18);
+  }
+  [data-theme="dark"]{
+    --bg:#111113; --card:#1A1A1C; --ink:#F4F4F6; --ink-2:#A8A8B0; --ink-3:#6E6E78;
+    --line:#2B2B30; --accent:#FC5200; --accent-press:#FF6B1F; --accent-soft:#2C1a10;
+    --hm0:#242428; --hm1:#5A2E1B; --hm2:#8A421D; --hm3:#C2551A; --hm4:#FC5200;
+    --shadow:0 1px 2px rgba(0,0,0,.35), 0 6px 20px rgba(0,0,0,.30);
+    --sheet-shadow:0 -8px 40px rgba(0,0,0,.6);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    background:var(--bg); color:var(--ink);
+    font:400 15px/1.5 "Barlow",system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    min-height:100dvh;
+  }
+  body::before{ /* subtle top wash */
+    content:""; position:fixed; inset:0 0 auto 0; height:220px; pointer-events:none; z-index:0;
+    background:radial-gradient(120% 100% at 50% -20%, color-mix(in srgb, var(--accent) 9%, transparent), transparent 70%);
+  }
+  .app{position:relative; z-index:1; max-width:480px; margin:0 auto; padding:14px 16px calc(92px + env(safe-area-inset-bottom))}
+
+  /* ---------- type helpers ---------- */
+  .cond{font-family:"Barlow Condensed",sans-serif}
+  .kicker{font-family:"Barlow Condensed"; font-weight:600; font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent)}
+  .section-t{font-family:"Barlow Condensed"; font-weight:600; font-size:15px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-2); margin:26px 0 10px}
+  .section-t:first-child{margin-top:0}
+
+  /* ---------- header ---------- */
+  header{display:flex; align-items:center; justify-content:space-between; padding:2px 0 18px}
+  .logo{display:flex; align-items:center; gap:7px; font-family:"Barlow Condensed"; font-weight:700; font-size:22px; letter-spacing:.2em; text-transform:uppercase}
+  .logo svg{width:20px;height:20px;color:var(--accent)}
+  .icon-btn{
+    display:flex;align-items:center;justify-content:center; width:38px;height:38px; border-radius:12px;
+    border:1px solid var(--line); background:var(--card); color:var(--ink-2); cursor:pointer;
+    transition:transform .12s ease, background .15s;
+  }
+  .icon-btn:active{transform:scale(.93)}
+  .icon-btn svg{width:18px;height:18px}
+
+  /* ---------- cards ---------- */
+  .card{background:var(--card); border:1px solid var(--line); border-radius:18px; box-shadow:var(--shadow)}
+
+  /* ---------- streak hero ---------- */
+  .hero{display:flex; align-items:center; gap:18px; padding:20px 22px; margin-top:10px; overflow:hidden; position:relative}
+  .hero .flame{width:52px;height:52px; flex:none; color:var(--accent); filter:drop-shadow(0 3px 10px color-mix(in srgb, var(--accent) 45%, transparent))}
+  .hero .flame.lit{animation:flick 2.2s ease-in-out infinite}
+  @keyframes flick{0%,100%{transform:scale(1) rotate(0deg)}30%{transform:scale(1.06) rotate(-2deg)}60%{transform:scale(.98) rotate(2deg)}}
+  .hero .flame.cold{color:var(--ink-3); filter:none; opacity:.6}
+  .streak-num{font-family:"Barlow Condensed"; font-weight:700; font-size:58px; line-height:1; letter-spacing:-.01em}
+  .streak-lab{font-family:"Barlow Condensed"; font-weight:600; font-size:14px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-2); margin-top:2px}
+  .streak-best{font-size:13px; color:var(--ink-3); margin-top:3px}
+  .weekdots{margin-left:auto; display:grid; grid-template-columns:repeat(7,1fr); gap:7px; text-align:center}
+  .weekdots .d{width:11px;height:11px;border-radius:50%; background:var(--hm0); margin:0 auto}
+  .weekdots .d.on{background:var(--accent)}
+  .weekdots .d.today{outline:2px solid color-mix(in srgb, var(--accent) 45%, transparent); outline-offset:2px}
+  .weekdots span{font-size:9.5px; font-weight:600; color:var(--ink-3); text-transform:uppercase; display:block; margin-top:5px}
+
+  /* ---------- quick-tap grid ---------- */
+  .act-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+  .act-btn{
+    display:flex; align-items:center; gap:11px; padding:13px 14px;
+    background:var(--card); border:1px solid var(--line); border-radius:15px; box-shadow:var(--shadow);
+    color:var(--ink); font:600 15px "Barlow",sans-serif; cursor:pointer; text-align:left;
+    transition:transform .1s ease, background .15s, border-color .15s, color .15s;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .act-btn svg{width:21px;height:21px; flex:none; color:var(--ink-2); transition:color .15s}
+  .act-btn:active{transform:scale(.96)}
+  .act-btn[aria-pressed="true"]{
+    background:var(--accent); border-color:var(--accent); color:var(--on-accent);
+    box-shadow:0 4px 16px color-mix(in srgb, var(--accent) 35%, transparent);
+    animation:pop .28s cubic-bezier(.3,1.6,.5,1);
+  }
+  .act-btn[aria-pressed="true"] svg{color:var(--on-accent)}
+  .act-btn .tick{margin-left:auto; width:16px !important; height:16px !important; opacity:0}
+  .act-btn[aria-pressed="true"] .tick{opacity:1}
+  @keyframes pop{0%{transform:scale(.92)}60%{transform:scale(1.03)}100%{transform:scale(1)}}
+
+  /* ---------- today's log detail rows ---------- */
+  .log-list{display:flex; flex-direction:column}
+  .log-row{display:flex; align-items:center; gap:10px; padding:12px 16px; border-top:1px solid var(--line)}
+  .log-row:first-child{border-top:none}
+  .log-row svg{width:18px;height:18px; color:var(--accent); flex:none}
+  .log-row .nm{font-weight:600; width:74px; flex:none; font-size:14px}
+  .log-row input{
+    background:transparent; border:none; border-bottom:1px dashed var(--line); color:var(--ink);
+    font:400 14px "Barlow",sans-serif; padding:3px 2px; outline:none; min-width:0;
+  }
+  .log-row input:focus{border-bottom-color:var(--accent)}
+  .log-row input::placeholder{color:var(--ink-3)}
+  .log-row .dur{width:52px; text-align:right}
+  .log-row .un{font-size:12px; color:var(--ink-3); margin-left:-4px}
+  .log-row .note{flex:1}
+  .hint{font-size:13px; color:var(--ink-3); margin-top:10px; text-align:center}
+
+  /* ---------- heatmap ---------- */
+  .hm-wrap{padding:16px 6px 14px 16px}
+  .hm-scroll{overflow-x:auto; display:flex; scrollbar-width:none}
+  .hm-scroll::-webkit-scrollbar{display:none}
+  .hm-days{display:grid; grid-template-rows:repeat(7,14px); gap:3px; margin:19px 8px 0 0; flex:none; position:sticky; left:0}
+  .hm-days span{font-size:9px; font-weight:600; color:var(--ink-3); line-height:14px; text-transform:uppercase}
+  .hm-grid{flex:none}
+  .hm-months{display:flex; height:16px; margin-bottom:3px}
+  .hm-months span{font-size:10px; font-weight:600; color:var(--ink-3); text-transform:uppercase; letter-spacing:.05em; flex:none}
+  .hm-cols{display:flex; gap:3px}
+  .hm-col{display:grid; grid-template-rows:repeat(7,14px); gap:3px}
+  .hm-cell{width:14px; height:14px; border-radius:4px; background:var(--hm0); border:none; padding:0; cursor:pointer; transition:transform .1s}
+  .hm-cell:active{transform:scale(.85)}
+  .hm-cell.future{visibility:hidden}
+  .hm-cell.l1{background:var(--hm1)} .hm-cell.l2{background:var(--hm2)}
+  .hm-cell.l3{background:var(--hm3)} .hm-cell.l4{background:var(--hm4)}
+  .hm-cell.today{outline:1.5px solid var(--accent); outline-offset:1.5px}
+  .hm-legend{display:flex; align-items:center; gap:4px; justify-content:flex-end; padding:10px 12px 0 0; font-size:10.5px; color:var(--ink-3)}
+  .hm-legend i{width:11px;height:11px;border-radius:3px;display:inline-block}
+
+  /* ---------- history feed ---------- */
+  .feed{display:flex; flex-direction:column; gap:12px}
+  .day-card{padding:15px 16px 13px; animation:rise .35s ease both}
+  .feed .day-card:nth-child(1){animation-delay:.02s}.feed .day-card:nth-child(2){animation-delay:.06s}
+  .feed .day-card:nth-child(3){animation-delay:.1s}.feed .day-card:nth-child(4){animation-delay:.14s}
+  @keyframes rise{from{opacity:0; transform:translateY(8px)}to{opacity:1; transform:none}}
+  .day-head{display:flex; align-items:baseline; gap:8px}
+  .day-date{font-family:"Barlow Condensed"; font-weight:700; font-size:19px; letter-spacing:.04em; text-transform:uppercase}
+  .day-meta{font-size:12.5px; color:var(--ink-3); margin-left:auto}
+  .day-edit{background:none;border:none;color:var(--ink-3);cursor:pointer;padding:4px;margin:-4px -4px -4px 2px;border-radius:8px}
+  .day-edit:active{color:var(--accent)}
+  .day-edit svg{width:15px;height:15px;display:block}
+  .chips{display:flex; flex-wrap:wrap; gap:7px; margin-top:10px}
+  .a-chip{display:inline-flex; align-items:center; gap:6px; padding:5px 11px 5px 8px; border-radius:999px;
+    background:var(--accent-soft); color:var(--ink); font-size:13px; font-weight:600}
+  .a-chip svg{width:14px;height:14px;color:var(--accent)}
+  .a-chip small{font-weight:400; color:var(--ink-2)}
+  .day-note{font-size:13.5px; color:var(--ink-2); margin-top:9px; padding-left:10px; border-left:2px solid var(--line)}
+  .day-note b{font-weight:600; color:var(--ink)}
+  .backfill{display:flex; align-items:center; gap:10px; padding:13px 16px; margin-bottom:14px}
+  .backfill label{font-weight:600; font-size:14px}
+  .backfill input{margin-left:auto; background:transparent; border:1px solid var(--line); color:var(--ink);
+    border-radius:10px; padding:7px 10px; font:500 14px "Barlow"; color-scheme:inherit}
+
+  /* ---------- trends ---------- */
+  .tiles{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+  .tile{padding:15px 16px 13px}
+  .tile .t-lab{font-family:"Barlow Condensed"; font-weight:600; font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-2)}
+  .tile .t-num{font-family:"Barlow Condensed"; font-weight:700; font-size:38px; line-height:1.1; margin-top:2px}
+  .tile .t-num small{font-size:19px; font-weight:600; color:var(--ink-2); letter-spacing:0}
+  .tile .t-sub{font-size:12px; color:var(--ink-3); margin-top:1px}
+  .chart-card{padding:16px; margin-top:10px}
+  .filter-row{display:flex; gap:7px; overflow-x:auto; padding:2px 2px 12px; scrollbar-width:none}
+  .filter-row::-webkit-scrollbar{display:none}
+  .f-chip{flex:none; padding:5px 13px; border-radius:999px; border:1px solid var(--line); background:transparent;
+    color:var(--ink-2); font:600 13px "Barlow"; cursor:pointer; transition:all .15s}
+  .f-chip[aria-pressed="true"]{background:var(--accent); border-color:var(--accent); color:var(--on-accent)}
+  .chart-svg{width:100%; display:block}
+  .bar{fill:var(--accent)}
+  .bar-stub{fill:var(--line)}
+  .bar-val{font:600 11px "Barlow"; fill:var(--ink-2)}
+  .ax{font:500 10.5px "Barlow"; fill:var(--ink-3)}
+  .gridline{stroke:var(--line); stroke-width:1; stroke-dasharray:2 3}
+  .baseline{stroke:var(--line); stroke-width:1}
+  .s-table{margin-top:10px}
+  .s-row{display:flex; align-items:center; gap:10px; padding:11px 16px; border-top:1px solid var(--line); font-size:14px}
+  .s-row:first-of-type{border-top:none}
+  .s-row svg{width:17px;height:17px;color:var(--accent);flex:none}
+  .s-row .nm{font-weight:600; flex:1}
+  .s-row .v{font-family:"Barlow Condensed"; font-weight:700; font-size:19px; width:52px; text-align:right}
+  .s-row .v small{font-size:11px; font-weight:600; color:var(--ink-3); font-family:"Barlow"; display:block; margin-top:-3px; letter-spacing:.06em; text-transform:uppercase}
+  .s-head{display:flex; padding:10px 16px 0; justify-content:flex-end; gap:0}
+  .m-row{display:flex; align-items:center; gap:12px; padding:10px 16px; border-top:1px solid var(--line); font-size:14px}
+  .m-row:first-of-type{border-top:none}
+  .m-row .nm{font-family:"Barlow Condensed"; font-weight:600; font-size:15px; letter-spacing:.06em; text-transform:uppercase; width:66px; flex:none}
+  .m-row .meter{flex:1; height:8px; border-radius:99px; background:var(--hm0); overflow:hidden}
+  .m-row .meter i{display:block; height:100%; background:var(--accent); border-radius:99px}
+  .m-row .v{font-weight:600; width:78px; text-align:right; color:var(--ink-2); font-size:12.5px}
+
+  /* ---------- empty state ---------- */
+  .empty{padding:34px 24px; text-align:center; color:var(--ink-3)}
+  .empty svg{width:34px; height:34px; color:var(--ink-3); opacity:.7; margin-bottom:10px}
+  .empty b{display:block; font-family:"Barlow Condensed"; font-weight:600; font-size:17px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-2); margin-bottom:3px}
+
+  /* ---------- bottom nav ---------- */
+  nav{
+    position:fixed; bottom:0; left:0; right:0; z-index:40;
+    background:color-mix(in srgb, var(--card) 88%, transparent); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+    border-top:1px solid var(--line);
+  }
+  .nav-in{max-width:480px; margin:0 auto; display:grid; grid-template-columns:repeat(3,1fr); padding:6px 10px calc(8px + env(safe-area-inset-bottom))}
+  .nav-btn{display:flex; flex-direction:column; align-items:center; gap:3px; padding:7px 0 4px; background:none; border:none;
+    color:var(--ink-3); cursor:pointer; font-family:"Barlow Condensed"; font-weight:600; font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+    border-radius:12px; transition:color .15s; -webkit-tap-highlight-color:transparent}
+  .nav-btn svg{width:21px; height:21px}
+  .nav-btn.on{color:var(--accent)}
+
+  /* ---------- bottom sheet editor ---------- */
+  .sheet-bg{position:fixed; inset:0; z-index:50; background:rgba(10,10,12,.45); opacity:0; pointer-events:none; transition:opacity .22s}
+  .sheet-bg.open{opacity:1; pointer-events:auto}
+  .sheet{
+    position:fixed; z-index:51; left:50%; bottom:0; transform:translate(-50%,105%); width:100%; max-width:480px;
+    background:var(--card); border-radius:22px 22px 0 0; box-shadow:var(--sheet-shadow);
+    transition:transform .3s cubic-bezier(.3,1,.4,1); max-height:88dvh; display:flex; flex-direction:column;
+  }
+  .sheet.open{transform:translate(-50%,0)}
+  .sheet-head{padding:16px 20px 12px; display:flex; align-items:center; border-bottom:1px solid var(--line)}
+  .sheet-head::before{content:""; position:absolute; top:8px; left:50%; transform:translateX(-50%); width:40px; height:4px; border-radius:99px; background:var(--line)}
+  .sheet-title{font-family:"Barlow Condensed"; font-weight:700; font-size:21px; letter-spacing:.05em; text-transform:uppercase}
+  .sheet-x{margin-left:auto}
+  .sheet-body{padding:16px 20px; overflow-y:auto}
+  .sheet-body .act-grid{gap:8px}
+  .sheet-body .act-btn{padding:10px 12px; font-size:14px; box-shadow:none}
+  .sheet-foot{display:flex; gap:10px; padding:12px 20px calc(16px + env(safe-area-inset-bottom)); border-top:1px solid var(--line)}
+  .btn{flex:1; padding:13px; border-radius:14px; border:none; cursor:pointer;
+    font-family:"Barlow Condensed"; font-weight:700; font-size:16px; letter-spacing:.12em; text-transform:uppercase;
+    transition:transform .1s}
+  .btn:active{transform:scale(.97)}
+  .btn-primary{background:var(--accent); color:var(--on-accent)}
+  .btn-primary:active{background:var(--accent-press)}
+  .btn-ghost{background:transparent; border:1px solid var(--line); color:var(--ink-2); flex:0 0 auto; padding:13px 18px}
+  .sheet .log-list{border:1px solid var(--line); border-radius:14px; margin-top:14px}
+
+  .view{display:none; animation:fadein .25s ease}
+  .view.on{display:block}
+  @keyframes fadein{from{opacity:0}to{opacity:1}}
+  @media (max-width:355px){ .streak-num{font-size:48px} .weekdots{display:none} }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <header>
+    <div class="logo"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#i-flame"/></svg>Ember</div>
+    <button class="icon-btn" id="themeBtn" aria-label="Toggle dark mode"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-moon" id="themeIcon"/></svg></button>
+  </header>
+
+  <!-- ============ TODAY ============ -->
+  <section class="view on" id="view-today">
+    <div class="kicker" id="todayDate"></div>
+    <div class="card hero" id="heroCard"></div>
+    <div class="section-t">What did you do today?</div>
+    <div class="act-grid" id="todayGrid"></div>
+    <div id="todayLogWrap"></div>
+  </section>
+
+  <!-- ============ HISTORY ============ -->
+  <section class="view" id="view-history">
+    <div class="kicker">History</div>
+    <div class="section-t">Consistency</div>
+    <div class="card hm-wrap">
+      <div class="hm-scroll" id="hmScroll"></div>
+      <div class="hm-legend">Less
+        <i style="background:var(--hm0)"></i><i style="background:var(--hm1)"></i><i style="background:var(--hm2)"></i><i style="background:var(--hm3)"></i><i style="background:var(--hm4)"></i>
+      More</div>
+    </div>
+    <div class="section-t">Activity feed</div>
+    <div class="card backfill">
+      <label for="backfillDate">Log or edit a past day</label>
+      <input type="date" id="backfillDate">
+    </div>
+    <div class="feed" id="feed"></div>
+  </section>
+
+  <!-- ============ TRENDS ============ -->
+  <section class="view" id="view-trends">
+    <div class="kicker">Trends</div>
+    <div class="section-t">Stats</div>
+    <div class="tiles" id="tiles"></div>
+    <div class="section-t">Weekly sessions</div>
+    <div class="card chart-card">
+      <div class="filter-row" id="filterRow"></div>
+      <div id="weeklyChart"></div>
+    </div>
+    <div class="section-t">Monthly volume</div>
+    <div class="card" id="monthList"></div>
+    <div class="section-t">Streaks by activity</div>
+    <div class="card s-table" id="streakTable"></div>
+  </section>
+</div>
+
+<!-- ============ BOTTOM NAV ============ -->
+<nav>
+  <div class="nav-in">
+    <button class="nav-btn on" data-view="today"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-bolt"/></svg>Today</button>
+    <button class="nav-btn" data-view="history"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-list"/></svg>History</button>
+    <button class="nav-btn" data-view="trends"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-chart"/></svg>Trends</button>
+  </div>
+</nav>
+
+<!-- ============ EDITOR SHEET ============ -->
+<div class="sheet-bg" id="sheetBg"></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+  <div class="sheet-head" style="position:relative">
+    <div class="sheet-title" id="sheetTitle"></div>
+    <button class="icon-btn sheet-x" id="sheetClose" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  </div>
+  <div class="sheet-body">
+    <div class="act-grid" id="sheetGrid"></div>
+    <div id="sheetLogWrap"></div>
+  </div>
+  <div class="sheet-foot">
+    <button class="btn btn-ghost" id="sheetClear">Clear</button>
+    <button class="btn btn-primary" id="sheetSave">Save day</button>
+  </div>
+</div>
+
+<!-- ============ ICON DEFS ============ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <g id="i-flame"><path d="M12 1.6s5.8 5.4 5.8 10.9a5.8 5.8 0 0 1-11.6 0c0-1.9.8-3.6 1.9-5.2.3 1 .9 1.9 1.7 2.4-.2-2.9.6-5.9 2.2-8.1zm0 17.6a3.1 3.1 0 0 0 3.1-3.1c0-1.5-1.2-3-3.1-4.5-1.9 1.5-3.1 3-3.1 4.5A3.1 3.1 0 0 0 12 19.2z" fill-rule="evenodd"/></g>
+    <g id="i-lift"><path d="M6.5 6.5v11M17.5 6.5v11M3.5 9.5v5M20.5 9.5v5M6.5 12h11"/></g>
+    <g id="i-cardio"><path d="M12 20.2S4.8 15.7 3.1 11.4C1.9 8.5 3.8 5.4 7 5.4c2 0 3.4 1.1 5 3.1 1.6-2 3-3.1 5-3.1 3.2 0 5.1 3.1 3.9 6-1.7 4.3-8.9 8.8-8.9 8.8z"/><path d="M7.5 11.5h2.5l1-2 2 4.5 1-2.5h2.5"/></g>
+    <g id="i-run"><path d="M13.2 2.5 4.8 13.7h5.7L9.3 21.5l8.9-11.9h-6.2l1.2-7.1z"/></g>
+    <g id="i-ride"><circle cx="5.5" cy="17" r="3.4"/><circle cx="18.5" cy="17" r="3.4"/><path d="M5.5 17 9 9.5h6.2M12 17l3.2-7.5M15.2 9.5 13.8 6h2.7"/></g>
+    <g id="i-sauna"><path d="M8 2.8c-1.8 2.2 1.8 3.2 0 5.6M12 2.8c-1.8 2.2 1.8 3.2 0 5.6M16 2.8c-1.8 2.2 1.8 3.2 0 5.6"/><path d="M4 13.5h16M6 13.5V21M18 13.5V21M6 17.5h12"/></g>
+    <g id="i-meditate"><circle cx="12" cy="5.5" r="2.6"/><path d="M12 10.5c-2.8 0-4.6 2-5.2 4.6"/><path d="M12 10.5c2.8 0 4.6 2 5.2 4.6"/><path d="M3.5 19.5c2.8-2 5.6-2.8 8.5-2.8s5.7.8 8.5 2.8"/></g>
+    <g id="i-stretch"><path d="M8.5 12H2.5m0 0 3-3m-3 3 3 3M15.5 12h6m0 0-3-3m3 3-3 3"/><path d="M12 4.5v15"/></g>
+    <g id="i-other"><circle cx="12" cy="12" r="8.6"/><path d="M12 8.2v7.6M8.2 12h7.6"/></g>
+    <g id="i-bolt"><path d="M13.2 2.5 4.8 13.7h5.7L9.3 21.5l8.9-11.9h-6.2l1.2-7.1z"/></g>
+    <g id="i-list"><path d="M8.5 6h12M8.5 12h12M8.5 18h12"/><circle cx="4" cy="6" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1.1" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="1.1" fill="currentColor" stroke="none"/></g>
+    <g id="i-chart"><path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/></g>
+    <g id="i-moon"><path d="M20 13A8.1 8.1 0 0 1 11 4a8.1 8.1 0 1 0 9 9z"/></g>
+    <g id="i-sun"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2.5 12h2M19.5 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></g>
+    <g id="i-pencil"><path d="M17 3.5 20.5 7 8.5 19l-4.5 1 1-4.5L17 3.5z"/></g>
+    <g id="i-check"><path d="M4.5 12.5 10 18 19.5 6.5"/></g>
+  </defs>
+</svg>
+
+<script>
+"use strict";
+/* ============================================================
+   EMBER — daily workout & wellness tracker
+   data model:  localStorage["ember-tracker-v1"] =
+     { days: { "YYYY-MM-DD": { actId: {d:<min|null>, n:"note"} } }, theme }
+   ============================================================ */
+const KEY = "ember-tracker-v1";
+
+const ACTS = [
+  {id:"lift",     name:"Lift",     icon:"i-lift"},
+  {id:"cardio",   name:"Cardio",   icon:"i-cardio"},
+  {id:"run",      name:"Run",      icon:"i-run"},
+  {id:"ride",     name:"Ride",     icon:"i-ride"},
+  {id:"sauna",    name:"Sauna",    icon:"i-sauna"},
+  {id:"meditate", name:"Meditate", icon:"i-meditate"},
+  {id:"stretch",  name:"Stretch",  icon:"i-stretch"},
+  {id:"other",    name:"Other",    icon:"i-other"},
+];
+const ACT = Object.fromEntries(ACTS.map(a=>[a.id,a]));
+
+/* ---------- store ---------- */
+let db = load();
+function load(){
+  try{ const d = JSON.parse(localStorage.getItem(KEY)); if(d && typeof d.days==="object") return d; }catch(e){}
+  return {days:{}, theme:null};
+}
+function save(){ localStorage.setItem(KEY, JSON.stringify(db)); }
+
+/* ---------- date utils (local time) ---------- */
+const pad = n => String(n).padStart(2,"0");
+const keyOf = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const parseKey = k => { const [y,m,dd] = k.split("-").map(Number); return new Date(y, m-1, dd); };
+const addDays = (d,n) => { const x = new Date(d); x.setDate(x.getDate()+n); return x; };
+const todayKey = () => keyOf(new Date());
+const startOfWeek = d => addDays(d, -((d.getDay()+6)%7));   /* Monday start */
+const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const WD = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+function fmtLong(k){
+  const d = parseKey(k);
+  return d.toLocaleDateString("en-US",{weekday:"long", month:"long", day:"numeric"});
+}
+function fmtShort(k){
+  const d = parseKey(k), t = todayKey(), y = keyOf(addDays(new Date(),-1));
+  if(k===t) return "Today";
+  if(k===y) return "Yesterday";
+  return d.toLocaleDateString("en-US",{weekday:"short", month:"short", day:"numeric"});
+}
+
+/* ---------- queries ---------- */
+const dayActs = k => db.days[k] || {};
+const actCount = k => Object.keys(dayActs(k)).length;
+const has = (k, actId) => actId ? !!dayActs(k)[actId] : actCount(k) > 0;
+const dayMinutes = k => Object.values(dayActs(k)).reduce((s,e)=>s+(e.d||0),0);
+
+function currentStreak(actId){
+  let d = new Date();
+  if(!has(keyOf(d), actId)) d = addDays(d,-1);      /* today not logged yet ≠ broken */
+  let n = 0;
+  while(has(keyOf(d), actId)){ n++; d = addDays(d,-1); }
+  return n;
+}
+function longestStreak(actId){
+  const keys = Object.keys(db.days).filter(k=>has(k,actId)).sort();
+  let best=0, run=0, prev=null;
+  for(const k of keys){
+    run = (prev && keyOf(addDays(parseKey(prev),1))===k) ? run+1 : 1;
+    if(run>best) best=run;
+    prev = k;
+  }
+  return best;
+}
+function countInLastDays(n, actId){
+  let c=0;
+  for(let i=0;i<n;i++){
+    const k = keyOf(addDays(new Date(),-i));
+    if(actId){ if(dayActs(k)[actId]) c++; }
+    else c += actCount(k);
+  }
+  return c;
+}
+function activeDaysInLast(n){
+  let c=0;
+  for(let i=0;i<n;i++) if(has(keyOf(addDays(new Date(),-i)))) c++;
+  return c;
+}
+function weeklyCounts(nWeeks, actId){
+  const thisMon = startOfWeek(new Date());
+  const out = [];
+  for(let w=nWeeks-1; w>=0; w--){
+    const mon = addDays(thisMon, -7*w);
+    let sessions=0, mins=0;
+    for(let i=0;i<7;i++){
+      const k = keyOf(addDays(mon,i));
+      const acts = dayActs(k);
+      for(const id in acts){
+        if(actId && id!==actId) continue;
+        sessions++; mins += acts[id].d||0;
+      }
+    }
+    out.push({label:`${mon.getMonth()+1}/${mon.getDate()}`, sessions, mins, current: w===0});
+  }
+  return out;
+}
+function monthlyCounts(nMonths){
+  const now = new Date(); const out = [];
+  for(let m=nMonths-1; m>=0; m--){
+    const first = new Date(now.getFullYear(), now.getMonth()-m, 1);
+    const next  = new Date(now.getFullYear(), now.getMonth()-m+1, 1);
+    let sessions=0, mins=0;
+    for(let d=new Date(first); d<next; d.setDate(d.getDate()+1)){
+      const acts = dayActs(keyOf(d));
+      for(const id in acts){ sessions++; mins += acts[id].d||0; }
+    }
+    out.push({label:MONTHS[first.getMonth()], sessions, mins});
+  }
+  return out;
+}
+
+/* ---------- tiny html helpers ---------- */
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const icon = (id, cls="") => `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#${id}"/></svg>`;
+
+/* ============================================================
+   TODAY VIEW
+   ============================================================ */
+function renderToday(){
+  const tk = todayKey();
+  $("#todayDate").textContent = fmtLong(tk);
+
+  /* streak hero */
+  const cur = currentStreak(null), best = Math.max(longestStreak(null), cur);
+  const mon = startOfWeek(new Date());
+  let dots = "";
+  for(let i=0;i<7;i++){
+    const k = keyOf(addDays(mon,i));
+    const future = k > tk;
+    dots += `<div><div class="d ${(!future && has(k))?"on":""} ${k===tk?"today":""}"></div><span>${WD[i][0]}</span></div>`;
+  }
+  $("#heroCard").innerHTML = `
+    <svg class="flame ${cur>0?"lit":"cold"}" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#i-flame"/></svg>
+    <div>
+      <div class="streak-num">${cur}</div>
+      <div class="streak-lab">day streak</div>
+      <div class="streak-best">Best · ${best} day${best===1?"":"s"}</div>
+    </div>
+    <div class="weekdots" aria-label="This week">${dots}</div>`;
+
+  /* quick-tap grid */
+  $("#todayGrid").innerHTML = ACTS.map(a=>{
+    const on = !!dayActs(tk)[a.id];
+    return `<button class="act-btn" data-act="${a.id}" aria-pressed="${on}">
+      ${icon(a.icon)}${a.name}${icon("i-check","tick")}</button>`;
+  }).join("");
+  $("#todayGrid").querySelectorAll(".act-btn").forEach(b=>{
+    b.onclick = ()=> toggleAct(tk, b.dataset.act);
+  });
+
+  /* detail rows for logged activities */
+  const acts = dayActs(tk);
+  const ids = ACTS.filter(a=>acts[a.id]).map(a=>a.id);
+  $("#todayLogWrap").innerHTML = ids.length ? `
+    <div class="section-t">Details <span style="font-weight:500;letter-spacing:.02em;text-transform:none;color:var(--ink-3)">— optional</span></div>
+    <div class="card log-list">${ids.map(id=>logRow(id, acts[id])).join("")}</div>`
+    : `<div class="hint">Tap an activity to log it — done in seconds.</div>`;
+  bindLogRows($("#todayLogWrap"), (id,field,val)=>{
+    const day = db.days[tk]; if(!day || !day[id]) return;
+    day[id][field] = field==="d" ? (val===""?null:Math.max(0,parseInt(val,10)||0)) : val;
+    save();
+  });
+}
+
+function logRow(id, e){
+  const a = ACT[id];
+  return `<div class="log-row" data-act="${id}">
+    ${icon(a.icon)}<span class="nm">${a.name}</span>
+    <input class="dur" type="number" inputmode="numeric" min="0" placeholder="—" value="${e.d??""}" aria-label="${a.name} minutes"><span class="un">min</span>
+    <input class="note" type="text" maxlength="120" placeholder="Add a note" value="${esc(e.n||"")}" aria-label="${a.name} note">
+  </div>`;
+}
+function bindLogRows(root, onChange){
+  root.querySelectorAll(".log-row").forEach(r=>{
+    r.querySelector(".dur").oninput  = ev => onChange(r.dataset.act, "d", ev.target.value);
+    r.querySelector(".note").oninput = ev => onChange(r.dataset.act, "n", ev.target.value);
+  });
+}
+
+function toggleAct(k, id){
+  const day = db.days[k] || (db.days[k] = {});
+  if(day[id]){ delete day[id]; if(!Object.keys(day).length) delete db.days[k]; }
+  else day[id] = {d:null, n:""};
+  save();
+  renderToday();
+}
+
+/* ============================================================
+   HISTORY VIEW
+   ============================================================ */
+const HM_WEEKS = 26;
+function renderHistory(){
+  /* ---- heatmap ---- */
+  const tk = todayKey();
+  const thisMon = startOfWeek(new Date());
+  const first = addDays(thisMon, -7*(HM_WEEKS-1));
+  let cols = "", monthRow = "", lastMonth = -1;
+  for(let w=0; w<HM_WEEKS; w++){
+    const mon = addDays(first, w*7);
+    /* month label when the month changes at this column */
+    const m = mon.getMonth();
+    monthRow += `<span style="width:17px">${m!==lastMonth ? MONTHS[m] : ""}</span>`;
+    lastMonth = m;
+    let cells = "";
+    for(let i=0;i<7;i++){
+      const k = keyOf(addDays(mon,i));
+      const n = actCount(k);
+      const lvl = n===0?0 : n===1?1 : n===2?2 : n===3?3 : 4;
+      const future = k > tk;
+      cells += `<button class="hm-cell ${lvl?("l"+lvl):""} ${k===tk?"today":""} ${future?"future":""}"
+        data-k="${k}" title="${fmtShort(k)} — ${n} ${n===1?"activity":"activities"}"
+        aria-label="${fmtShort(k)}, ${n} activities"${future?" disabled":""}></button>`;
+    }
+    cols += `<div class="hm-col">${cells}</div>`;
+  }
+  $("#hmScroll").innerHTML = `
+    <div class="hm-days"><span>M</span><span></span><span>W</span><span></span><span>F</span><span></span><span>S</span></div>
+    <div class="hm-grid"><div class="hm-months">${monthRow}</div><div class="hm-cols">${cols}</div></div>`;
+  $("#hmScroll").querySelectorAll(".hm-cell:not(.future)").forEach(c=>{
+    c.onclick = ()=> openEditor(c.dataset.k);
+  });
+  $("#hmScroll").scrollLeft = $("#hmScroll").scrollWidth;
+
+  /* ---- backfill date picker ---- */
+  const bf = $("#backfillDate");
+  bf.max = tk;
+  bf.value = "";
+  bf.onchange = ()=>{ if(bf.value && bf.value <= tk) openEditor(bf.value); };
+
+  /* ---- feed ---- */
+  const keys = Object.keys(db.days).filter(k=>actCount(k)>0 && k<=tk).sort().reverse().slice(0,60);
+  if(!keys.length){
+    $("#feed").innerHTML = `<div class="card empty">${icon("i-flame")}<b>No activity yet</b>Log today or backfill a past day above.</div>`;
+    return;
+  }
+  $("#feed").innerHTML = keys.map(k=>{
+    const acts = dayActs(k);
+    const mins = dayMinutes(k);
+    const chips = ACTS.filter(a=>acts[a.id]).map(a=>{
+      const e = acts[a.id];
+      return `<span class="a-chip">${icon(a.icon)}${a.name}${e.d?`<small>· ${e.d} min</small>`:""}</span>`;
+    }).join("");
+    const notes = ACTS.filter(a=>acts[a.id] && acts[a.id].n).map(a=>
+      `<div class="day-note"><b>${a.name}:</b> ${esc(acts[a.id].n)}</div>`).join("");
+    return `<div class="card day-card">
+      <div class="day-head">
+        <span class="day-date">${fmtShort(k)}</span>
+        <span class="day-meta">${Object.keys(acts).length} ${Object.keys(acts).length===1?"activity":"activities"}${mins?` · ${mins} min`:""}</span>
+        <button class="day-edit" data-k="${k}" aria-label="Edit ${fmtShort(k)}">${icon("i-pencil")}</button>
+      </div>
+      <div class="chips">${chips}</div>${notes}
+    </div>`;
+  }).join("");
+  $("#feed").querySelectorAll(".day-edit").forEach(b=> b.onclick = ()=> openEditor(b.dataset.k));
+}
+
+/* ============================================================
+   TRENDS VIEW
+   ============================================================ */
+let trendFilter = null;   /* null = all activities */
+
+function renderTrends(){
+  const cur = currentStreak(null), best = Math.max(longestStreak(null), cur);
+  const consist = Math.round(activeDaysInLast(30)/30*100);
+  const wk = weeklyCounts(1, null)[0];
+
+  $("#tiles").innerHTML = [
+    {lab:"Current streak", num:cur, unit:"days", sub:cur>0?"Keep it burning":"Log today to start"},
+    {lab:"Longest streak", num:best, unit:"days", sub:"All-time best"},
+    {lab:"This week", num:wk.sessions, unit:"sessions", sub:wk.mins?`${wk.mins} min logged`:"Mon – Sun"},
+    {lab:"Consistency", num:consist, unit:"%", sub:`${activeDaysInLast(30)} of last 30 days`},
+  ].map(t=>`<div class="card tile">
+      <div class="t-lab">${t.lab}</div>
+      <div class="t-num">${t.num}<small> ${t.unit}</small></div>
+      <div class="t-sub">${t.sub}</div>
+    </div>`).join("");
+
+  /* filter chips */
+  $("#filterRow").innerHTML =
+    `<button class="f-chip" data-f="" aria-pressed="${trendFilter===null}">All</button>` +
+    ACTS.map(a=>`<button class="f-chip" data-f="${a.id}" aria-pressed="${trendFilter===a.id}">${a.name}</button>`).join("");
+  $("#filterRow").querySelectorAll(".f-chip").forEach(b=>{
+    b.onclick = ()=>{ trendFilter = b.dataset.f || null; renderTrends(); };
+  });
+
+  $("#weeklyChart").innerHTML = barChartSVG(weeklyCounts(8, trendFilter));
+
+  /* monthly volume */
+  const months = monthlyCounts(6);
+  const mMax = Math.max(1, ...months.map(m=>m.sessions));
+  $("#monthList").innerHTML = months.map(m=>`
+    <div class="m-row">
+      <span class="nm">${m.label}</span>
+      <div class="meter"><i style="width:${Math.round(m.sessions/mMax*100)}%"></i></div>
+      <span class="v">${m.sessions===0 ? "—" : m.sessions + (m.mins ? " · "+fmtMins(m.mins) : " sessions")}</span>
+    </div>`).join("");
+
+  /* per-activity streaks */
+  $("#streakTable").innerHTML = ACTS.map(a=>{
+    const c = currentStreak(a.id), b = Math.max(longestStreak(a.id), c), n30 = countInLastDays(30, a.id);
+    return `<div class="s-row">
+      ${icon(a.icon)}<span class="nm">${a.name}</span>
+      <span class="v">${c}<small>now</small></span>
+      <span class="v">${b}<small>best</small></span>
+      <span class="v">${n30}<small>30 d</small></span>
+    </div>`;
+  }).join("");
+}
+const fmtMins = m => m>=60 ? `${Math.floor(m/60)}h ${m%60?`${m%60}m`:""}`.trim() : `${m}m`;
+
+/* single-series bar chart, orange, rounded top ends, labels above bars */
+function barChartSVG(data){
+  const W=440, H=190, padL=8, padR=8, padT=26, padB=26;
+  const plotW = W-padL-padR, plotH = H-padT-padB, baseY = H-padB;
+  const n = data.length, gap = 10, bw = Math.floor((plotW - gap*(n-1))/n);
+  const max = Math.max(1, ...data.map(d=>d.sessions));
+  let bars="";
+  data.forEach((d,i)=>{
+    const x = padL + i*(bw+gap);
+    const h = Math.round(d.sessions/max*plotH);
+    const y = baseY - h;
+    const r = Math.min(4, bw/2, h);
+    const tip = `Week of ${d.label} — ${d.sessions} session${d.sessions===1?"":"s"}${d.mins?`, ${fmtMins(d.mins)}`:""}`;
+    if(d.sessions>0){
+      bars += `<path class="bar" d="M${x} ${baseY} V${y+r} Q${x} ${y} ${x+r} ${y} H${x+bw-r} Q${x+bw} ${y} ${x+bw} ${y+r} V${baseY} Z"
+        opacity="${d.current?1:.82}"><title>${tip}</title></path>
+        <text class="bar-val" x="${x+bw/2}" y="${y-6}" text-anchor="middle">${d.sessions}</text>`;
+    } else {
+      bars += `<rect class="bar-stub" x="${x}" y="${baseY-3}" width="${bw}" height="3" rx="1.5"><title>${tip}</title></rect>`;
+    }
+    bars += `<text class="ax" x="${x+bw/2}" y="${H-8}" text-anchor="middle">${d.current?"now":d.label}</text>`;
+  });
+  return `<svg class="chart-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="Sessions per week, last 8 weeks">
+    <line class="gridline" x1="${padL}" y1="${padT}" x2="${W-padR}" y2="${padT}"/>
+    <line class="baseline" x1="${padL}" y1="${baseY}" x2="${W-padR}" y2="${baseY}"/>
+    ${bars}</svg>`;
+}
+
+/* ============================================================
+   EDITOR SHEET  (backfill / correct any day)
+   ============================================================ */
+let editorKey=null, draft=null;
+
+function openEditor(k){
+  editorKey = k;
+  draft = JSON.parse(JSON.stringify(dayActs(k)));
+  $("#sheetTitle").textContent = fmtShort(k)==="Today" ? "Today" : fmtLong(k);
+  renderSheet();
+  $("#sheetBg").classList.add("open");
+  $("#sheet").classList.add("open");
+}
+function renderSheet(){
+  $("#sheetGrid").innerHTML = ACTS.map(a=>{
+    const on = !!draft[a.id];
+    return `<button class="act-btn" data-act="${a.id}" aria-pressed="${on}">
+      ${icon(a.icon)}${a.name}${icon("i-check","tick")}</button>`;
+  }).join("");
+  $("#sheetGrid").querySelectorAll(".act-btn").forEach(b=>{
+    b.onclick = ()=>{
+      const id = b.dataset.act;
+      if(draft[id]) delete draft[id]; else draft[id] = {d:null, n:""};
+      renderSheet();
+    };
+  });
+  const ids = ACTS.filter(a=>draft[a.id]).map(a=>a.id);
+  $("#sheetLogWrap").innerHTML = ids.length
+    ? `<div class="log-list">${ids.map(id=>logRow(id, draft[id])).join("")}</div>` : "";
+  bindLogRows($("#sheetLogWrap"), (id,field,val)=>{
+    if(!draft[id]) return;
+    draft[id][field] = field==="d" ? (val===""?null:Math.max(0,parseInt(val,10)||0)) : val;
+  });
+}
+function closeEditor(){
+  $("#sheetBg").classList.remove("open");
+  $("#sheet").classList.remove("open");
+  editorKey = null; draft = null;
+}
+$("#sheetSave").onclick = ()=>{
+  if(Object.keys(draft).length) db.days[editorKey] = draft;
+  else delete db.days[editorKey];
+  save(); closeEditor(); renderAll();
+};
+$("#sheetClear").onclick = ()=>{ draft = {}; renderSheet(); };
+$("#sheetClose").onclick = closeEditor;
+$("#sheetBg").onclick = closeEditor;
+
+/* ============================================================
+   NAV + THEME + BOOT
+   ============================================================ */
+const renderers = {today:renderToday, history:renderHistory, trends:renderTrends};
+function renderAll(){ renderToday(); renderHistory(); renderTrends(); }
+
+document.querySelectorAll(".nav-btn").forEach(b=>{
+  b.onclick = ()=>{
+    document.querySelectorAll(".nav-btn").forEach(x=>x.classList.toggle("on", x===b));
+    document.querySelectorAll(".view").forEach(v=>v.classList.remove("on"));
+    $("#view-"+b.dataset.view).classList.add("on");
+    renderers[b.dataset.view]();
+    window.scrollTo({top:0});
+  };
+});
+
+function applyTheme(){
+  const pref = db.theme || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+  document.documentElement.dataset.theme = pref;
+  $("#themeIcon").setAttribute("href", pref==="dark" ? "#i-sun" : "#i-moon");
+  document.querySelector('meta[name="theme-color"]').content = pref==="dark" ? "#1A1A1C" : "#FC5200";
+}
+$("#themeBtn").onclick = ()=>{
+  const cur = document.documentElement.dataset.theme;
+  db.theme = cur==="dark" ? "light" : "dark";
+  save(); applyTheme();
+};
+
+/* re-render when the date rolls over or tab regains focus */
+let lastDay = todayKey();
+document.addEventListener("visibilitychange", ()=>{
+  if(!document.hidden && todayKey()!==lastDay){ lastDay = todayKey(); renderAll(); }
+});
+
+applyTheme();
+renderAll();
+</script>
+</body>
+</html>
