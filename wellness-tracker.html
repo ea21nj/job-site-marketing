@@ -94,6 +94,22 @@
   .act-btn .tick{margin-left:auto; width:16px !important; height:16px !important; opacity:0}
   .act-btn[aria-pressed="true"] .tick{opacity:1}
   @keyframes pop{0%{transform:scale(.92)}60%{transform:scale(1.03)}100%{transform:scale(1)}}
+  .act-btn.planned{border:1.5px dashed color-mix(in srgb, var(--accent) 65%, transparent)}
+  .act-btn.planned svg:first-of-type{color:var(--accent)}
+  .act-btn.planned .tick{display:none}
+  .plan-tag{margin-left:auto; font-family:"Barlow Condensed"; font-weight:600; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent)}
+  .act-btn[aria-pressed="true"] .plan-tag{display:none}
+
+  /* ---------- up next (plan ahead) ---------- */
+  .plan-row{display:flex; align-items:center; gap:10px; width:100%; padding:12px 14px; background:none; border:none;
+    border-top:1px solid var(--line); cursor:pointer; text-align:left; color:var(--ink); font:inherit; -webkit-tap-highlight-color:transparent}
+  .plan-row:first-child{border-top:none}
+  .plan-row:active{background:color-mix(in srgb, var(--accent) 5%, transparent)}
+  .pr-date{font-family:"Barlow Condensed"; font-weight:600; font-size:15px; letter-spacing:.05em; text-transform:uppercase; width:92px; flex:none}
+  .pr-chips{flex:1; display:flex; flex-wrap:wrap; gap:6px}
+  .pr-none{font-size:13px; color:var(--ink-3)}
+  .pr-edit{width:14px !important; height:14px !important; color:var(--ink-3); flex:none}
+  .a-chip.plan{background:transparent; border:1.5px dashed color-mix(in srgb, var(--accent) 55%, transparent); padding:3.5px 10px 3.5px 7px; font-size:12.5px}
 
   /* ---------- today's log detail rows ---------- */
   .log-list{display:flex; flex-direction:column}
@@ -129,6 +145,7 @@
   .hm-cell.l1{background:var(--hm1)} .hm-cell.l2{background:var(--hm2)}
   .hm-cell.l3{background:var(--hm3)} .hm-cell.l4{background:var(--hm4)}
   .hm-cell.today{outline:1.5px solid var(--accent); outline-offset:1.5px}
+  .hm-cell.future.planned{visibility:visible; background:transparent; border:1.5px dashed color-mix(in srgb, var(--accent) 65%, transparent)}
   .hm-legend{display:flex; align-items:center; gap:4px; justify-content:flex-end; padding:10px 12px 0 0; font-size:10.5px; color:var(--ink-3)}
   .hm-legend i{width:11px;height:11px;border-radius:3px;display:inline-block}
 
@@ -151,6 +168,7 @@
   .a-chip small{font-weight:400; color:var(--ink-2)}
   .day-note{font-size:13.5px; color:var(--ink-2); margin-top:9px; padding-left:10px; border-left:2px solid var(--line)}
   .day-note b{font-weight:600; color:var(--ink)}
+  .day-note.miss{color:var(--ink-3); border-left-style:dashed}
   .backfill{display:flex; align-items:center; gap:10px; padding:13px 16px; margin-bottom:14px}
   .backfill label{font-weight:600; font-size:14px}
   .backfill input{margin-left:auto; background:transparent; border:1px solid var(--line); color:var(--ink);
@@ -256,6 +274,8 @@
     <div class="section-t">What did you do today?</div>
     <div class="act-grid" id="todayGrid"></div>
     <div id="todayLogWrap"></div>
+    <div class="section-t">Up next</div>
+    <div class="card" id="upNext"></div>
   </section>
 
   <!-- ============ HISTORY ============ -->
@@ -270,7 +290,7 @@
     </div>
     <div class="section-t">Activity feed</div>
     <div class="card backfill">
-      <label for="backfillDate">Log or edit a past day</label>
+      <label for="backfillDate">Log a past day · plan ahead</label>
       <input type="date" id="backfillDate">
     </div>
     <div class="feed" id="feed"></div>
@@ -365,8 +385,11 @@ const ACT = Object.fromEntries(ACTS.map(a=>[a.id,a]));
 /* ---------- store ---------- */
 let db = load();
 function load(){
-  try{ const d = JSON.parse(localStorage.getItem(KEY)); if(d && typeof d.days==="object") return d; }catch(e){}
-  return {days:{}, theme:null};
+  try{
+    const d = JSON.parse(localStorage.getItem(KEY));
+    if(d && typeof d.days==="object"){ if(typeof d.plans!=="object" || !d.plans) d.plans = {}; return d; }
+  }catch(e){}
+  return {days:{}, plans:{}, theme:null};
 }
 function save(){ localStorage.setItem(KEY, JSON.stringify(db)); }
 
@@ -384,14 +407,16 @@ function fmtLong(k){
   return d.toLocaleDateString("en-US",{weekday:"long", month:"long", day:"numeric"});
 }
 function fmtShort(k){
-  const d = parseKey(k), t = todayKey(), y = keyOf(addDays(new Date(),-1));
+  const d = parseKey(k), t = todayKey(), y = keyOf(addDays(new Date(),-1)), tm = keyOf(addDays(new Date(),1));
   if(k===t) return "Today";
   if(k===y) return "Yesterday";
+  if(k===tm) return "Tomorrow";
   return d.toLocaleDateString("en-US",{weekday:"short", month:"short", day:"numeric"});
 }
 
 /* ---------- queries ---------- */
 const dayActs = k => db.days[k] || {};
+const planActs = k => db.plans[k] || {};
 const actCount = k => Object.keys(dayActs(k)).length;
 const has = (k, actId) => actId ? !!dayActs(k)[actId] : actCount(k) > 0;
 const dayMinutes = k => Object.values(dayActs(k)).reduce((s,e)=>s+(e.d||0),0);
@@ -490,11 +515,12 @@ function renderToday(){
     </div>
     <div class="weekdots" aria-label="This week">${dots}</div>`;
 
-  /* quick-tap grid */
+  /* quick-tap grid — dashed "planned" state for today's unlogged plans */
   $("#todayGrid").innerHTML = ACTS.map(a=>{
     const on = !!dayActs(tk)[a.id];
-    return `<button class="act-btn" data-act="${a.id}" aria-pressed="${on}">
-      ${icon(a.icon)}${a.name}${icon("i-check","tick")}</button>`;
+    const planned = !on && !!planActs(tk)[a.id];
+    return `<button class="act-btn${planned?" planned":""}" data-act="${a.id}" aria-pressed="${on}">
+      ${icon(a.icon)}${a.name}${planned?'<small class="plan-tag">plan</small>':""}${icon("i-check","tick")}</button>`;
   }).join("");
   $("#todayGrid").querySelectorAll(".act-btn").forEach(b=>{
     b.onclick = ()=> toggleAct(tk, b.dataset.act);
@@ -512,6 +538,22 @@ function renderToday(){
     day[id][field] = field==="d" ? (val===""?null:Math.max(0,parseInt(val,10)||0)) : val;
     save();
   });
+
+  /* up next — plan the coming week */
+  $("#upNext").innerHTML = Array.from({length:7},(_,i)=>{
+    const k = keyOf(addDays(new Date(), i+1));
+    const plan = planActs(k);
+    const chips = ACTS.filter(a=>plan[a.id]).map(a=>{
+      const e = plan[a.id];
+      return `<span class="a-chip plan">${icon(a.icon)}${a.name}${e.d?`<small>· ${e.d} min</small>`:""}</span>`;
+    }).join("");
+    return `<button class="plan-row" data-k="${k}" aria-label="Plan ${fmtShort(k)}">
+      <span class="pr-date">${fmtShort(k)}</span>
+      <span class="pr-chips">${chips || '<span class="pr-none">Rest — tap to plan</span>'}</span>
+      ${icon("i-pencil","pr-edit")}
+    </button>`;
+  }).join("");
+  $("#upNext").querySelectorAll(".plan-row").forEach(b=> b.onclick = ()=> openEditor(b.dataset.k));
 }
 
 function logRow(id, e){
@@ -532,7 +574,10 @@ function bindLogRows(root, onChange){
 function toggleAct(k, id){
   const day = db.days[k] || (db.days[k] = {});
   if(day[id]){ delete day[id]; if(!Object.keys(day).length) delete db.days[k]; }
-  else day[id] = {d:null, n:""};
+  else {
+    const p = planActs(k)[id];               /* planned? one tap logs it with its intent */
+    day[id] = p ? {d:p.d, n:p.n} : {d:null, n:""};
+  }
   save();
   renderToday();
 }
@@ -559,25 +604,26 @@ function renderHistory(){
       const n = actCount(k);
       const lvl = n===0?0 : n===1?1 : n===2?2 : n===3?3 : 4;
       const future = k > tk;
-      cells += `<button class="hm-cell ${lvl?("l"+lvl):""} ${k===tk?"today":""} ${future?"future":""}"
-        data-k="${k}" title="${fmtShort(k)} — ${n} ${n===1?"activity":"activities"}"
-        aria-label="${fmtShort(k)}, ${n} activities"${future?" disabled":""}></button>`;
+      const planned = future && Object.keys(planActs(k)).length > 0;
+      cells += `<button class="hm-cell ${lvl?("l"+lvl):""} ${k===tk?"today":""} ${future?"future":""} ${planned?"planned":""}"
+        data-k="${k}" title="${fmtShort(k)} — ${planned?"planned":`${n} ${n===1?"activity":"activities"}`}"
+        aria-label="${fmtShort(k)}, ${planned?"planned":n+" activities"}"${future && !planned?" disabled":""}></button>`;
     }
     cols += `<div class="hm-col">${cells}</div>`;
   }
   $("#hmScroll").innerHTML = `
     <div class="hm-days"><span>M</span><span></span><span>W</span><span></span><span>F</span><span></span><span>S</span></div>
     <div class="hm-grid"><div class="hm-months">${monthRow}</div><div class="hm-cols">${cols}</div></div>`;
-  $("#hmScroll").querySelectorAll(".hm-cell:not(.future)").forEach(c=>{
+  $("#hmScroll").querySelectorAll(".hm-cell:not([disabled])").forEach(c=>{
     c.onclick = ()=> openEditor(c.dataset.k);
   });
   $("#hmScroll").scrollLeft = $("#hmScroll").scrollWidth;
 
-  /* ---- backfill date picker ---- */
+  /* ---- date picker: past dates edit the log, future dates open a plan ---- */
   const bf = $("#backfillDate");
-  bf.max = tk;
+  bf.max = keyOf(addDays(new Date(), 365));
   bf.value = "";
-  bf.onchange = ()=>{ if(bf.value && bf.value <= tk) openEditor(bf.value); };
+  bf.onchange = ()=>{ if(bf.value && bf.value <= bf.max) openEditor(bf.value); };
 
   /* ---- feed ---- */
   const keys = Object.keys(db.days).filter(k=>actCount(k)>0 && k<=tk).sort().reverse().slice(0,60);
@@ -594,13 +640,15 @@ function renderHistory(){
     }).join("");
     const notes = ACTS.filter(a=>acts[a.id] && acts[a.id].n).map(a=>
       `<div class="day-note"><b>${a.name}:</b> ${esc(acts[a.id].n)}</div>`).join("");
+    const missed = ACTS.filter(a=>planActs(k)[a.id] && !acts[a.id]).map(a=>a.name);
+    const missedLine = missed.length ? `<div class="day-note miss">Planned: ${missed.join(", ")} — not logged</div>` : "";
     return `<div class="card day-card">
       <div class="day-head">
         <span class="day-date">${fmtShort(k)}</span>
         <span class="day-meta">${Object.keys(acts).length} ${Object.keys(acts).length===1?"activity":"activities"}${mins?` · ${mins} min`:""}</span>
         <button class="day-edit" data-k="${k}" aria-label="Edit ${fmtShort(k)}">${icon("i-pencil")}</button>
       </div>
-      <div class="chips">${chips}</div>${notes}
+      <div class="chips">${chips}</div>${notes}${missedLine}
     </div>`;
   }).join("");
   $("#feed").querySelectorAll(".day-edit").forEach(b=> b.onclick = ()=> openEditor(b.dataset.k));
@@ -691,12 +739,14 @@ function barChartSVG(data){
 /* ============================================================
    EDITOR SHEET  (backfill / correct any day)
    ============================================================ */
-let editorKey=null, draft=null;
+let editorKey=null, draft=null, editorIsPlan=false;
 
 function openEditor(k){
   editorKey = k;
-  draft = JSON.parse(JSON.stringify(dayActs(k)));
-  $("#sheetTitle").textContent = fmtShort(k)==="Today" ? "Today" : fmtLong(k);
+  editorIsPlan = k > todayKey();
+  draft = JSON.parse(JSON.stringify(editorIsPlan ? planActs(k) : dayActs(k)));
+  $("#sheetTitle").textContent = (editorIsPlan ? "Plan — " : "") + (fmtShort(k)==="Today" ? "Today" : fmtLong(k));
+  $("#sheetSave").textContent = editorIsPlan ? "Save plan" : "Save day";
   renderSheet();
   $("#sheetBg").classList.add("open");
   $("#sheet").classList.add("open");
@@ -728,8 +778,9 @@ function closeEditor(){
   editorKey = null; draft = null;
 }
 $("#sheetSave").onclick = ()=>{
-  if(Object.keys(draft).length) db.days[editorKey] = draft;
-  else delete db.days[editorKey];
+  const target = editorIsPlan ? db.plans : db.days;
+  if(Object.keys(draft).length) target[editorKey] = draft;
+  else delete target[editorKey];
   save(); closeEditor(); renderAll();
 };
 $("#sheetClear").onclick = ()=>{ draft = {}; renderSheet(); };
