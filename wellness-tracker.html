@@ -239,6 +239,12 @@
   .add-btn{background:var(--accent); color:var(--on-accent); border:none; border-radius:999px; padding:6px 16px; cursor:pointer;
     font-family:"Barlow Condensed"; font-weight:700; font-size:13px; letter-spacing:.1em; text-transform:uppercase; flex:none; transition:transform .1s}
   .add-btn:active{transform:scale(.95)}
+  .sync-blurb{font-size:13px; color:var(--ink-2); line-height:1.45}
+  .sync-status{font-size:13px; color:var(--ink-2); text-align:right; flex:1}
+  .sync-code{flex:1; min-width:0; background:var(--bg2); border:1px solid var(--line); border-radius:8px; color:var(--ink);
+    font:500 11.5px ui-monospace,SFMono-Regular,Menlo,monospace; padding:8px 10px; outline:none}
+  .ghost-link{background:none; border:none; color:var(--ink-3); font:600 13px "Barlow",sans-serif; cursor:pointer; padding:0}
+  .ghost-link:active{color:var(--accent)}
 
   /* ---------- empty state ---------- */
   .empty{padding:34px 24px; text-align:center; color:var(--ink-3)}
@@ -319,6 +325,8 @@
     <div class="card" id="setTrack"></div>
     <div class="section-t">Custom activities</div>
     <div class="card" id="setCustom"></div>
+    <div class="section-t">Cloud sync</div>
+    <div class="card" id="setSync"></div>
     <div class="hint">Turning something off hides it from logging and planning — history you already logged stays.</div>
   </section>
 
@@ -429,6 +437,18 @@
    ============================================================ */
 const KEY = "ember-tracker-v1";
 
+/* ---------- optional cloud sync (Supabase) ----------
+   Data lives locally first; when sync is enabled the whole state is
+   mirrored to Supabase keyed by an unguessable sync code. The table
+   has no direct API access — only ember_get/ember_set RPCs. */
+const SB_URL = "https://fappsarnztagfboncywm.supabase.co";
+const SB_KEY = "sb_publishable_YjY4HfaOEKWYKafCALOg8A_gnmIRlPy";
+const SYNC_CFG_KEY = "ember-sync-v1";
+let sync = null;                 /* {code, ts} — ts = server updated_at we last saw */
+try{ sync = JSON.parse(localStorage.getItem(SYNC_CFG_KEY)); }catch(e){}
+if(sync && typeof sync.code !== "string") sync = null;
+let syncStatus = "Synced", pushTimer = null, applyingRemote = false;
+
 const ACTS = [
   {id:"lift",     name:"Lift",     icon:"i-lift"},
   {id:"cardio",   name:"Cardio",   icon:"i-cardio"},
@@ -468,7 +488,59 @@ function load(){
   }catch(e){}
   return {days:{}, plans:{}, weight:{}, disabled:[], custom:[], archive:{}, theme:null};
 }
-function save(){ localStorage.setItem(KEY, JSON.stringify(db)); }
+function save(){
+  localStorage.setItem(KEY, JSON.stringify(db));
+  if(sync && !applyingRemote){ clearTimeout(pushTimer); pushTimer = setTimeout(pushState, 1200); }
+}
+
+/* ---------- sync plumbing ---------- */
+function saveSyncCfg(){ if(sync) localStorage.setItem(SYNC_CFG_KEY, JSON.stringify(sync)); else localStorage.removeItem(SYNC_CFG_KEY); }
+async function sbRpc(fn, args){
+  const r = await fetch(`${SB_URL}/rest/v1/rpc/${fn}`, {
+    method:"POST",
+    headers:{"content-type":"application/json", "apikey":SB_KEY, "authorization":"Bearer "+SB_KEY},
+    body:JSON.stringify(args)
+  });
+  if(!r.ok) throw new Error("sync "+r.status);
+  const t = await r.text();
+  return t ? JSON.parse(t) : null;
+}
+function setSyncStatus(s){ syncStatus = s; const el = $("#syncStatus"); if(el) el.textContent = s; }
+async function pushState(){
+  if(!sync) return;
+  try{
+    setSyncStatus("Syncing…");
+    const ts = await sbRpc("ember_set", {k:sync.code, s:db});
+    sync.ts = ts; saveSyncCfg();
+    setSyncStatus("Synced · " + new Date(ts).toLocaleTimeString([], {hour:"numeric", minute:"2-digit"}));
+  }catch(e){ setSyncStatus("Sync failed — retries on next change"); }
+}
+async function pullState(){
+  if(!sync) return;
+  try{
+    setSyncStatus("Syncing…");
+    const row = await sbRpc("ember_get", {k:sync.code});
+    if(row && row.state && (!sync.ts || new Date(row.updated_at) > new Date(sync.ts))){
+      applyingRemote = true;
+      db = row.state;
+      if(typeof db.days!=="object" || !db.days) db.days = {};
+      if(typeof db.plans!=="object" || !db.plans) db.plans = {};
+      if(typeof db.weight!=="object" || !db.weight) db.weight = {};
+      if(!Array.isArray(db.disabled)) db.disabled = [];
+      if(!Array.isArray(db.custom)) db.custom = [];
+      if(typeof db.archive!=="object" || !db.archive) db.archive = {};
+      save();
+      applyingRemote = false;
+      sync.ts = row.updated_at; saveSyncCfg();
+      applyTheme(); renderAll();
+      setSyncStatus("Synced · " + new Date(row.updated_at).toLocaleTimeString([], {hour:"numeric", minute:"2-digit"}));
+    } else if(!row){
+      await pushState();          /* fresh code — seed the server copy */
+    } else {
+      setSyncStatus("Synced");
+    }
+  }catch(e){ setSyncStatus("Sync failed — check connection"); }
+}
 
 /* ---------- date utils (local time) ---------- */
 const pad = n => String(n).padStart(2,"0");
@@ -1007,6 +1079,37 @@ function renderSettings(){
   };
   $("#addActBtn").onclick = addIt;
   $("#newActName").onkeydown = e=>{ if(e.key==="Enter") addIt(); };
+
+  /* cloud sync */
+  if(!sync){
+    $("#setSync").innerHTML = `
+      <div class="set-row sync-blurb">Back up your data and use it on other devices. Enabling creates a private sync code — enter that same code on another device to link it.</div>
+      <div class="set-row add-row">
+        <input id="syncCodeIn" type="text" placeholder="Paste a sync code, or leave empty" autocomplete="off" spellcheck="false">
+        <button class="add-btn" id="syncOnBtn">Enable</button>
+      </div>`;
+    $("#syncOnBtn").onclick = ()=>{
+      const v = $("#syncCodeIn").value.trim();
+      if(v && v.length < 32){ $("#syncCodeIn").value = ""; $("#syncCodeIn").placeholder = "That code looks too short — check it"; return; }
+      const code = v || (crypto.randomUUID() + crypto.randomUUID()).replace(/-/g,"");
+      sync = {code, ts:null}; saveSyncCfg();
+      renderSettings(); pullState();
+    };
+  } else {
+    $("#setSync").innerHTML = `
+      <div class="set-row"><span class="nm">Status</span><span id="syncStatus" class="sync-status">${esc(syncStatus)}</span></div>
+      <div class="set-row">
+        <input class="sync-code" type="text" readonly value="${esc(sync.code)}" aria-label="Sync code" onclick="this.select()">
+        <button class="add-btn" id="syncCopyBtn">Copy</button>
+      </div>
+      <div class="set-row sync-blurb">Enter this code on another device to link it. Keep it private — it is the key to your data.</div>
+      <div class="set-row"><button class="ghost-link" id="syncOffBtn">Turn off sync on this device</button></div>`;
+    $("#syncCopyBtn").onclick = async ()=>{
+      try{ await navigator.clipboard.writeText(sync.code); $("#syncCopyBtn").textContent = "Copied"; }
+      catch(e){ $(".sync-code").select(); }
+    };
+    $("#syncOffBtn").onclick = ()=>{ sync = null; saveSyncCfg(); renderSettings(); };
+  }
 }
 function removeCustom(id){
   const used = [...Object.values(db.days), ...Object.values(db.plans)].some(day=>day[id]);
@@ -1052,6 +1155,7 @@ document.addEventListener("visibilitychange", ()=>{
 
 applyTheme();
 renderAll();
+if(sync) pullState();
 </script>
 </body>
 </html>
