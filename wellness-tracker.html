@@ -14,14 +14,16 @@
     --line:#DFDFE8; --accent:#FC5200; --accent-press:#D94700; --accent-soft:#FFEFE6;
     --on-accent:#FFFFFF;
     --hm0:#ECECF2; --hm1:#FFDCCB; --hm2:#FFAD84; --hm3:#FD7E44; --hm4:#FC5200;
-    --shadow:0 1px 2px rgba(20,20,25,.05), 0 6px 20px rgba(20,20,25,.05);
+    --bg2:#F2F2F6;
+    --shadow:0 1px 2px rgba(20,20,25,.04);
     --sheet-shadow:0 -8px 40px rgba(20,20,25,.18);
   }
   [data-theme="dark"]{
     --bg:#111113; --card:#1A1A1C; --ink:#F4F4F6; --ink-2:#A8A8B0; --ink-3:#6E6E78;
     --line:#2B2B30; --accent:#FC5200; --accent-press:#FF6B1F; --accent-soft:#2C1a10;
     --hm0:#242428; --hm1:#5A2E1B; --hm2:#8A421D; --hm3:#C2551A; --hm4:#FC5200;
-    --shadow:0 1px 2px rgba(0,0,0,.35), 0 6px 20px rgba(0,0,0,.30);
+    --bg2:#222226;
+    --shadow:0 1px 2px rgba(0,0,0,.3);
     --sheet-shadow:0 -8px 40px rgba(0,0,0,.6);
   }
   *{box-sizing:border-box;margin:0;padding:0}
@@ -40,8 +42,8 @@
 
   /* ---------- type helpers ---------- */
   .cond{font-family:"Barlow Condensed",sans-serif}
-  .kicker{font-family:"Barlow Condensed"; font-weight:600; font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent)}
-  .section-t{font-family:"Barlow Condensed"; font-weight:600; font-size:15px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-2); margin:26px 0 10px}
+  .kicker{font:600 19px/1.2 "Barlow",sans-serif; color:var(--ink); padding-bottom:13px; border-bottom:1px solid var(--line); margin-bottom:6px}
+  .section-t{font:600 11.5px "Barlow",sans-serif; letter-spacing:.09em; text-transform:uppercase; color:var(--ink-2); margin:24px 0 10px}
   .section-t:first-child{margin-top:0}
 
   /* ---------- header ---------- */
@@ -57,55 +59,55 @@
   .icon-btn svg{width:18px;height:18px}
 
   /* ---------- cards ---------- */
-  .card{background:var(--card); border:1px solid var(--line); border-radius:18px; box-shadow:var(--shadow)}
+  .card{background:var(--card); border:1px solid var(--line); border-radius:12px; box-shadow:var(--shadow)}
 
-  /* ---------- streak hero ---------- */
-  .hero{display:flex; align-items:center; gap:18px; padding:20px 22px; margin-top:10px; overflow:hidden; position:relative}
-  .hero .flame{width:52px;height:52px; flex:none; color:var(--accent); filter:drop-shadow(0 3px 10px color-mix(in srgb, var(--accent) 45%, transparent))}
-  .hero .flame.lit{animation:flick 2.2s ease-in-out infinite}
-  @keyframes flick{0%,100%{transform:scale(1) rotate(0deg)}30%{transform:scale(1.06) rotate(-2deg)}60%{transform:scale(.98) rotate(2deg)}}
-  .hero .flame.cold{color:var(--ink-3); filter:none; opacity:.6}
-  .streak-num{font-family:"Barlow Condensed"; font-weight:700; font-size:58px; line-height:1; letter-spacing:-.01em}
-  .streak-lab{font-family:"Barlow Condensed"; font-weight:600; font-size:14px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-2); margin-top:2px}
-  .streak-best{font-size:13px; color:var(--ink-3); margin-top:3px}
-  .weekdots{margin-left:auto; display:grid; grid-template-columns:repeat(7,1fr); gap:7px; text-align:center}
-  .weekdots .d{width:11px;height:11px;border-radius:50%; background:var(--hm0); margin:0 auto}
-  .weekdots .d.on{background:var(--accent)}
-  .weekdots .d.today{outline:2px solid color-mix(in srgb, var(--accent) 45%, transparent); outline-offset:2px}
-  .weekdots span{font-size:9.5px; font-weight:600; color:var(--ink-3); text-transform:uppercase; display:block; margin-top:5px}
+  /* ---------- orange streak header ---------- */
+  .hero-orange{
+    background:var(--accent); border-radius:12px; padding:15px 18px 17px; color:#fff; margin-top:6px;
+    box-shadow:0 6px 20px color-mix(in srgb, var(--accent) 28%, transparent);
+  }
+  .ho-date{font:600 12px "Barlow",sans-serif; letter-spacing:.1em; text-transform:uppercase; opacity:.88}
+  .ho-streak{display:flex; align-items:baseline; gap:8px; font:500 15px "Barlow",sans-serif; margin-top:3px}
+  .ho-streak b{font:700 42px/1 "Barlow",sans-serif; letter-spacing:-.02em}
 
-  /* ---------- quick-tap grid ---------- */
+  /* ---------- activity tiles ---------- */
   .act-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px}
   .act-btn{
-    display:flex; align-items:center; gap:11px; padding:13px 14px;
-    background:var(--card); border:1px solid var(--line); border-radius:15px; box-shadow:var(--shadow);
-    color:var(--ink); font:600 15px "Barlow",sans-serif; cursor:pointer; text-align:left;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:7px; padding:16px 8px 14px;
+    background:var(--card); border:1px solid var(--line); border-radius:12px;
+    color:var(--ink); font:600 13.5px "Barlow",sans-serif; cursor:pointer; text-align:center;
     transition:transform .1s ease, background .15s, border-color .15s, color .15s;
     -webkit-tap-highlight-color:transparent;
   }
-  .act-btn svg{width:21px;height:21px; flex:none; color:var(--ink-2); transition:color .15s}
+  .act-btn svg{width:22px;height:22px; flex:none; color:var(--ink-2); transition:color .15s}
+  .act-btn span{max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
   .act-btn:active{transform:scale(.96)}
   .act-btn[aria-pressed="true"]{
     background:var(--accent); border-color:var(--accent); color:var(--on-accent);
-    box-shadow:0 4px 16px color-mix(in srgb, var(--accent) 35%, transparent);
+    box-shadow:0 4px 14px color-mix(in srgb, var(--accent) 30%, transparent);
     animation:pop .28s cubic-bezier(.3,1.6,.5,1);
   }
   .act-btn[aria-pressed="true"] svg{color:var(--on-accent)}
-  .act-btn .tick{margin-left:auto; width:16px !important; height:16px !important; opacity:0}
-  .act-btn[aria-pressed="true"] .tick{opacity:1}
   @keyframes pop{0%{transform:scale(.92)}60%{transform:scale(1.03)}100%{transform:scale(1)}}
   .act-btn.planned{border:1.5px dashed color-mix(in srgb, var(--accent) 65%, transparent)}
   .act-btn.planned svg:first-of-type{color:var(--accent)}
-  .act-btn.planned .tick{display:none}
-  .plan-tag{margin-left:auto; font-family:"Barlow Condensed"; font-weight:600; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent)}
+  .plan-tag{font:600 10px "Barlow",sans-serif; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); margin-top:-3px}
   .act-btn[aria-pressed="true"] .plan-tag{display:none}
+
+  /* ---------- save button ---------- */
+  .save-btn{
+    width:100%; margin-top:12px; padding:14px; border:none; border-radius:12px;
+    background:var(--accent); color:#fff; font:700 15px "Barlow",sans-serif; cursor:pointer;
+    box-shadow:0 4px 14px color-mix(in srgb, var(--accent) 28%, transparent); transition:transform .1s;
+  }
+  .save-btn:active{transform:scale(.98); background:var(--accent-press)}
 
   /* ---------- up next (plan ahead) ---------- */
   .plan-row{display:flex; align-items:center; gap:10px; width:100%; padding:12px 14px; background:none; border:none;
     border-top:1px solid var(--line); cursor:pointer; text-align:left; color:var(--ink); font:inherit; -webkit-tap-highlight-color:transparent}
   .plan-row:first-child{border-top:none}
   .plan-row:active{background:color-mix(in srgb, var(--accent) 5%, transparent)}
-  .pr-date{font-family:"Barlow Condensed"; font-weight:600; font-size:15px; letter-spacing:.05em; text-transform:uppercase; width:92px; flex:none}
+  .pr-date{font:600 13.5px "Barlow",sans-serif; width:92px; flex:none}
   .pr-chips{flex:1; display:flex; flex-wrap:wrap; gap:6px}
   .pr-none{font-size:13px; color:var(--ink-3)}
   .pr-edit{width:14px !important; height:14px !important; color:var(--ink-3); flex:none}
@@ -149,26 +151,16 @@
   .wt-dot{fill:var(--card); stroke:var(--accent); stroke-width:1.5}
   .wt-dot-last{fill:var(--accent)}
 
-  /* ---------- heatmap ---------- */
-  .hm-wrap{padding:16px 6px 14px 16px}
-  .hm-scroll{overflow-x:auto; display:flex; scrollbar-width:none}
-  .hm-scroll::-webkit-scrollbar{display:none}
-  .hm-days{display:grid; grid-template-rows:repeat(7,14px); gap:3px; margin:19px 8px 0 0; flex:none; position:sticky; left:0}
-  .hm-days span{font-size:9px; font-weight:600; color:var(--ink-3); line-height:14px; text-transform:uppercase}
-  .hm-grid{flex:none}
-  .hm-months{display:flex; height:16px; margin-bottom:3px}
-  .hm-months span{font-size:10px; font-weight:600; color:var(--ink-3); text-transform:uppercase; letter-spacing:.05em; flex:none}
-  .hm-cols{display:flex; gap:3px}
-  .hm-col{display:grid; grid-template-rows:repeat(7,14px); gap:3px}
-  .hm-cell{width:14px; height:14px; border-radius:4px; background:var(--hm0); border:none; padding:0; cursor:pointer; transition:transform .1s}
-  .hm-cell:active{transform:scale(.85)}
+  /* ---------- heatmap: 5 big rows, one per week ---------- */
+  .hm-wrap{padding:14px}
+  .hm-big{display:grid; grid-template-columns:repeat(7,1fr); gap:7px}
+  .hm-cell{aspect-ratio:1; width:100%; border-radius:7px; background:var(--hm0); border:none; padding:0; cursor:pointer; transition:transform .1s}
+  .hm-cell:active{transform:scale(.9)}
   .hm-cell.future{visibility:hidden}
   .hm-cell.l1{background:var(--hm1)} .hm-cell.l2{background:var(--hm2)}
   .hm-cell.l3{background:var(--hm3)} .hm-cell.l4{background:var(--hm4)}
-  .hm-cell.today{outline:1.5px solid var(--accent); outline-offset:1.5px}
+  .hm-cell.today{outline:2px solid var(--accent); outline-offset:2px}
   .hm-cell.future.planned{visibility:visible; background:transparent; border:1.5px dashed color-mix(in srgb, var(--accent) 65%, transparent)}
-  .hm-legend{display:flex; align-items:center; gap:4px; justify-content:flex-end; padding:10px 12px 0 0; font-size:10.5px; color:var(--ink-3)}
-  .hm-legend i{width:11px;height:11px;border-radius:3px;display:inline-block}
 
   /* ---------- history feed ---------- */
   .feed{display:flex; flex-direction:column; gap:12px}
@@ -177,16 +169,15 @@
   .feed .day-card:nth-child(3){animation-delay:.1s}.feed .day-card:nth-child(4){animation-delay:.14s}
   @keyframes rise{from{opacity:0; transform:translateY(8px)}to{opacity:1; transform:none}}
   .day-head{display:flex; align-items:baseline; gap:8px}
-  .day-date{font-family:"Barlow Condensed"; font-weight:700; font-size:19px; letter-spacing:.04em; text-transform:uppercase}
+  .day-date{font:600 15px "Barlow",sans-serif}
   .day-meta{font-size:12.5px; color:var(--ink-3); margin-left:auto}
   .day-edit{background:none;border:none;color:var(--ink-3);cursor:pointer;padding:4px;margin:-4px -4px -4px 2px;border-radius:8px}
   .day-edit:active{color:var(--accent)}
   .day-edit svg{width:15px;height:15px;display:block}
   .chips{display:flex; flex-wrap:wrap; gap:7px; margin-top:10px}
-  .a-chip{display:inline-flex; align-items:center; gap:6px; padding:5px 11px 5px 8px; border-radius:999px;
+  .a-chip{display:inline-flex; align-items:center; padding:5px 12px; border-radius:8px;
     background:var(--accent-soft); color:var(--ink); font-size:13px; font-weight:600}
-  .a-chip svg{width:14px;height:14px;color:var(--accent)}
-  .a-chip small{font-weight:400; color:var(--ink-2)}
+  .a-chip small{font-weight:400; font-size:13px; color:var(--ink-2); white-space:pre}
   .day-note{font-size:13.5px; color:var(--ink-2); margin-top:9px; padding-left:10px; border-left:2px solid var(--line)}
   .day-note b{font-weight:600; color:var(--ink)}
   .day-note.miss{color:var(--ink-3); border-left-style:dashed}
@@ -197,10 +188,11 @@
 
   /* ---------- trends ---------- */
   .tiles{display:grid; grid-template-columns:1fr 1fr; gap:10px}
-  .tile{padding:15px 16px 13px}
-  .t-lab{font-family:"Barlow Condensed"; font-weight:600; font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-2)}
-  .t-num{font-family:"Barlow Condensed"; font-weight:700; font-size:38px; line-height:1.1; margin-top:2px}
-  .t-num small{font-size:19px; font-weight:600; color:var(--ink-2); letter-spacing:0}
+  .tile{padding:14px 16px 12px; background:var(--bg2); border-radius:12px}
+  .t-lab{font:600 10.5px "Barlow",sans-serif; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-2)}
+  .t-num{font:700 32px/1.15 "Barlow",sans-serif; letter-spacing:-.02em; margin-top:3px}
+  .t-num.o{color:var(--accent)}
+  .t-num small{font-size:17px; font-weight:600; color:var(--ink-2); letter-spacing:0}
   .tile .t-sub{font-size:12px; color:var(--ink-3); margin-top:1px}
   .chart-card{padding:16px; margin-top:10px}
   .filter-row{display:flex; gap:7px; overflow-x:auto; padding:2px 2px 12px; scrollbar-width:none}
@@ -210,25 +202,21 @@
   .f-chip[aria-pressed="true"]{background:var(--accent); border-color:var(--accent); color:var(--on-accent)}
   .chart-svg{width:100%; display:block}
   .bar{fill:var(--accent)}
+  .bar.cur{fill:var(--hm2)}
   .bar-stub{fill:var(--line)}
   .bar-val{font:600 11px "Barlow"; fill:var(--ink-2)}
   .ax{font:500 10.5px "Barlow"; fill:var(--ink-3)}
   .gridline{stroke:var(--line); stroke-width:1; stroke-dasharray:2 3}
   .baseline{stroke:var(--line); stroke-width:1}
-  .s-table{margin-top:10px}
-  .s-row{display:flex; align-items:center; gap:10px; padding:11px 16px; border-top:1px solid var(--line); font-size:14px}
-  .s-row:first-of-type{border-top:none}
-  .s-row svg{width:17px;height:17px;color:var(--accent);flex:none}
-  .s-row .nm{font-weight:600; flex:1}
-  .s-row .v{font-family:"Barlow Condensed"; font-weight:700; font-size:19px; width:52px; text-align:right}
-  .s-row .v small{font-size:11px; font-weight:600; color:var(--ink-3); font-family:"Barlow"; display:block; margin-top:-3px; letter-spacing:.06em; text-transform:uppercase}
-  .s-head{display:flex; padding:10px 16px 0; justify-content:flex-end; gap:0}
   .m-row{display:flex; align-items:center; gap:12px; padding:10px 16px; border-top:1px solid var(--line); font-size:14px}
   .m-row:first-of-type{border-top:none}
   .m-row .nm{font-family:"Barlow Condensed"; font-weight:600; font-size:15px; letter-spacing:.06em; text-transform:uppercase; width:66px; flex:none}
   .m-row .meter{flex:1; height:8px; border-radius:99px; background:var(--hm0); overflow:hidden}
   .m-row .meter i{display:block; height:100%; background:var(--accent); border-radius:99px}
   .m-row .v{font-weight:600; width:78px; text-align:right; color:var(--ink-2); font-size:12.5px}
+  .ba-nm{width:92px; flex:none; font:600 13.5px "Barlow",sans-serif; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+  .ba-nm small{display:block; font:400 11px "Barlow",sans-serif; color:var(--ink-3); margin-top:1px}
+  .ba-v{width:28px; flex:none; text-align:right; font:700 14.5px "Barlow",sans-serif}
 
   /* ---------- settings ---------- */
   .hdr-btns{display:flex; gap:8px}
@@ -264,10 +252,9 @@
     border-top:1px solid var(--line);
   }
   .nav-in{max-width:480px; margin:0 auto; display:grid; grid-template-columns:repeat(4,1fr); padding:6px 10px calc(8px + env(safe-area-inset-bottom))}
-  .nav-btn{display:flex; flex-direction:column; align-items:center; gap:3px; padding:7px 0 4px; background:none; border:none;
-    color:var(--ink-3); cursor:pointer; font-family:"Barlow Condensed"; font-weight:600; font-size:11px; letter-spacing:.14em; text-transform:uppercase;
-    border-radius:12px; transition:color .15s; -webkit-tap-highlight-color:transparent}
-  .nav-btn svg{width:21px; height:21px}
+  .nav-btn{display:flex; align-items:center; justify-content:center; padding:12px 0; background:none; border:none;
+    color:var(--ink-3); cursor:pointer; border-radius:12px; transition:color .15s; -webkit-tap-highlight-color:transparent}
+  .nav-btn svg{width:22px; height:22px}
   .nav-btn.on{color:var(--accent)}
 
   /* ---------- bottom sheet editor ---------- */
@@ -281,15 +268,14 @@
   .sheet.open{transform:translate(-50%,0)}
   .sheet-head{padding:16px 20px 12px; display:flex; align-items:center; border-bottom:1px solid var(--line)}
   .sheet-head::before{content:""; position:absolute; top:8px; left:50%; transform:translateX(-50%); width:40px; height:4px; border-radius:99px; background:var(--line)}
-  .sheet-title{font-family:"Barlow Condensed"; font-weight:700; font-size:21px; letter-spacing:.05em; text-transform:uppercase}
+  .sheet-title{font:600 17px "Barlow",sans-serif}
   .sheet-x{margin-left:auto}
   .sheet-body{padding:16px 20px; overflow-y:auto}
   .sheet-body .act-grid{gap:8px}
   .sheet-body .act-btn{padding:10px 12px; font-size:14px; box-shadow:none}
   .sheet-foot{display:flex; gap:10px; padding:12px 20px calc(16px + env(safe-area-inset-bottom)); border-top:1px solid var(--line)}
-  .btn{flex:1; padding:13px; border-radius:14px; border:none; cursor:pointer;
-    font-family:"Barlow Condensed"; font-weight:700; font-size:16px; letter-spacing:.12em; text-transform:uppercase;
-    transition:transform .1s}
+  .btn{flex:1; padding:13px; border-radius:12px; border:none; cursor:pointer;
+    font:700 15px "Barlow",sans-serif; transition:transform .1s}
   .btn:active{transform:scale(.97)}
   .btn-primary{background:var(--accent); color:var(--on-accent)}
   .btn-primary:active{background:var(--accent-press)}
@@ -299,7 +285,7 @@
   .view{display:none; animation:fadein .25s ease}
   .view.on{display:block}
   @keyframes fadein{from{opacity:0}to{opacity:1}}
-  @media (max-width:355px){ .streak-num{font-size:48px} .weekdots{display:none} }
+  @media (max-width:355px){ .ho-streak b{font-size:36px} }
 </style>
 </head>
 <body>
@@ -315,10 +301,10 @@
 
   <!-- ============ TODAY ============ -->
   <section class="view on" id="view-today">
-    <div class="kicker" id="todayDate"></div>
-    <div class="card hero" id="heroCard"></div>
-    <div class="section-t">What did you do today?</div>
+    <div class="hero-orange" id="heroCard"></div>
+    <div class="section-t">Log today</div>
     <div class="act-grid" id="todayGrid"></div>
+    <button class="save-btn" id="saveDayBtn" style="display:none"></button>
     <div id="todayLogWrap"></div>
     <div id="weightHome">
       <div class="section-t">Body weight</div>
@@ -338,7 +324,7 @@
 
   <!-- ============ PLAN ============ -->
   <section class="view" id="view-plan">
-    <div class="kicker">Plan ahead</div>
+    <div class="kicker">Plan</div>
     <div class="section-t">Up next</div>
     <div class="filter-row" id="planRangeRow"></div>
     <div class="card" id="upNext"></div>
@@ -347,12 +333,9 @@
   <!-- ============ HISTORY ============ -->
   <section class="view" id="view-history">
     <div class="kicker">History</div>
-    <div class="section-t">Consistency</div>
+    <div class="section-t">Last 5 weeks</div>
     <div class="card hm-wrap">
-      <div class="hm-scroll" id="hmScroll"></div>
-      <div class="hm-legend">Less
-        <i style="background:var(--hm0)"></i><i style="background:var(--hm1)"></i><i style="background:var(--hm2)"></i><i style="background:var(--hm3)"></i><i style="background:var(--hm4)"></i>
-      More</div>
+      <div class="hm-big" id="hmGrid"></div>
     </div>
     <div class="section-t">Activity feed</div>
     <div class="card backfill">
@@ -367,7 +350,7 @@
     <div class="kicker">Trends</div>
     <div class="section-t">Stats</div>
     <div class="tiles" id="tiles"></div>
-    <div class="section-t">Weekly sessions</div>
+    <div class="section-t">Weekly volume</div>
     <div class="card chart-card">
       <div class="filter-row" id="filterRow"></div>
       <div id="weeklyChart"></div>
@@ -378,18 +361,18 @@
     </div>
     <div class="section-t">Monthly volume</div>
     <div class="card" id="monthList"></div>
-    <div class="section-t">Streaks by activity</div>
-    <div class="card s-table" id="streakTable"></div>
+    <div class="section-t">By activity — last 30 days</div>
+    <div class="card" id="streakTable"></div>
   </section>
 </div>
 
 <!-- ============ BOTTOM NAV ============ -->
 <nav>
   <div class="nav-in">
-    <button class="nav-btn on" data-view="today"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-bolt"/></svg>Today</button>
-    <button class="nav-btn" data-view="plan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-cal"/></svg>Plan</button>
-    <button class="nav-btn" data-view="history"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-list"/></svg>History</button>
-    <button class="nav-btn" data-view="trends"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-chart"/></svg>Trends</button>
+    <button class="nav-btn on" data-view="today" aria-label="Today"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-other"/></svg></button>
+    <button class="nav-btn" data-view="plan" aria-label="Plan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-cal"/></svg></button>
+    <button class="nav-btn" data-view="history" aria-label="History"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-grid"/></svg></button>
+    <button class="nav-btn" data-view="trends" aria-label="Trends"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-chart"/></svg></button>
   </div>
 </nav>
 
@@ -429,6 +412,7 @@
     <g id="i-cal"><rect x="3.5" y="5" width="17" height="16" rx="2.5"/><path d="M3.5 10.5h17M8 2.5V6.5M16 2.5V6.5"/></g>
     <g id="i-scale"><rect x="3.5" y="3.5" width="17" height="17" rx="3.5"/><path d="M8.7 10a4.6 4.6 0 0 1 6.6 0M12 10.2V13"/></g>
     <g id="i-sliders"><path d="M4 7.5h9M17.5 7.5H20M4 16.5h3M11.5 16.5H20"/><circle cx="15" cy="7.5" r="2.4"/><circle cx="9" cy="16.5" r="2.4"/></g>
+    <g id="i-grid"><rect x="4" y="4" width="7" height="7" rx="1.8"/><rect x="13" y="4" width="7" height="7" rx="1.8"/><rect x="4" y="13" width="7" height="7" rx="1.8"/><rect x="13" y="13" width="7" height="7" rx="1.8"/></g>
     <g id="i-moon"><path d="M20 13A8.1 8.1 0 0 1 11 4a8.1 8.1 0 1 0 9 9z"/></g>
     <g id="i-sun"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2.5 12h2M19.5 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></g>
     <g id="i-pencil"><path d="M17 3.5 20.5 7 8.5 19l-4.5 1 1-4.5L17 3.5z"/></g>
@@ -593,38 +577,42 @@ const icon = (id, cls="") => `<svg class="${cls}" viewBox="0 0 24 24" fill="none
 /* ============================================================
    TODAY VIEW
    ============================================================ */
+let stagedIds = null;   /* unsaved tile selection for today; null = mirrors the log */
+
 function renderToday(){
   const tk = todayKey();
-  $("#todayDate").textContent = fmtLong(tk);
 
-  /* streak hero */
-  const cur = currentStreak(null), best = Math.max(longestStreak(null), cur);
-  const mon = startOfWeek(new Date());
-  let dots = "";
-  for(let i=0;i<7;i++){
-    const k = keyOf(addDays(mon,i));
-    const future = k > tk;
-    dots += `<div><div class="d ${(!future && has(k))?"on":""} ${k===tk?"today":""}"></div><span>${WD[i][0]}</span></div>`;
-  }
+  /* orange header block: date + streak, first thing you see */
+  const cur = currentStreak(null);
   $("#heroCard").innerHTML = `
-    <svg class="flame ${cur>0?"lit":"cold"}" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#i-flame"/></svg>
-    <div>
-      <div class="streak-num">${cur}</div>
-      <div class="streak-lab">day streak</div>
-      <div class="streak-best">Best · ${best} day${best===1?"":"s"}</div>
-    </div>
-    <div class="weekdots" aria-label="This week">${dots}</div>`;
+    <div class="ho-date">${fmtLong(tk)}</div>
+    <div class="ho-streak"><b>${cur}</b>day streak</div>`;
 
-  /* quick-tap grid — dashed "planned" state for today's unlogged plans */
+  /* activity tiles — toggle chips, committed with the save button */
+  const logged = Object.keys(dayActs(tk));
+  const staged = stagedIds ?? logged.slice();
   $("#todayGrid").innerHTML = activeActs().map(a=>{
-    const on = !!dayActs(tk)[a.id];
+    const on = staged.includes(a.id);
     const planned = !on && !!planActs(tk)[a.id];
     return `<button class="act-btn${planned?" planned":""}" data-act="${a.id}" aria-pressed="${on}">
-      ${icon(a.icon)}${esc(a.name)}${planned?'<small class="plan-tag">plan</small>':""}${icon("i-check","tick")}</button>`;
+      ${icon(a.icon)}<span>${esc(a.name)}</span>${planned?'<small class="plan-tag">plan</small>':""}</button>`;
   }).join("");
   $("#todayGrid").querySelectorAll(".act-btn").forEach(b=>{
-    b.onclick = ()=> toggleAct(tk, b.dataset.act);
+    b.onclick = ()=>{
+      const id = b.dataset.act;
+      const s = stagedIds ?? Object.keys(dayActs(todayKey()));
+      stagedIds = s.includes(id) ? s.filter(x=>x!==id) : [...s, id];
+      renderToday();
+    };
   });
+
+  /* save button appears when the selection differs from the log */
+  const dirty = staged.length!==logged.length || staged.some(id=>!logged.includes(id));
+  const sb = $("#saveDayBtn");
+  sb.style.display = dirty ? "" : "none";
+  sb.textContent = staged.length===0 ? "Clear today"
+    : `Save ${staged.length} ${staged.length===1?"activity":"activities"}`;
+  sb.onclick = commitStaged;
 
   /* detail rows for logged activities (incl. ones since disabled) */
   const acts = dayActs(tk);
@@ -632,7 +620,7 @@ function renderToday(){
   $("#todayLogWrap").innerHTML = ids.length ? `
     <div class="section-t">Details <span style="font-weight:500;letter-spacing:.02em;text-transform:none;color:var(--ink-3)">— optional</span></div>
     <div class="card log-list">${ids.map(id=>logRow(id, acts[id])).join("")}</div>`
-    : `<div class="hint">Tap an activity to log it — done in seconds.</div>`;
+    : `<div class="hint">Tap activities, hit save — done in seconds.</div>`;
   bindLogRows($("#todayLogWrap"), (id,field,val)=>{
     const day = db.days[tk]; if(!day || !day[id]) return;
     day[id][field] = field==="d" ? (val===""?null:Math.max(0,parseInt(val,10)||0)) : val;
@@ -685,7 +673,7 @@ function renderPlan(){
     const plan = planActs(k);
     const chips = Object.keys(plan).map(id=>{
       const a = actOf(id), e = plan[id];
-      return `<span class="a-chip plan">${icon(a.icon)}${esc(a.name)}${e.d?`<small>· ${e.d} min</small>`:""}</span>`;
+      return `<span class="a-chip plan">${esc(a.name)}${e.d?`<small> · ${e.d} min</small>`:""}</span>`;
     }).join("");
     return `<button class="plan-row" data-k="${k}" aria-label="Plan ${fmtShort(k)}">
       <span class="pr-date">${fmtShort(k)}</span>
@@ -711,34 +699,28 @@ function bindLogRows(root, onChange){
   });
 }
 
-function toggleAct(k, id){
-  const day = db.days[k] || (db.days[k] = {});
-  if(day[id]){ delete day[id]; if(!Object.keys(day).length) delete db.days[k]; }
-  else {
-    const p = planActs(k)[id];               /* planned? one tap logs it with its intent */
-    day[id] = p ? {d:p.d, n:p.n} : {d:null, n:""};
-  }
-  save();
-  renderToday();
+function commitStaged(){
+  const tk = todayKey();
+  const cur = dayActs(tk), next = {};
+  (stagedIds||[]).forEach(id=>{
+    const p = planActs(tk)[id];              /* planned? logging it carries the intent */
+    next[id] = cur[id] || (p ? {d:p.d, n:p.n} : {d:null, n:""});
+  });
+  if(Object.keys(next).length) db.days[tk] = next; else delete db.days[tk];
+  stagedIds = null;
+  save(); renderAll();
 }
 
 /* ============================================================
    HISTORY VIEW
    ============================================================ */
-const HM_WEEKS = 26;
 function renderHistory(){
-  /* ---- heatmap ---- */
+  /* ---- heatmap: last 5 weeks, one row per week, Mon–Sun ---- */
   const tk = todayKey();
   const thisMon = startOfWeek(new Date());
-  const first = addDays(thisMon, -7*(HM_WEEKS-1));
-  let cols = "", monthRow = "", lastMonth = -1;
-  for(let w=0; w<HM_WEEKS; w++){
-    const mon = addDays(first, w*7);
-    /* month label when the month changes at this column */
-    const m = mon.getMonth();
-    monthRow += `<span style="width:17px">${m!==lastMonth ? MONTHS[m] : ""}</span>`;
-    lastMonth = m;
-    let cells = "";
+  let cells = "";
+  for(let w=4; w>=0; w--){
+    const mon = addDays(thisMon, -7*w);
     for(let i=0;i<7;i++){
       const k = keyOf(addDays(mon,i));
       const n = actCount(k);
@@ -749,15 +731,11 @@ function renderHistory(){
         data-k="${k}" title="${fmtShort(k)} — ${planned?"planned":`${n} ${n===1?"activity":"activities"}`}"
         aria-label="${fmtShort(k)}, ${planned?"planned":n+" activities"}"${future && !planned?" disabled":""}></button>`;
     }
-    cols += `<div class="hm-col">${cells}</div>`;
   }
-  $("#hmScroll").innerHTML = `
-    <div class="hm-days"><span>M</span><span></span><span>W</span><span></span><span>F</span><span></span><span>S</span></div>
-    <div class="hm-grid"><div class="hm-months">${monthRow}</div><div class="hm-cols">${cols}</div></div>`;
-  $("#hmScroll").querySelectorAll(".hm-cell:not([disabled])").forEach(c=>{
+  $("#hmGrid").innerHTML = cells;
+  $("#hmGrid").querySelectorAll(".hm-cell:not([disabled])").forEach(c=>{
     c.onclick = ()=> openEditor(c.dataset.k);
   });
-  $("#hmScroll").scrollLeft = $("#hmScroll").scrollWidth;
 
   /* ---- date picker: past dates edit the log, future dates open a plan ---- */
   const bf = $("#backfillDate");
@@ -776,7 +754,7 @@ function renderHistory(){
     const mins = dayMinutes(k);
     const chips = Object.keys(acts).map(id=>{
       const a = actOf(id), e = acts[id];
-      return `<span class="a-chip">${icon(a.icon)}${esc(a.name)}${e.d?`<small>· ${e.d} min</small>`:""}</span>`;
+      return `<span class="a-chip">${esc(a.name)}${e.d?`<small> · ${e.d} min</small>`:""}</span>`;
     }).join("");
     const notes = Object.keys(acts).filter(id=>acts[id].n).map(id=>
       `<div class="day-note"><b>${esc(actOf(id).name)}:</b> ${esc(acts[id].n)}</div>`).join("");
@@ -802,16 +780,16 @@ let trendFilter = null;   /* null = all activities */
 function renderTrends(){
   const cur = currentStreak(null), best = Math.max(longestStreak(null), cur);
   const consist = Math.round(activeDaysInLast(30)/30*100);
-  const wk = weeklyCounts(1, null)[0];
+  const mo = monthlyCounts(1)[0];
 
   $("#tiles").innerHTML = [
-    {lab:"Current streak", num:cur, unit:"days", sub:cur>0?"Keep it burning":"Log today to start"},
-    {lab:"Longest streak", num:best, unit:"days", sub:"All-time best"},
-    {lab:"This week", num:wk.sessions, unit:"sessions", sub:wk.mins?`${wk.mins} min logged`:"Mon – Sun"},
-    {lab:"Consistency", num:consist, unit:"%", sub:`${activeDaysInLast(30)} of last 30 days`},
-  ].map(t=>`<div class="card tile">
+    {lab:"Current", num:cur, o:true, sub:cur===1?"day streak":"day streak"},
+    {lab:"Longest", num:best, sub:"day streak"},
+    {lab:"Consistency", num:consist+"%", sub:`${activeDaysInLast(30)} of last 30 days`},
+    {lab:"This month", num:mo.sessions, sub:mo.mins?`sessions · ${fmtMins(mo.mins)}`:"sessions"},
+  ].map(t=>`<div class="tile">
       <div class="t-lab">${t.lab}</div>
-      <div class="t-num">${t.num}<small> ${t.unit}</small></div>
+      <div class="t-num${t.o?" o":""}">${t.num}</div>
       <div class="t-sub">${t.sub}</div>
     </div>`).join("");
 
@@ -855,22 +833,22 @@ function renderTrends(){
       <span class="v">${m.sessions===0 ? "—" : m.sessions + (m.mins ? " · "+fmtMins(m.mins) : " sessions")}</span>
     </div>`).join("");
 
-  /* per-activity streaks */
-  $("#streakTable").innerHTML = activeActs().map(a=>{
-    const c = currentStreak(a.id), b = Math.max(longestStreak(a.id), c), n30 = countInLastDays(30, a.id);
-    return `<div class="s-row">
-      ${icon(a.icon)}<span class="nm">${esc(a.name)}</span>
-      <span class="v">${c}<small>now</small></span>
-      <span class="v">${b}<small>best</small></span>
-      <span class="v">${n30}<small>30 d</small></span>
-    </div>`;
-  }).join("");
+  /* by activity: 30-day session split with per-activity streaks */
+  const rows = activeActs().map(a=>({a, n:countInLastDays(30,a.id), s:currentStreak(a.id)}))
+    .sort((x,y)=>y.n-x.n);
+  const mx = Math.max(1, ...rows.map(r=>r.n));
+  $("#streakTable").innerHTML = rows.map(({a,n,s})=>`
+    <div class="m-row">
+      <span class="ba-nm">${esc(a.name)}${s>0?`<small>${s}-day streak</small>`:""}</span>
+      <div class="meter"><i style="width:${Math.round(n/mx*100)}%"></i></div>
+      <span class="ba-v">${n}</span>
+    </div>`).join("");
 }
 const fmtMins = m => m>=60 ? `${Math.floor(m/60)}h ${m%60?`${m%60}m`:""}`.trim() : `${m}m`;
 
-/* single-series bar chart, orange, rounded top ends, labels above bars */
+/* flat single-series bars, orange with a pale in-progress current week; detail in tooltips */
 function barChartSVG(data){
-  const W=440, H=190, padL=8, padR=8, padT=26, padB=26;
+  const W=440, H=150, padL=4, padR=4, padT=10, padB=6;
   const plotW = W-padL-padR, plotH = H-padT-padB, baseY = H-padB;
   const n = data.length, gap = 10, bw = Math.floor((plotW - gap*(n-1))/n);
   const max = Math.max(1, ...data.map(d=>d.sessions));
@@ -879,21 +857,15 @@ function barChartSVG(data){
     const x = padL + i*(bw+gap);
     const h = Math.round(d.sessions/max*plotH);
     const y = baseY - h;
-    const r = Math.min(4, bw/2, h);
-    const tip = `Week of ${d.label} — ${d.sessions} session${d.sessions===1?"":"s"}${d.mins?`, ${fmtMins(d.mins)}`:""}`;
+    const r = Math.min(5, bw/2, h);
+    const tip = `Week of ${d.label}${d.current?" (this week)":""} — ${d.sessions} session${d.sessions===1?"":"s"}${d.mins?`, ${fmtMins(d.mins)}`:""}`;
     if(d.sessions>0){
-      bars += `<path class="bar" d="M${x} ${baseY} V${y+r} Q${x} ${y} ${x+r} ${y} H${x+bw-r} Q${x+bw} ${y} ${x+bw} ${y+r} V${baseY} Z"
-        opacity="${d.current?1:.82}"><title>${tip}</title></path>
-        <text class="bar-val" x="${x+bw/2}" y="${y-6}" text-anchor="middle">${d.sessions}</text>`;
+      bars += `<path class="bar${d.current?" cur":""}" d="M${x} ${baseY} V${y+r} Q${x} ${y} ${x+r} ${y} H${x+bw-r} Q${x+bw} ${y} ${x+bw} ${y+r} V${baseY} Z"><title>${tip}</title></path>`;
     } else {
-      bars += `<rect class="bar-stub" x="${x}" y="${baseY-3}" width="${bw}" height="3" rx="1.5"><title>${tip}</title></rect>`;
+      bars += `<rect class="bar-stub" x="${x}" y="${baseY-4}" width="${bw}" height="4" rx="2"><title>${tip}</title></rect>`;
     }
-    bars += `<text class="ax" x="${x+bw/2}" y="${H-8}" text-anchor="middle">${d.current?"now":d.label}</text>`;
   });
-  return `<svg class="chart-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="Sessions per week, last 8 weeks">
-    <line class="gridline" x1="${padL}" y1="${padT}" x2="${W-padR}" y2="${padT}"/>
-    <line class="baseline" x1="${padL}" y1="${baseY}" x2="${W-padR}" y2="${baseY}"/>
-    ${bars}</svg>`;
+  return `<svg class="chart-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="Sessions per week, last 8 weeks, newest on the right">${bars}</svg>`;
 }
 
 /* single-series weight line, orange, dot per weigh-in, gridlines at data min/max */
@@ -946,7 +918,7 @@ function renderSheet(){
   $("#sheetGrid").innerHTML = opts.map(a=>{
     const on = !!draft[a.id];
     return `<button class="act-btn" data-act="${a.id}" aria-pressed="${on}">
-      ${icon(a.icon)}${esc(a.name)}${icon("i-check","tick")}</button>`;
+      ${icon(a.icon)}<span>${esc(a.name)}</span></button>`;
   }).join("");
   $("#sheetGrid").querySelectorAll(".act-btn").forEach(b=>{
     b.onclick = ()=>{
@@ -1048,7 +1020,7 @@ function removeCustom(id){
    NAV + THEME + BOOT
    ============================================================ */
 const renderers = {today:renderToday, plan:renderPlan, history:renderHistory, trends:renderTrends, settings:renderSettings};
-function renderAll(){ renderToday(); renderPlan(); renderHistory(); renderTrends(); renderSettings(); }
+function renderAll(){ stagedIds = null; renderToday(); renderPlan(); renderHistory(); renderTrends(); renderSettings(); }
 
 function showView(name){
   document.querySelectorAll(".nav-btn").forEach(x=>x.classList.toggle("on", x.dataset.view===name));
